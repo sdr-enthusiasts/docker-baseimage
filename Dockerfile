@@ -16,7 +16,7 @@ RUN set -x && \
     # required for S6 overlay
     # curl kept for healthcheck
     TEMP_PACKAGES+=(gnupg2) && \
-    KEPT_PACKAGES+=(file) && \
+    TEMP_PACKAGES+=(file) && \
     KEPT_PACKAGES+=(curl) && \
     KEPT_PACKAGES+=(ca-certificates) && \
     # install packages

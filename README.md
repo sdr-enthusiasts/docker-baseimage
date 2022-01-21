@@ -12,6 +12,5 @@ Based on Debian Bullseye
 * [Mike Nye Healthcheck](https://github.com/mikenye/docker-healthchecks-framework)
 * ca-certificates
 * curl
-* file
 * gawk
 * pv
