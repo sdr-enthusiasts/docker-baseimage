@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Provide a basic image, with all normal packages common to all installs of @mikenye ADSB, @fredclausen, or @kx1t SDR docker images, to reduce download time for users.
+Provide a basic image, with all normal packages common to all installs of [mikenye](https://github.com/mikenye/) ADSB, [fredclausen](https://github.com/fredclausen), or [kx1t](https://github.com/mikenye/) SDR docker images, to reduce download time for users.
 
 ## Installed Packages
 
