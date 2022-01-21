@@ -9,7 +9,7 @@ RUN set -x && \
     TEMP_PACKAGES=() && \
     KEPT_PACKAGES=() && \
     # packages needed to install
-    TEMP_PACKAGES+=("git") && \
+    TEMP_PACKAGES+=(git) && \
     # logging
     KEPT_PACKAGES+=(gawk) && \
     KEPT_PACKAGES+=(pv) && \
