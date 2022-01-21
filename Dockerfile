@@ -4,7 +4,7 @@ ENV BRANCH_RTLSDR="ed0317e6a58c098874ac58b769cf2e609c18d9a5" \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-COPY rootfs/ /
+
 # hadolint ignore=DL3008,SC2086
 RUN set -x && \
     TEMP_PACKAGES=() && \
