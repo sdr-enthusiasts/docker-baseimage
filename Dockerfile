@@ -1,7 +1,6 @@
 FROM debian:bullseye-20211220-slim
 
-ENV BRANCH_RTLSDR="ed0317e6a58c098874ac58b769cf2e609c18d9a5" \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -9,6 +8,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN set -x && \
     TEMP_PACKAGES=() && \
     KEPT_PACKAGES=() && \
+    # packages needed to install
+    TEMP_PACKAGES+=("git") && \
     # logging
     KEPT_PACKAGES+=(gawk) && \
     KEPT_PACKAGES+=(pv) && \
