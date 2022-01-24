@@ -3,6 +3,7 @@ on:
   workflow_run:
     workflows:
       - 'Deploy'
+      - 'Linting'
     types: ['requested']
 
 jobs:
