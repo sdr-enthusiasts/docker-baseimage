@@ -16,7 +16,7 @@ RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}"\
+        "${TEMP_PACKAGES[@]}" \
         && \    
     # clone rtl-sdr repo
     git clone 'git://git.osmocom.org/rtl-sdr' /src/rtl-sdr && \

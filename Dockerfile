@@ -28,7 +28,7 @@ RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}"\
+        "${TEMP_PACKAGES[@]}" \
         && \
     # install S6 Overlay
     curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh && \
