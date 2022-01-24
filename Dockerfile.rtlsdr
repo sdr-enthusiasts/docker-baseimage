@@ -1,4 +1,4 @@
-INCLUDE ./Dockerfile
+INCLUDE+ ./Dockerfile
 
 # hadolint ignore=DL3008,SC2086
 RUN set -x && \
