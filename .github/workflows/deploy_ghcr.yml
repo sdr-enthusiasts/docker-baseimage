@@ -123,3 +123,15 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/fredclausen/docker-baseimage:readsb-full
           labels: ${{ steps.meta.outputs.labels }}
+
+      # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
+      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:acars
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile.acars-decoder
+          no-cache: true
+          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/fredclausen/docker-baseimage:acars-decoder
+          labels: ${{ steps.meta.outputs.labels }}
