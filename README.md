@@ -27,7 +27,7 @@ RUN: ...
 
 ### `readsb-full`
 
-* The readsb webapp and configuration files have been included in the image (see `/usr/share/readsb/html` and `/etc/lighttpd/config-enabled`), however lighttpd has not been installed or configured. You will need to do this if you want this functionality in your image.
+* The readsb webapp and configuration files have been included in the image (see `/usr/share/readsb/html` and `/etc/lighttpd/conf-available`), however lighttpd has not been installed or configured. You will need to do this if you want this functionality in your image.
 * The collectd configuration files have been included in the image (see `/etc/collectd/collectd.conf.d` and `/usr/share/readsb/graphs`), however collectd/rrdtool have not been installed or configured. You will need to do this if you want this functionality in your image.
 * The installed version of readsb's protobuf protocol file is located at: `/opt/readsb-protobuf`, should you need this in your image.
 * bladeRF FPGA firmware images are located at: `/usr/share/Nuand/bladeRF`
