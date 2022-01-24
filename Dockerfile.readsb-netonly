@@ -20,17 +20,17 @@ RUN set -x && \
     TEMP_PACKAGES+=(binutils) && \
     # install packages
     apt-get update && \
-    apt-get install -y —no-install-recommends \
+    apt-get install -y --no-install-recommends \
         "${KEPT_PACKAGES[@]}" \
         "${TEMP_PACKAGES[@]}" \
         && \
     # readsb: get latest release tag without cloning repo
-    BRANCH_READSB=$(git -c 'versionsort.suffix=-' ls-remote —tags —sort='v:refname' 'https://github.com/Mictronics/readsb-protobuf.git' | grep -v "\-dev" | cut -d '/' -f 3 | tail -1) && \
+    BRANCH_READSB=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/Mictronics/readsb-protobuf.git' | grep -v "\-dev" | cut -d '/' -f 3 | tail -1) && \
     # readsb: clone repo
     git clone \
-      —branch "$BRANCH_READSB" \
-      —depth 1 \
-      —single-branch \
+      --branch "$BRANCH_READSB" \
+      --depth 1 \
+      --single-branch \
       'https://github.com/Mictronics/readsb-protobuf.git' \
       /src/readsb-protobuf \
       && \
@@ -41,9 +41,9 @@ RUN set -x && \
     popd && \
     ldconfig && \
     # readsb: simple tests
-    readsb —version && \
-    viewadsb —version && \
-    readsbrrd —version && \
+    readsb --version && \
+    viewadsb --version && \
+    readsbrrd --version && \
     # readsb: copy webapp files to /usr/share/readsb/html
     mkdir -p /usr/share/readsb/html && \
     cp -Rv /src/readsb-protobuf/webapp/src/* /usr/share/readsb/html/ && \
