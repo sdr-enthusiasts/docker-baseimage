@@ -1,3 +1,5 @@
+# syntax = edrevo/dockerfile-plus
+
 INCLUDE+ ./Dockerfile
 
 # hadolint ignore=DL3008,SC2086
