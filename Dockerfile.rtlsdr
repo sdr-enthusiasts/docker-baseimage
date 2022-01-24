@@ -26,7 +26,7 @@ RUN set -x && \
       --depth 1 \
       --single-branch \
       'git://git.osmocom.org/rtl-sdr' \
-      /src/bladeRF \
+      /src/rtl-sdr \
       && \
     # prepare to build
     mkdir -p /src/rtl-sdr/build && \
