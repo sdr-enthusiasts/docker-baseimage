@@ -38,6 +38,7 @@ RUN set -x && \
     make -j && \
     # install
     make install && \
+    ldconfig && \
     popd && \
     popd && \
     # Clean up
