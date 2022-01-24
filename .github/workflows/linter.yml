@@ -6,8 +6,8 @@ on:
       - main
       # only run linter if the deploy action does NOT contain dockerfile updates. This is because the
       # deploy action, which will run if the docker files are changed, already does linting
-      paths:
-        - '!Dockerfile**'
+    paths:
+      - '!Dockerfile**'
 
 jobs:
   yamllint:
