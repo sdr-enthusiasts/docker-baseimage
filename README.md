@@ -13,11 +13,11 @@ Provide a basic image, with all normal packages common to all installs of [miken
 
 ## Using
 
-Simply add `FROM: ghcr.io/fredclausen/docker-baseimage:<tag>` at the top of your Dockerfile, replacing `<tag>` with one of the tags above.
+Simply add `FROM ghcr.io/fredclausen/docker-baseimage:<tag>` at the top of your Dockerfile, replacing `<tag>` with one of the tags above.
 
 Example:
 
 ```Dockerfile
-FROM: ghcr.io/fredclausen/docker-baseimage:rtlsdr
-RUN: ...
+FROM ghcr.io/fredclausen/docker-baseimage:rtlsdr
+RUN ...
 ```
