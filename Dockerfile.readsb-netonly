@@ -1,0 +1,64 @@
+FROM ghcr.io/fredclausen/docker-baseimage:base
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    # packages needed to install
+    TEMP_PACKAGES+=(git) && \
+    # packages needed to build 
+    TEMP_PACKAGES+=(build-essential) && \
+    TEMP_PACKAGES+=(cmake) && \
+    TEMP_PACKAGES+=(pkg-config) && \
+    # prerequisites for readsb-protobuf \
+    KEPT_PACKAGES+=(protobuf-c-compiler) && \
+    KEPT_PACKAGES+=(libprotobuf-c1) && \
+    TEMP_PACKAGES+=(libprotobuf-c-dev) && \
+    TEMP_PACKAGES+=(librrd-dev) && \
+    KEPT_PACKAGES+=(libncurses5) && \
+    TEMP_PACKAGES+=(libncurses5-dev) && \
+    TEMP_PACKAGES+=(binutils) && \
+    # install packages
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        "${KEPT_PACKAGES[@]}" \
+        "${TEMP_PACKAGES[@]}" \
+        && \
+    # readsb: get latest release tag without cloning repo
+    BRANCH_READSB=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/Mictronics/readsb-protobuf.git' | grep -v "\-dev" | cut -d '/' -f 3 | tail -1) && \
+    # readsb: clone repo
+    git clone \
+      --branch "$BRANCH_READSB" \
+      --depth 1 \
+      --single-branch \
+      'https://github.com/Mictronics/readsb-protobuf.git' \
+      /src/readsb-protobuf \
+      && \
+    # readsb: build & install (note, -j seems to have issues, so not using...)
+    pushd /src/readsb-protobuf && \
+    make BLADERF=no RTLSDR=no PLUTOSDR=no HAVE_BIASTEE=no && \
+    find "/src/readsb-protobuf" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
+    popd && \
+    ldconfig && \
+    # readsb: simple tests
+    readsb --version && \
+    viewadsb --version && \
+    readsbrrd --version && \
+    # readsb: copy webapp files to /usr/share/readsb/html
+    mkdir -p /usr/share/readsb/html && \
+    cp -Rv /src/readsb-protobuf/webapp/src/* /usr/share/readsb/html/ && \
+    mkdir -p /etc/lighttpd/conf-available/ && \
+    cp -v /src/readsb-protobuf/debian/lighttpd/* /etc/lighttpd/conf-available/ && \
+    # readsb: copy collectd files
+    mkdir -p /etc/collectd/collectd.conf.d && \
+    cp -v /src/readsb-protobuf/debian/collectd/readsb.collectd.conf /etc/collectd/collectd.conf.d/ && \
+    mkdir -p /usr/share/readsb/graphs && \
+    cp -v /src/readsb-protobuf/debian/graphs/*.sh /usr/share/readsb/graphs/ && \
+    chmod a+x /usr/share/readsb/graphs/*.sh && \
+    # readsb: local copy of installed readsb version’s protobuf proto file
+    mkdir -p /opt/readsb-protobuf && \
+    cp -v /src/readsb-protobuf/readsb.proto /opt/readsb-protobuf/readsb.proto && \
+    # Clean up
+    apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+    apt-get autoremove -y && \
+    rm -rf /src/* /tmp/* /var/lib/apt/lists/*
