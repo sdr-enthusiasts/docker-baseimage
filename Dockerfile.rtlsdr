@@ -1,6 +1,4 @@
-# syntax = edrevo/dockerfile-plus
-
-INCLUDE+ Dockerfile
+FROM ghcr.io/fredclausen/docker-baseimage:main
 
 # hadolint ignore=DL3008,SC2086
 RUN set -x && \
