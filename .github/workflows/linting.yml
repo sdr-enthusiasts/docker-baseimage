@@ -6,19 +6,19 @@ on:
       - main
 
 jobs:
-  shellcheck:
+#   shellcheck:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Pull koalaman/shellcheck:stable Image
-      run: docker pull koalaman/shellcheck:stable
-    - name: Run Shellcheck against shell scripts
-      run: |
-        find . -type f -exec grep -m1 -l -E '^#!.*sh.*' {} \; | grep -v -E '\/(.git\/|\S+.MD|\S+.md|retired_scripts\/|acarshub-typescript\/node_modules\/)'
-        docker run --rm -i -v "$PWD:/mnt" koalaman/shellcheck:stable $(find . -type f -exec grep -m1 -l -E '^#!.*sh.*' {} \; | grep -v -E '\/(.git\/|\S+.MD|\S+.md|retired_scripts\/|acarshub-typescript\/node_modules\/)')
-#        docker run --rm -i -v "$PWD:/mnt" koalaman/shellcheck:stable $(find . -type f -exec grep -m1 -l -E '^#!.*execline.*' {} \; | grep -v '/.git/')
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Pull koalaman/shellcheck:stable Image
+#       run: docker pull koalaman/shellcheck:stable
+#     - name: Run Shellcheck against shell scripts
+#       run: |
+#         find . -type f -exec grep -m1 -l -E '^#!.*sh.*' {} \; | grep -v -E '\/(.git\/|\S+.MD|\S+.md/)'
+#         docker run --rm -i -v "$PWD:/mnt" koalaman/shellcheck:stable $(find . -type f -exec grep -m1 -l -E '^#!.*sh.*' {} \; | grep -v -E '\/(.git\/|\S+.MD|\S+.md/)')
+# #        docker run --rm -i -v "$PWD:/mnt" koalaman/shellcheck:stable $(find . -type f -exec grep -m1 -l -E '^#!.*execline.*' {} \; | grep -v '/.git/')
 
   hadolint:
 
