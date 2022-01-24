@@ -17,13 +17,17 @@ RUN set -x && \
     apt-get install -y --no-install-recommends \
         "${KEPT_PACKAGES[@]}" \
         "${TEMP_PACKAGES[@]}" \
-        && \    
-    # clone rtl-sdr repo
-    git clone 'git://git.osmocom.org/rtl-sdr' /src/rtl-sdr && \
-    pushd /src/rtl-sdr && \
-    # check out most recent tagged release
-    BRANCH_RTLSDR=$(git tag -l --sort=creatordate | tail -1) && \
-    git checkout "$BRANCH_RTLSDR" && \
+        && \
+    # rtlsdr: get latest release tag without cloning repo
+    BRANCH_RTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'git://git.osmocom.org/rtl-sdr' | grep -v '\^' | cut -d '/' -f 3 | grep -v '^v.*' | tail -1) && \
+    # rtlsdr: clone repo
+    git clone \
+      --branch "$BRANCH_RTLSDR" \
+      --depth 1 \
+      --single-branch \
+      'git://git.osmocom.org/rtl-sdr' \
+      /src/bladeRF \
+      && \
     # prepare to build
     mkdir -p /src/rtl-sdr/build && \
     pushd /src/rtl-sdr/build && \
@@ -35,11 +39,11 @@ RUN set -x && \
       ../ \
       && \
     # build
-    make -j && \
+    make -j $(nproc) && \
     # install
     make install && \
     ldconfig && \
-    popd && popd && \
+    popd && \
     # Clean up
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -y && \
