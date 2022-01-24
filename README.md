@@ -31,3 +31,11 @@ RUN ...
 * The collectd configuration files have been included in the image (see `/etc/collectd/collectd.conf.d` and `/usr/share/readsb/graphs`), however collectd/rrdtool have not been installed or configured. You will need to do this if you want this functionality in your image.
 * The installed version of readsb's protobuf protocol file is located at: `/opt/readsb-protobuf`, should you need this in your image.
 * bladeRF FPGA firmware images are located at: `/usr/share/Nuand/bladeRF`
+
+## Projects and Tag Tree
+
+| Tag | Sub-tags Using | Up-Stream Projects Using |
+| --- | -------------- | ------------------------ |
+| `base` | `ALL`       | - |
+| `rtlsdr` | `readsb-full` | - |
+| `readsb-full` | - | - |
