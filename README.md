@@ -41,7 +41,7 @@ RUN ...
 | Tag | Sub-tags Using | Up-Stream Projects Using |
 | --- | -------------- | ------------------------ |
 | `base` | `ALL`       | - |
-| `acars-decoder` | `rtlsdr` | [docker-acarsdec](https://github.com/fredclausen/docker-acarsdec), [docker-dumpvdl2](https://github.com/fredclausen/docker-dumpvdl2)
-| `rtlsdr` | `readsb-full` | - |
+| `acars-decoder` | - | [docker-acarsdec](https://github.com/fredclausen/docker-acarsdec), [docker-dumpvdl2](https://github.com/fredclausen/docker-dumpvdl2)
+| `rtlsdr` | `acars-decoder`, `readsb-full` | - |
 | `readsb-full` | - | - |
 | `readsb-netonly` | - | - |
