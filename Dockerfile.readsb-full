@@ -100,7 +100,6 @@ RUN set -x && \
     make install && \
     ldconfig && \
     popd && \
-
     # libad9361-iio: get latest release tag without cloning repo
     BRANCH_LIBAD9361_IIO=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/analogdevicesinc/libad9361-iio.git' | grep -v '\^' | cut -d '/' -f 3 | tail -1) && \
     # libad9361-iio: clone repo
