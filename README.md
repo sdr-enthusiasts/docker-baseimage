@@ -8,8 +8,8 @@ Provide a basic image, with all normal packages common to all installs of [miken
 
 Based on Debian Bullseye
 
-* [Mike Nye S6 framework](https://github.com/mikenye/deploy-s6-overlay)
-* [Mike Nye Healthcheck](https://github.com/mikenye/docker-healthchecks-framework)
+* [s6-overlay](https://github.com/just-containers/s6-overlay) (via [mikenye/deploy-s6-overlay](https://github.com/mikenye/deploy-s6-overlay))
+* [Mike Nye's Healthcheck Framework](https://github.com/mikenye/docker-healthchecks-framework)
 * ca-certificates
 * curl
 * gawk
