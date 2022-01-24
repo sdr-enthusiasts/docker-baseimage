@@ -39,8 +39,7 @@ RUN set -x && \
     # install
     make install && \
     ldconfig && \
-    popd && \
-    popd && \
+    popd && popd && \
     # Clean up
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -y && \
