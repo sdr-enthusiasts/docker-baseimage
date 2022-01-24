@@ -16,6 +16,8 @@ Provide a basic image, with all normal packages common to all installs of [miken
 
 Simply add `FROM ghcr.io/fredclausen/docker-baseimage:<tag>` at the top of your Dockerfile, replacing `<tag>` with one of the tags above.
 
+The base image provides an `[ENTRYPOINT]` for starting the container so unless you have a specific reason to change this you do not have to provide an `[ENTRYPOINT]` in your `Dockerfile`.
+
 Example:
 
 ```Dockerfile
@@ -25,7 +27,7 @@ RUN ...
 
 ## Tag-specific Notes
 
-### `readsb-full`
+## `readsb-full`
 
 * The readsb webapp and configuration files have been included in the image (see `/usr/share/readsb/html` and `/etc/lighttpd/conf-available`), however lighttpd has not been installed or configured. You will need to do this if you want this functionality in your image.
 * The collectd configuration files have been included in the image (see `/etc/collectd/collectd.conf.d` and `/usr/share/readsb/graphs`), however collectd/rrdtool have not been installed or configured. You will need to do this if you want this functionality in your image.
