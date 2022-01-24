@@ -1,7 +1,5 @@
 FROM ghcr.io/fredclausen/docker-baseimage:rtlsdr
 
-ENV BRANCH_RTLSDR="ed0317e6a58c098874ac58b769cf2e609c18d9a5"
-
 # hadolint ignore=DL3008,SC2086,DL3008,SC2039
 RUN set -x && \
     TEMP_PACKAGES=() && \
@@ -25,12 +23,6 @@ RUN set -x && \
     # packages for acarsserv
     TEMP_PACKAGES+=(libsqlite3-dev) && \
     KEPT_PACKAGES+=(libsqlite3-0) && \
-    # packages for network stuff
-    KEPT_PACKAGES+=(socat) && \
-    KEPT_PACKAGES+=(ncat) && \
-    KEPT_PACKAGES+=(net-tools) && \
-    # process management
-    KEPT_PACKAGES+=(procps) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
