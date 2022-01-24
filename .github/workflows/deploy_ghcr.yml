@@ -40,6 +40,21 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  yamllint:
+    name: Run yamllint against YAML files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 120
+                level: warning
+
   hadolint:
     name: Run hadolint against docker files
     runs-on: ubuntu-latest
@@ -62,7 +77,7 @@ jobs:
 
   deploy_ghcr_base:
     name: Deploy base image to ghcr.io
-    needs: [hadolint, markdownlint]
+    needs: [hadolint, markdownlint, yamllint]
     runs-on: ubuntu-latest
     permissions:
       contents: read
