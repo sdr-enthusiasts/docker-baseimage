@@ -142,8 +142,8 @@ RUN set -x && \
     # readsb: copy webapp files to /usr/share/readsb/html
     mkdir -p /usr/share/readsb/html && \
     cp -Rv /src/readsb-protobuf/webapp/src/* /usr/share/readsb/html/ && \
-    mkdir -p /etc/lighttpd/config-enabled/ && \
-    cp -v /src/readsb-protobuf/debian/lighttpd/* /etc/lighttpd/conf-enabled/ && \
+    mkdir -p /etc/lighttpd/conf-available/ && \
+    cp -v /src/readsb-protobuf/debian/lighttpd/* /etc/lighttpd/conf-available/ && \
     # readsb: copy collectd files
     mkdir -p /etc/collectd/collectd.conf.d && \
     cp -v /src/readsb-protobuf/debian/collectd/readsb.collectd.conf /etc/collectd/collectd.conf.d/ && \
