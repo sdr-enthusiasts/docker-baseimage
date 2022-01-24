@@ -10,7 +10,7 @@ Based on Debian Bullseye
 
 * [s6-overlay](https://github.com/just-containers/s6-overlay) (via [mikenye/deploy-s6-overlay](https://github.com/mikenye/deploy-s6-overlay))
 * [Mike Nye's Healthcheck Framework](https://github.com/mikenye/docker-healthchecks-framework)
-* ca-certificates
-* curl
-* gawk
-* pv
+* [ca-certificates](https://packages.debian.org/stable/ca-certificates)
+* [curl](https://packages.debian.org/stable/curl)
+* [gawk](https://packages.debian.org/stable/gawk)
+* [pv (Pipe Viewer)](https://packages.debian.org/stable/pv)
