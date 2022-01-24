@@ -1,0 +1,49 @@
+FROM ghcr.io/fredclausen/docker-baseimage:main
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    # packages needed to install
+    TEMP_PACKAGES+=(git) && \
+    # packages needed to build rtl-sdr
+    TEMP_PACKAGES+=(build-essential) && \
+    TEMP_PACKAGES+=(cmake) && \
+    # dependencies for rtl-sdr
+    TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+    KEPT_PACKAGES+=(libusb-1.0-0) && \
+    # install packages
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        "${KEPT_PACKAGES[@]}" \
+        "${TEMP_PACKAGES[@]}"\
+        && \    
+    # clone rtl-sdr repo
+    git clone 'git://git.osmocom.org/rtl-sdr' /src/rtl-sdr && \
+    pushd /src/rtl-sdr && \
+    # check out most recent tagged release
+    BRANCH_RTLSDR=$(git tag -l --sort=creatordate | tail -1) && \
+    git checkout "$BRANCH_RTLSDR" && \
+    # prepare to build
+    mkdir -p /src/rtl-sdr/build && \
+    pushd /src/rtl-sdr/build && \
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DENABLE_ZEROCOPY=ON \
+      -DDETACH_KERNEL_DRIVER=ON \
+      -DINSTALL_UDEV_RULES=ON \
+      ../ \
+      && \
+    # build
+    make -j && \
+    # install
+    make install && \
+    ldconfig && \
+    popd && \
+    popd && \
+    # Clean up
+    apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+    apt-get autoremove -y && \
+    rm -rf /src/* /tmp/* /var/lib/apt/lists/*
+
+ENTRYPOINT [ "/init" ]
