@@ -4,22 +4,8 @@ on:
   # Enable manual running of action if necessary
   workflow_dispatch:
   # Build and deploy the image on pushes to main branch
-  push:
+  [push, pull_request]:
     # Only publish on push to main branch
-    branches:
-      - main
-    # Don't trigger if it's just a documentation update
-    paths-ignore:
-      - '**.md'
-      - '**.MD'
-      - 'LICENSE'
-      - '.gitattributes'
-      - '.gitignore'
-      - '.dockerignore'
-
-  # Test build/deploy on PR (no push, build only)
-  pull_request:
-    # Only run on PR to main
     branches:
       - main
     # Don't trigger if it's just a documentation update
