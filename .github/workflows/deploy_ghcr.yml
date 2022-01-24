@@ -7,7 +7,7 @@ on:
 
     # Only publish on push to main branch
     branches:
-      - main
+      - deploy_to_ghcr
 
     # Don't trigger if it's just a documentation update
     paths-ignore:
