@@ -61,16 +61,21 @@ Add under the `jobs` section.
 Copy and paste the exact same yaml job entry you created above, except add the following under the `Checkout` step
 
 ```yaml
-      # Get changed files
-      - name: Get changed files
-        id: changed-files
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
         uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.acars-decoder
+            Dockerfile.rtlsdr
 ```
+
+Change the list of files to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
 
 And then for **EACH STEP AFTER THAT** add the following under the `name` of the step
 
 ```yaml
-if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.readsb-netonly')"
+if: steps.changed-files-specific.outputs.any_changed == 'true'
 ```
-
-Change the line to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
