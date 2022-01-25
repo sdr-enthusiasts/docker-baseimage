@@ -5,6 +5,7 @@ on:
     workflows:
       - 'Deploy'
       - 'Linting'
+      - 'Pull Request'
     types: ['requested']
 
 jobs:
