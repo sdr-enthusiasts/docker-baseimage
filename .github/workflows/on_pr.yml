@@ -77,7 +77,7 @@ jobs:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile
+            Dockerfile$
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
@@ -140,7 +140,7 @@ jobs:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile
+            Dockerfile$
             Dockerfile.python
 
       # Log into ghcr (so we can push images)
@@ -203,7 +203,7 @@ jobs:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile
+            Dockerfile$
             Dockerfile.rtlsdr
 
       # Log into ghcr (so we can push images)
@@ -266,7 +266,7 @@ jobs:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile
+            Dockerfile$
             Dockerfile.readsb-netonly
 
       # Log into ghcr (so we can push images)
@@ -329,7 +329,7 @@ jobs:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile
+            Dockerfile$
             Dockerfile.readsb-full
             Dockerfile.rtlsdr
 
@@ -394,7 +394,7 @@ jobs:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile
+            Dockerfile$
             Dockerfile.acars-decoder
             Dockerfile.rtlsdr
 
