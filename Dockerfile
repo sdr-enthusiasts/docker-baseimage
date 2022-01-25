@@ -19,6 +19,12 @@ RUN set -x && \
     TEMP_PACKAGES+=(file) && \
     KEPT_PACKAGES+=(curl) && \
     KEPT_PACKAGES+=(ca-certificates) && \
+    # packages for network stuff
+    KEPT_PACKAGES+=(socat) && \
+    KEPT_PACKAGES+=(ncat) && \
+    KEPT_PACKAGES+=(net-tools) && \
+    # process management
+    KEPT_PACKAGES+=(procps) && \
     # install packages
     ## Builder fixes...
     mkdir -p /usr/sbin/ && \
