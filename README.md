@@ -4,6 +4,10 @@
 
 Provide a basic image, with all normal packages common to all installs of [mikenye](https://github.com/mikenye/), [fredclausen](https://github.com/fredclausen), or [kx1t](https://github.com/kx1t/) SDR docker images, to reduce download time and disk space usage for users.
 
+## Adding containers
+
+Please see [this](Add-New-Container-Template.MD) for information on how to update GitHub actions.
+
 ## Tags
 
 | Tag | Extends | Included Packages |

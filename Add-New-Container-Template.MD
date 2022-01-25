@@ -1,0 +1,76 @@
+# Github Action Template
+
+## deploy_ghcr.yml template
+
+Add under the `jobs` section.
+
+```yaml
+  deploy_<name of your image>:
+    name: Deploy <name of your image> to ghcr.io # Modify this line
+    needs: [deploy_ghcr_base] # Modify this line.....add in the name of any jobs (aka containers) that your container depends on, comma separated
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
+      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:<your container tag> # Modify this line
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./<your container's Dockerfile> # Modify this line
+          no-cache: true
+          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/fredclausen/docker-baseimage:<your container tag> # Modify this line
+          labels: ${{ steps.meta.outputs.labels }}
+```
+
+## on_pr.yaml template
+
+Copy and paste the exact same yaml job entry you created above, except add the following under the `Checkout` step
+
+```yaml
+      # Get changed files
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v13.2
+```
+
+And then for **EACH STEP AFTER THAT** add the following under the `name` of the step
+
+```yaml
+if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.readsb-netonly')"
+```
+
+Change the line to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
