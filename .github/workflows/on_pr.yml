@@ -118,6 +118,65 @@ jobs:
           tags: ghcr.io/fredclausen/docker-baseimage:base
           labels: ${{ steps.meta.outputs.labels }}
 
+  deploy_ghcr_python:
+    name: Deploy python to ghcr.io
+    runs-on: ubuntu-latest
+    needs: [deploy_ghcr_base]
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Get changed files
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v13.2
+
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.python')"
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.python')"
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.python')"
+        uses: docker/setup-qemu-action@v1
+
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.python')"
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      # Build & Push Dockerfile.python (only push if this action was NOT triggered by a PR)
+      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:python
+        if: "contains(steps.changed-files.outputs.modified_files, 'Dockerfile') || contains(steps.changed-files.outputs.modified_files, 'Dockerfile.python')"
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile.python
+          no-cache: true
+          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/fredclausen/docker-baseimage:python
+          labels: ${{ steps.meta.outputs.labels }}
+
   deploy_ghcr_rtlsdr:
     name: Deploy rtlsdr to ghcr.io
     runs-on: ubuntu-latest
