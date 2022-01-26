@@ -20,6 +20,8 @@ RUN set -x && \
     KEPT_PACKAGES+=(curl) && \
     TEMP_PACKAGES+=(xz-utils) && \
     KEPT_PACKAGES+=(ca-certificates) && \
+    # bc for scrips and healthchecks
+    KEPT_PACKAGES+=(bc) && \
     # packages for network stuff
     KEPT_PACKAGES+=(socat) && \
     KEPT_PACKAGES+=(ncat) && \
