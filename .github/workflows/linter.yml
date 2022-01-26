@@ -9,6 +9,8 @@ on:
       # deploy action, which will run if the docker files are changed, already does linting
     paths:
       - '!Dockerfile**'
+      - '**.yml'
+      - '**.MD'
 
 jobs:
   yamllint:
