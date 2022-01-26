@@ -1,6 +1,7 @@
 FROM debian:bullseye-20211220-slim
 
-ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    S6OVERLAY_VERSION=v2.2.0.3
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
