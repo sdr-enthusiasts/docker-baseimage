@@ -1,11 +1,11 @@
 ---
-name: Deploy
+name: Pull Request
 
 on:
   # Enable manual running of action if necessary
   workflow_dispatch:
   # Build and deploy the image on pushes to main branch
-  push:
+  pull_request:
     # Only publish on push to main branch
     branches:
       - main
@@ -17,10 +17,6 @@ on:
       - '.gitattributes'
       - '.gitignore'
       - '.dockerignore'
-
-  # Build and deploy the image nightly (to ensure we pick up any security updates)
-  schedule:
-    - cron: "0 12 * * *"
 
 env:
   REGISTRY: ghcr.io
@@ -71,13 +67,21 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
 
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -86,6 +90,7 @@ jobs:
 
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -93,15 +98,18 @@ jobs:
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/fredclausen/docker-baseimage:base
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -126,13 +134,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # Get changed files
-      - name: Get changed files
-        id: changed-files
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
         uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.python
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -141,6 +154,7 @@ jobs:
 
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -148,14 +162,17 @@ jobs:
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push Dockerfile.python (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/fredclausen/docker-baseimage:python
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -180,8 +197,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.rtlsdr
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -190,6 +217,7 @@ jobs:
 
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -197,14 +225,17 @@ jobs:
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push Dockerfile.rtlsdr (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/fredclausen/docker-baseimage:rtlsdr
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -229,8 +260,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.readsb-netonly
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -239,6 +280,7 @@ jobs:
 
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -246,14 +288,17 @@ jobs:
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push Dockerfile.readsb-netonly (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/fredclausen/docker-baseimage:readsb-netonly
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -278,8 +323,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.readsb-full
+            Dockerfile.rtlsdr
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -288,6 +344,7 @@ jobs:
 
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -295,15 +352,18 @@ jobs:
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile.readsb-full (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/fredclausen/docker-baseimage:readsb-full
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -328,8 +388,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.acars-decoder
+            Dockerfile.rtlsdr
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -338,6 +409,7 @@ jobs:
 
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -345,15 +417,18 @@ jobs:
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/fredclausen/docker-baseimage:acars-decoder
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
