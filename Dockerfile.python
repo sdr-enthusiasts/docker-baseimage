@@ -1,0 +1,20 @@
+FROM ghcr.io/fredclausen/docker-baseimage:base
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    # packages for python
+    KEPT_PACKAGES+=(python3) && \
+    KEPT_PACKAGES+=(python3-pip) && \
+    KEPT_PACKAGES+=(python3-setuptools) && \
+    KEPT_PACKAGES+=(python3-wheel) && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        "${KEPT_PACKAGES[@]}" \
+        "${TEMP_PACKAGES[@]}"\
+        && \
+    # Clean up
+    apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+    apt-get autoremove -y && \
+    rm -rf /src/* /tmp/* /var/lib/apt/lists/*
