@@ -7,7 +7,7 @@ Provide a basic image, with all normal packages common to all installs of [miken
 ## Adding containers
 
 1) Create your new docker file
-2) [Update github actions]](Add-New-Container-Template.MD)
+2) [Update github actions](Add-New-Container-Template.MD)
 3) Update the [Tags](#tags) section
 4) Update the [the Projects and Tag Tree](#Projects-and-Tag-Tree) section
 
