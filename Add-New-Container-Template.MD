@@ -18,6 +18,8 @@ Add under the `jobs` section.
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
