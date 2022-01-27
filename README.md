@@ -51,6 +51,6 @@ RUN ...
 | `base`           | `ALL`                          | [kx1t/docker-radarvirtuel](http://github.com/kx1t/docker-radarvirtuel) |
 | `acars-decoder`  | -                              | [docker-acarsdec](https://github.com/fredclausen/docker-acarsdec), [docker-dumpvdl2](https://github.com/fredclausen/docker-dumpvdl2) |
 | `python`         | -                              | [kx1t/docker-planefence](http://github.com/kx1t/docker-planefence) |
-| `rtlsdr`         | `acars-decoder`, `readsb-full` | - |
+| `rtlsdr`         | `acars-decoder`, `readsb-full` | [mikenye/piaware](https://github.com/mikenye/docker-piaware) |
 | `readsb-full`    | -                              | [mikenye/readsb-protobuf](https://github.com/mikenye/docker-readsb-protobuf) |
 | `readsb-netonly` | -                              | - |
