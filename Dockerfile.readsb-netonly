@@ -25,7 +25,10 @@ RUN set -x && \
         "${TEMP_PACKAGES[@]}" \
         && \
     # readsb: get latest release tag without cloning repo
-    BRANCH_READSB=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/Mictronics/readsb-protobuf.git' | grep -v "\-dev" | cut -d '/' -f 3 | tail -1) && \
+    # kx1t edits -- get simply the latest committed version from the dev (=default) branch rather than the latest tag
+    # this is because Mictronic doesn't update their labels very often, and important bug fixes are needlessly delayed
+    # BRANCH_READSB=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/Mictronics/readsb-protobuf.git' | grep -v "\-dev" | cut -d '/' -f 3 | tail -1) && \
+    BRANCH_READSB="dev" && \
     # readsb: clone repo
     git clone \
       --branch "$BRANCH_READSB" \
