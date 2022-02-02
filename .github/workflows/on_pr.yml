@@ -438,3 +438,70 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/fredclausen/docker-baseimage:acars-decoder
           labels: ${{ steps.meta.outputs.labels }}
+  
+  deploy_soapyrtlsdr:
+    name: Deploy soapyrtlsdr to ghcr.io
+    needs: [deploy_ghcr_rtlsdr]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v13.2
+        with:
+          files: |
+            Dockerfile$
+            Dockerfile.rtlsdr
+            Dockerfile.soapyrtlsdr
+
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/setup-qemu-action@v1
+
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
+      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:soapyrtlsdr
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile.soapyrtlsdr
+          no-cache: true
+          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/fredclausen/docker-baseimage:soapyrtlsdr
+          labels: ${{ steps.meta.outputs.labels }}
