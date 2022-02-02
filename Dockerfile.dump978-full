@@ -40,11 +40,11 @@ RUN set -x && \
     cp -v "/src/dump978/faup978" "/usr/lib/piaware/helpers/" && \
     mkdir -p "/usr/share/dump978-fa/html" && \
     cp -a "/src/dump978/skyaware/"* "/usr/share/dump978-fa/html/" && \
-    # dump978: simple tests
-    # ---
-    # TODO: perhaps read some samples from stdin?
-    # Exit code of `dump978-fa --version` is non-zero so cannot use this. :-(
-    # ---
+    # dump978: prepare test data
+    git clone --depth 1 'https://github.com/mutability/dump978.git' "/src/dump978-mutability" && \
+    gunzip /src/dump978-mutability/sample-data.txt.gz && \
+    # dump978: simple test
+    dump978-fa --json-stdout --stdin --format CS8 < /src/dump978-mutability/sample-data.txt && \
     # Clean up
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -y && \
