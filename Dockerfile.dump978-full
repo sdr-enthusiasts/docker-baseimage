@@ -35,7 +35,8 @@ RUN set -x && \
     popd && \
     # dump978: install
     mkdir -p "/usr/lib/piaware/helpers" && \
-    cp -v "/src/dump978/dump978-fa" skyaware978 "/usr/local/bin/" && \
+    cp -v "/src/dump978/dump978-fa" "/usr/local/bin/" && \
+    cp -v "/src/dump978/skyaware978" "/usr/local/bin/" && \
     cp -v "/src/dump978/faup978" "/usr/lib/piaware/helpers/" && \
     mkdir -p "/usr/share/dump978-fa/html" && \
     cp -a "/src/dump978/skyaware/"* "/usr/share/dump978-fa/html/" && \
