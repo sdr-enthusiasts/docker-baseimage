@@ -438,7 +438,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/fredclausen/docker-baseimage:acars-decoder
           labels: ${{ steps.meta.outputs.labels }}
-  
+
   deploy_soapyrtlsdr:
     name: Deploy soapyrtlsdr to ghcr.io
     needs: [deploy_ghcr_rtlsdr]
