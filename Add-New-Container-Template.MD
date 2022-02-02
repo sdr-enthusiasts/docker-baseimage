@@ -60,7 +60,10 @@ Add under the `jobs` section.
 
 ## on_pr.yaml template
 
-Copy and paste the exact same yaml job entry you created above, except add the following under the `Checkout` step
+Copy and paste the exact same yaml job entry you created above, and:
+
+* Change the job name from `Deploy <name of your image> to ghcr.io` to `Test deploy <name of your image> to ghcr.io`
+* Add the following under the `Checkout` step
 
 ```yaml
       # List of files to check to trigger a rebuild on this job
@@ -74,9 +77,9 @@ Copy and paste the exact same yaml job entry you created above, except add the f
             Dockerfile.rtlsdr
 ```
 
-Change the list of files to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
+* Change the list of files in the YAML above to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
 
-And then for **EACH STEP AFTER THAT** add the following under the `name` of the step
+* For **EACH STEP AFTER THE `Get specific changed files` STEP** add the following under the `name` of the step
 
 ```yaml
 if: steps.changed-files-specific.outputs.any_changed == 'true'
