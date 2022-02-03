@@ -39,7 +39,7 @@ jobs:
 
   deploy_ghcr_base:
     name: Deploy base image to ghcr.io
-    needs: [hadolint, markdownlint, yamllint]
+    needs: [hadolint]
     runs-on: ubuntu-latest
     permissions:
       contents: read
