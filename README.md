@@ -24,6 +24,7 @@ Provide a basic image, with all normal packages common to all installs of [miken
 | `rtlsdr` | `base` | Contains the latest tagged release of [rtl-sdr](https://osmocom.org/projects/rtl-sdr/), and prerequisites (eg: [libusb](https://packages.debian.org/stable/libusb-1.0-0)) |
 | `soapyrtlsdr` | `rtlsdr` | Contains the latest tagged release of [SoapySDR](https://github.com/pothosware/SoapySDR) and [SoapyRTLSDR](https://github.com/pothosware/SoapyRTLSDR), and prerequisites ([python3](https://packages.debian.org/stable/python3), [python3-pip](https://packages.debian.org/stable/python3-pip), [python3-setuptools](https://packages.debian.org/stable/python3-setuptools), [python3-wheel](https://packages.debian.org/stable/python3-wheel)) |
 | `dump978-full` | `soapyrtlsdr` | Contains the latest tagged release of [flightaware/dump978](https://github.com/flightaware/dump978), and prerequisites (various boost libraries) |
+| `qemu` | `base` | Contains `qemu-user-static` binaries |
 
 ## Using
 
@@ -60,3 +61,4 @@ RUN ...
 | `soapyrtlsdr`     | `dump978-full`                 | - |
 | `dump978-full`    | -                              | [mikenye/piaware](https://github.com/mikenye/docker-piaware) |
 | `wreadsb-netonly` | -                              | [mikenye/tar1090](https://github.com/mikenye/docker-tar1090) |
+| `qemu`            | -                              | - |
