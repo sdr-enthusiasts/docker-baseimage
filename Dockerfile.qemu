@@ -1,0 +1,20 @@
+FROM ghcr.io/fredclausen/docker-baseimage:base
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+    # Install packages
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    KEPT_PACKAGES+=(qemu-user-static) && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        "${KEPT_PACKAGES[@]}" \
+        "${TEMP_PACKAGES[@]}" \
+        && \
+    # Simple checks
+    qemu-arm-static --version && \
+    qemu-aarch64-static --version && \
+    # Clean up
+    apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+    apt-get autoremove -y && \
+    rm -rf /src/* /tmp/* /var/lib/apt/lists/*
