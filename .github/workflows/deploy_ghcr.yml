@@ -19,8 +19,8 @@ on:
       - '.dockerignore'
 
   # Build and deploy the image nightly (to ensure we pick up any security updates)
-  schedule:
-    - cron: "0 12 * * *"
+  # schedule:
+  #   - cron: "0 12 * * *"
 
 env:
   REGISTRY: ghcr.io
