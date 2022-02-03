@@ -46,7 +46,7 @@ Add under the `jobs` section.
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:<your container tag> # Modify this line
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:<your container tag> # Modify this line
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -54,7 +54,7 @@ Add under the `jobs` section.
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:<your container tag> # Modify this line
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:<your container tag> # Modify this line
           labels: ${{ steps.meta.outputs.labels }}
 ```
 

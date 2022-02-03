@@ -108,7 +108,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:base
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:base
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -117,7 +117,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:base
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:base
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_python:
@@ -171,7 +171,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push Dockerfile.python (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:python
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:python
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -180,7 +180,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:python
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:python
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_rtlsdr:
@@ -234,7 +234,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push Dockerfile.rtlsdr (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:rtlsdr
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -243,7 +243,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:rtlsdr
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_readsb-netonly:
@@ -297,7 +297,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push Dockerfile.readsb-netonly (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:readsb-netonly
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -306,7 +306,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:readsb-netonly
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_readsb-full:
@@ -362,7 +362,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile.readsb-full (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:readsb-full
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -371,7 +371,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:readsb-full
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_acars-decoder:
@@ -427,7 +427,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:acars-decoder
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -436,7 +436,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:acars-decoder
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_soapyrtlsdr:
@@ -494,7 +494,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:soapyrtlsdr
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -503,7 +503,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:soapyrtlsdr
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_dump978-full:
@@ -562,7 +562,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:dump978-full
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -571,7 +571,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:dump978-full
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_wreadsb-netonly:
@@ -628,7 +628,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:wreadsb-netonly
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -637,7 +637,7 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:wreadsb-netonly
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_qemu:
@@ -694,7 +694,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/fredclausen/docker-baseimage:qemu
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -703,5 +703,5 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/fredclausen/docker-baseimage:qemu
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
           labels: ${{ steps.meta.outputs.labels }}
