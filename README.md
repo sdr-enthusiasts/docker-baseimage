@@ -28,14 +28,14 @@ Provide a basic image, with all normal packages common to all installs of [miken
 
 ## Using
 
-Simply add `FROM ghcr.io/fredclausen/docker-baseimage:<tag>` at the top of your Dockerfile, replacing `<tag>` with one of the tags above.
+Simply add `FROM ghcr.io/sdr-enthusiasts/docker-baseimage:<tag>` at the top of your Dockerfile, replacing `<tag>` with one of the tags above.
 
 The base image provides an `[ENTRYPOINT]` for starting the container so unless you have a specific reason to change this you do not have to provide an `[ENTRYPOINT]` in your `Dockerfile`.
 
 Example:
 
 ```Dockerfile
-FROM ghcr.io/fredclausen/docker-baseimage:rtlsdr
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 RUN ...
 ```
 

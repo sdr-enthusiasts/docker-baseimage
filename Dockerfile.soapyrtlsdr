@@ -1,4 +1,4 @@
-FROM ghcr.io/fredclausen/docker-baseimage:rtlsdr
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
@@ -6,7 +6,7 @@ RUN set -x && \
     KEPT_PACKAGES=() && \
     # packages needed to install
     TEMP_PACKAGES+=(git) && \
-    # packages needed to build 
+    # packages needed to build
     TEMP_PACKAGES+=(build-essential) && \
     TEMP_PACKAGES+=(cmake) && \
     TEMP_PACKAGES+=(pkg-config) && \
