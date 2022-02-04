@@ -559,3 +559,18 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
           labels: ${{ steps.meta.outputs.labels }}
+
+  trigger_build_sdr-enthusiasts_docker-readsb-protobuf:
+    name: Trigger deploy of sdr-enthusiasts/docker-readsb-protobuf
+    needs: [deploy_ghcr_readsb-full]
+    runs-on: ubuntu-latest
+    env:
+          WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+          WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
+          WORKFLOW_FILE: deploy.yml
+          WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
