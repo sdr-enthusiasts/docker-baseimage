@@ -17,7 +17,7 @@ jobs:
           WORKFLOW_FILE: test_repository_dispatch.yml
           WORKFLOW_REASON: "sdr-enthusiasts/docker-baseimage/deploy_ghcr.yml"
         run: |
-          echo "$WORKFLOW_AUTH_TOKEN" > gh auth login --with-token
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
 
           
