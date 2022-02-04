@@ -84,3 +84,60 @@ Copy and paste the exact same yaml job entry you created above, and:
 ```yaml
 if: steps.changed-files-specific.outputs.any_changed == 'true'
 ```
+
+## Triggering build of upstream image
+
+* Create a GitHub Personal Access Token with `read:org` & `repo` scopes.
+* Add the GitHub Personal Access Token to this repo's secrets
+* Add the following to `deploy_ghcr.yml`
+
+```yaml
+  trigger_build_<github_user/org>-<github_repo_name>: # Modify this line
+    name: Trigger deploy of <github_user/org>-<github_repo_name> # Modify this line
+    needs: [deploy_<name of your image>] # Modify this line
+    runs-on: ubuntu-latest
+    env:
+          WORKFLOW_AUTH_TOKEN: ${{ secrets.<secret_name> }} # Modify this line with the name of the PAT secret
+          WORKFLOW_REPO: <github_user/org>-<github_repo_name> # Modify this line
+          WORKFLOW_FILE: <action_file> # Modify this line with the filename of action in the other repo
+          WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+```
+
+* In the upstream image repo, add the following to your action:
+
+```yaml
+on:
+  ...
+  workflow_dispatch:
+    inputs:
+      reason:
+        required: true
+        description: 'Reason for running this workflow'
+  ...
+```
+
+```yaml
+jobs:
+  test:
+    name: Triggered via Workflow Dispatch?
+    # only run this step if workflow dispatch triggered
+    # log the reason the workflow dispatch was triggered
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.reason != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log dispatch reason
+        env:
+          INPUTS_REASON: ${{ github.event.inputs.reason }}
+        run: |
+          echo "Workflow dispatch reason: $INPUTS_REASON"
+  ...
+```
+
+The above step will only run if the action is triggered via workflow_dispatch.
