@@ -10,12 +10,13 @@ jobs:
   test:
     name: Trigger deploy of sdr-enthusiasts/docker-readsb-protobuf
     runs-on: ubuntu-latest
-    steps:
-      - env:
+    env:
           WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
           WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
           WORKFLOW_FILE: deploy.yml
           WORKFLOW_REASON: "sdr-enthusiasts/docker-baseimage/deploy_ghcr.yml"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
