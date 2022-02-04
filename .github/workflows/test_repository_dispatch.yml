@@ -4,8 +4,7 @@ name: Test Dispatch (receive)
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [new-docker-baseimage-readsb-full]
+  push:
 
 jobs:
   test:
@@ -16,6 +15,6 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           curl -X POST https://api.github.com/repos/sdr-enthusiasts/docker-readsb-protobuf/dispatches \
-            -H 'Accept: application/vnd.github.everest-preview+json' \
+            -H 'Accept: application/vnd.github.v3+json' \
             -u ${{ secrets.GITHUB_TOKEN }} \
             --data '{"event_type": "new-docker-baseimage-readsb-full", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
