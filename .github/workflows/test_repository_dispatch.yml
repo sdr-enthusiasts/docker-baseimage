@@ -14,7 +14,9 @@ jobs:
       - env:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          curl -X POST https://api.github.com/repos/sdr-enthusiasts/docker-readsb-protobuf/dispatches \
+          curl -X POST 
+          https://api.github.com/repos/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/test_repository_dispatch.yml/dispatches
+          https://api.github.com/repos/sdr-enthusiasts/docker-readsb-protobuf/dispatches \
             -H 'Accept: application/vnd.github.v3+json' \
             -u ${{ secrets.GITHUB_TOKEN }} \
-            --data '{"event_type": "new-docker-baseimage-readsb-full", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+            --data '{"ref": "main"}'
