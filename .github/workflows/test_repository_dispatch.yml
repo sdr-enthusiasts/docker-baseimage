@@ -8,13 +8,16 @@ on:
 
 jobs:
   test:
-    name: send_dispatch
+    name: Trigger deploy of sdr-enthusiasts/docker-readsb-protobuf
     runs-on: ubuntu-latest
     steps:
       - env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+          WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
+          WORKFLOW_FILE: test_repository_dispatch.yml
+          WORKFLOW_REASON: "sdr-enthusiasts/docker-baseimage/deploy_ghcr.yml"
         run: |
-          curl -X POST https://api.github.com/repos/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/test_repository_dispatch.yml/dispatches \
-            -H 'Accept: application/vnd.github.v3+json' \
-            -u ${{ secrets.PAT_MIKENYE_REPO_HOOKS }} \
-            --data '{"ref": "main"}'
+          echo "$WORKFLOW_AUTH_TOKEN" > gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+
+          
