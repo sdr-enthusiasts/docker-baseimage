@@ -16,5 +16,5 @@ jobs:
         run: |
           curl -X POST https://api.github.com/repos/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/test_repository_dispatch.yml/dispatches \
             -H 'Accept: application/vnd.github.v3+json' \
-            -u ${{ secrets.GITHUB_TOKEN }} \
+            -u ${{ secrets.PAT_MIKENYE_REPO_HOOKS }} \
             --data '{"ref": "main"}'
