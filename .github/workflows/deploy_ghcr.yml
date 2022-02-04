@@ -565,10 +565,10 @@ jobs:
     needs: [deploy_ghcr_readsb-full]
     runs-on: ubuntu-latest
     env:
-        WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-        WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
-        WORKFLOW_FILE: deploy.yml
-        WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
       - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
@@ -580,10 +580,10 @@ jobs:
     needs: [deploy_ghcr_acars-decoder]
     runs-on: ubuntu-latest
     env:
-        WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
-        WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
-        WORKFLOW_FILE: deploy.yml
-        WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
       - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
@@ -595,10 +595,10 @@ jobs:
     needs: [deploy_ghcr_acars-decoder]
     runs-on: ubuntu-latest
     env:
-        WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
-        WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
-        WORKFLOW_FILE: deploy.yml
-        WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
       - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
@@ -610,10 +610,10 @@ jobs:
     needs: [deploy_ghcr_acars-decoder]
     runs-on: ubuntu-latest
     env:
-        WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
-        WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
-        WORKFLOW_FILE: deploy.yml
-        WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
       - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
