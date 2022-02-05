@@ -54,7 +54,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
@@ -117,7 +117,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.python
 
       # Log into ghcr (so we can push images)
@@ -180,7 +180,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.rtlsdr
 
       # Log into ghcr (so we can push images)
@@ -243,7 +243,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.readsb-netonly
 
       # Log into ghcr (so we can push images)
@@ -306,7 +306,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.readsb-full
             Dockerfile.rtlsdr
 
@@ -371,7 +371,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.acars-decoder
             Dockerfile.rtlsdr
 
@@ -438,7 +438,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.rtlsdr
             Dockerfile.soapyrtlsdr
 
@@ -505,7 +505,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.rtlsdr
             Dockerfile.soapyrtlsdr
             Dockerfile.dump978-full
@@ -573,7 +573,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.wreadsb-netonly
 
       # Log into ghcr (so we can push images)
@@ -639,7 +639,7 @@ jobs:
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.qemu
 
       # Log into ghcr (so we can push images)
