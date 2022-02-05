@@ -59,6 +59,6 @@ RUN set -x && \
     apt-get autoremove -y && \
     rm -rf /src/* /tmp/* /var/lib/apt/lists/*
 
-ADD https://github.com/sdr-enthusiasts/Buster-Docker-Fixes/00-libsecomp2 /etc/cont-init.d/00-libsecomp2
+ADD https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 /etc/cont-init.d/00-libsecomp2
 
 ENTRYPOINT [ "/init" ]
