@@ -9,15 +9,10 @@ on:
     # Only publish on push to main branch
     branches:
       - main
-    # Don't trigger if it's just a documentation update
-    paths-ignore:
-      - '**.md'
-      - '**.MD'
-      - '**.yml'
-      - 'LICENSE'
-      - '.gitattributes'
-      - '.gitignore'
-      - '.dockerignore'
+    # Only run if the PR yaml has changed or a Dockerfile has changed
+    paths:
+      - Dockerfile**
+      - on_pr.yml
 
 env:
   REGISTRY: ghcr.io
