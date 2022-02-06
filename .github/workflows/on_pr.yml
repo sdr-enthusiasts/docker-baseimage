@@ -9,6 +9,8 @@ on:
     # Only publish on push to main branch
     branches:
       - main
+      # debugging this....remove later
+      - cont-init-script-for-libseccomp2
     # Only run if the PR yaml has changed or a Dockerfile has changed
     paths:
       - Dockerfile**
