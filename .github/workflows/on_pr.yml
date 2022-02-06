@@ -12,7 +12,7 @@ on:
     # Only run if the PR yaml has changed or a Dockerfile has changed
     paths:
       - Dockerfile**
-      - on_pr.yml
+      - "**on_pr.yml"
 
 env:
   REGISTRY: ghcr.io
