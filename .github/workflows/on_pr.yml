@@ -93,8 +93,8 @@ jobs:
           file: ./Dockerfile.base
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:base
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:base-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_python:
@@ -120,6 +120,13 @@ jobs:
             Dockerfile.base
             Dockerfile.python
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -142,6 +149,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.python
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -156,8 +168,8 @@ jobs:
           file: ./Dockerfile.python
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:python
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:python-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_rtlsdr:
@@ -183,6 +195,13 @@ jobs:
             Dockerfile.base
             Dockerfile.rtlsdr
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -205,6 +224,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.rtlsdr
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -219,8 +243,8 @@ jobs:
           file: ./Dockerfile.rtlsdr
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_readsb-netonly:
@@ -246,6 +270,13 @@ jobs:
             Dockerfile.base
             Dockerfile.readsb-netonly
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -268,6 +299,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.readsb-netonly
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -282,8 +318,8 @@ jobs:
           file: ./Dockerfile.readsb-netonly
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_readsb-full:
@@ -310,6 +346,14 @@ jobs:
             Dockerfile.readsb-full
             Dockerfile.rtlsdr
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.rtlsdr
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -332,6 +376,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr-test/g" Dockerfile.readsb-full
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -347,8 +396,8 @@ jobs:
           file: ./Dockerfile.readsb-full
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_ghcr_acars-decoder:
@@ -375,6 +424,14 @@ jobs:
             Dockerfile.acars-decoder
             Dockerfile.rtlsdr
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.rtlsdr
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -397,6 +454,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr-test/g" Dockerfile.acars-decoder
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -412,8 +474,8 @@ jobs:
           file: ./Dockerfile.acars-decoder
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_soapyrtlsdr:
@@ -442,6 +504,14 @@ jobs:
             Dockerfile.rtlsdr
             Dockerfile.soapyrtlsdr
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.rtlsdr
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -464,6 +534,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr-test/g" Dockerfile.soapyrtlsdr
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -479,8 +554,8 @@ jobs:
           file: ./Dockerfile.soapyrtlsdr
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_dump978-full:
@@ -510,6 +585,15 @@ jobs:
             Dockerfile.soapyrtlsdr
             Dockerfile.dump978-full
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.soapyrtlsdr
+            Dockerfile.base
+            Dockerfile.rtlsdr
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -532,6 +616,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:soapyrtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:soapyrtlsdr-test/g" Dockerfile.dump978-full
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -547,8 +636,8 @@ jobs:
           file: ./Dockerfile.dump978-full
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_wreadsb-netonly:
@@ -576,6 +665,13 @@ jobs:
             Dockerfile.base
             Dockerfile.wreadsb-netonly
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -598,6 +694,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.wreadsb-netonly
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -613,8 +714,8 @@ jobs:
           file: ./Dockerfile.wreadsb-netonly
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly-test
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_qemu:
@@ -642,6 +743,13 @@ jobs:
             Dockerfile.base
             Dockerfile.qemu
 
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.base
+
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -664,6 +772,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
 
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.qemu
+
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -679,6 +792,6 @@ jobs:
           file: ./Dockerfile.qemu
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
+          push: true
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:qemu-test
           labels: ${{ steps.meta.outputs.labels }}
