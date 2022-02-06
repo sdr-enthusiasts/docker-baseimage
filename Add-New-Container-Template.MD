@@ -72,14 +72,36 @@ Copy and paste the exact same yaml job entry you created above, and:
         uses: tj-actions/changed-files@v13.2
         with:
           files: |
-            Dockerfile$
+            Dockerfile.base
             Dockerfile.acars-decoder
             Dockerfile.rtlsdr
 ```
 
 * Change the list of files in the YAML above to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
 
-* For **EACH STEP AFTER THE `Get specific changed files` STEP** add the following under the `name` of the step
+```yaml
+      - name: Get changed status of parent
+        id: changed-files-parent
+        uses: tj-actions/changed-files@v14.3
+        with:
+          files: |
+            Dockerfile.base
+```
+
+Add this section under the previous `Get specific changed files` you just added, changing the files in the list to be the all of the parent Dockerfiles the container is dependent on **MINUS** the Dockerfile for the current container.
+
+Finally, below the `Set up QEMU` step add:
+
+```yaml
+      - name: Patch dockerfile
+        if: steps.changed-files-parent.outputs.any_changed == 'true'
+        id: patch-dockerfile
+        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.python
+```
+
+Changing the tag name your container is dependent on in both places in the sed statement (leaving the `-test`) and the name of the docker file of your current container at the end.
+
+* For **EACH STEP AFTER THE `Get specific changed files` STEP** (minus `Get changed status of parent`) add the following under the `name` of the step
 
 ```yaml
 if: steps.changed-files-specific.outputs.any_changed == 'true'
