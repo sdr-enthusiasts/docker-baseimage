@@ -989,7 +989,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{fromJSON(needs.matrix.outputs.matrix)}}
-    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Delete image
