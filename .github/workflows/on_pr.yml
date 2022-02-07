@@ -982,6 +982,8 @@ jobs:
   # Delete images used by the build process
   purge-images:
     name: Clean-up
+    # only run if there's images to clean up (prevents the workflow failing)
+    if: needs.matrix.outputs.matrix != '{"tag":[]}'
     needs:
       - matrix
     strategy:
