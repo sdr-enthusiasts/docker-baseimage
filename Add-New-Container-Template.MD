@@ -2,7 +2,7 @@
 
 ## deploy_ghcr.yml template
 
-Add under the `jobs` section.
+* Add under the `jobs` section:
 
 ```yaml
   deploy_<name of your image>:
@@ -60,52 +60,103 @@ Add under the `jobs` section.
 
 ## on_pr.yaml template
 
-Copy and paste the exact same yaml job entry you created above, and:
-
-* Change the job name from `Deploy <name of your image> to ghcr.io` to `Test deploy <name of your image> to ghcr.io`
-* Add the following under the `Checkout` step
+* Add under the `jobs` section:
 
 ```yaml
+  deploy_ghcr_<name of your image>:
+    name: Test deploy <name of your image> to ghcr.io # Modify this line
+    # Define any dependant steps
+    needs: [deploy_ghcr_base] # Modify this line.....add in the name of any jobs (aka containers) that your container depends on, comma separated
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.<your dockerfile extension> # Modify this line
+      TAG: <name of your image> # Modify this line
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
+    steps:
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v2
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v13.2
+        uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.acars-decoder
-            Dockerfile.rtlsdr
-```
-
-* Change the list of files in the YAML above to indicate all of the docker files the container is depend on. At a bare minimum all containers will depend on `Dockerfile` *AND* the Dockerfile for the container you are creating. If it depends on an intermediate container (ie `rtlsdr`) add that or any other intermediate containers as further dependencies to check.
-
-```yaml
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
-```
-
-Add this section under the previous `Get specific changed files` you just added, changing the files in the list to be the all of the parent Dockerfiles the container is dependent on **MINUS** the Dockerfile for the current container.
-
-Finally, below the `Set up QEMU` step add:
-
-```yaml
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/setup-qemu-action@v1
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.python
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ${{ env.DOCKERFILE }}
+          no-cache: true
+          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          push: true
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 ```
 
-Changing the tag name your container is dependent on in both places in the sed statement (leaving the `-test`) and the name of the docker file of your current container at the end.
-
-* For **EACH STEP AFTER THE `Get specific changed files` STEP** (minus `Get changed status of parent`) add the following under the `name` of the step
-
-```yaml
-if: steps.changed-files-specific.outputs.any_changed == 'true'
-```
+* Under the `matrix:` job, under the `needs:` section, add the job id from the job in the previous step
+* Under the `matrix:` job, under the `env:` section:
+  * Add a new env var `DEPLOY_<IMAGE_NAME>`, set to `${{ needs.deploy_<your image name>.outputs.cleanupinfo }}`
+* Under the `matrix:` job, under the `steps:` section, under the `run:` section, add an if statement with the same format as the others.
 
 ## Triggering build of upstream image
 

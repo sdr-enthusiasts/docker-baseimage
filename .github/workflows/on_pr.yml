@@ -31,26 +31,31 @@ jobs:
         run: docker run --rm -i -v "$PWD":/workdir --workdir /workdir --entrypoint hadolint hadolint/hadolint --ignore DL3003 --ignore DL3006 --ignore DL3010 --ignore DL4001 --ignore DL3007 --ignore DL3008 --ignore SC2068 --ignore DL3007 --ignore SC1091 --ignore DL3013 --ignore DL3010 $(find . -type f -iname "Dockerfile*")
 
   deploy_ghcr_base:
-    name: Test deploy base image to ghcr.io
+    name: Test deploy base to ghcr.io
+    # Define any dependant steps
     needs: [hadolint]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.base
+      TAG: base
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
-            Dockerfile.base
-
+            ${{ env.Dockerfile }}
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -59,7 +64,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -67,61 +71,69 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:base
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.base
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:base-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_ghcr_python:
     name: Test deploy python to ghcr.io
-    runs-on: ubuntu-latest
+    # Define any dependant steps
     needs: [deploy_ghcr_base]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.python
+      TAG: python
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.python
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -130,7 +142,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -138,66 +149,78 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.python
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile.python (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:python
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.python
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:python-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_ghcr_rtlsdr:
     name: Test deploy rtlsdr to ghcr.io
-    runs-on: ubuntu-latest
     needs: [deploy_ghcr_base]
+    env:
+      DOCKERFILE: Dockerfile.rtlsdr
+      TAG: rtlsdr
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.rtlsdr
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -206,7 +229,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -214,66 +236,80 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.rtlsdr
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile.rtlsdr (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.rtlsdr
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_ghcr_readsb-netonly:
     name: Test deploy readsb-netonly to ghcr.io
-    runs-on: ubuntu-latest
+    # Define any dependant steps
     needs: [deploy_ghcr_base]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.readsb-netonly
+      TAG: readsb-netonly
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.readsb-netonly
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -282,7 +318,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -290,68 +325,82 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.readsb-netonly
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile.readsb-netonly (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.readsb-netonly
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_ghcr_readsb-full:
     name: Test deploy readsb-full to ghcr.io
-    runs-on: ubuntu-latest
+    # Define any dependant steps
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.readsb-full
+      TAG: readsb-full
     permissions:
       contents: read
       packages: write
-
+    runs-on: ubuntu-latest
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.readsb-full
             Dockerfile.rtlsdr
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -360,7 +409,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -368,68 +416,82 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr-test/g" Dockerfile.readsb-full
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile.readsb-full (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.readsb-full
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_ghcr_acars-decoder:
     name: Test deploy acars-decoder to ghcr.io
-    runs-on: ubuntu-latest
+    # Define any dependant steps
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.acars-decoder
+      TAG: acars-decoder
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.acars-decoder
             Dockerfile.rtlsdr
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -438,7 +500,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -446,70 +507,82 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr-test/g" Dockerfile.acars-decoder
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.acars-decoder
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_soapyrtlsdr:
     name: Test deploy soapyrtlsdr to ghcr.io
+    # Define any dependant steps
     needs: [deploy_ghcr_rtlsdr]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.soapyrtlsdr
+      TAG: soapyrtlsdr
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
             Dockerfile.rtlsdr
-            Dockerfile.soapyrtlsdr
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -518,7 +591,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -526,72 +598,83 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:rtlsdr-test/g" Dockerfile.soapyrtlsdr
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.soapyrtlsdr
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_dump978-full:
     name: Test deploy dump978-full to ghcr.io
+    # Define any dependant steps
     needs: [deploy_soapyrtlsdr]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.dump978-full
+      TAG: dump978-full
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
             Dockerfile.rtlsdr
             Dockerfile.soapyrtlsdr
-            Dockerfile.dump978-full
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.soapyrtlsdr
             Dockerfile.base
             Dockerfile.rtlsdr
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -600,7 +683,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -608,24 +690,27 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:soapyrtlsdr/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:soapyrtlsdr-test/g" Dockerfile.dump978-full
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
+      # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
@@ -635,41 +720,49 @@ jobs:
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_wreadsb-netonly:
     name: Test deploy wreadsb-netonly to ghcr.io
+    # Define any dependant steps
     needs: [deploy_ghcr_base]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.wreadsb-netonly
+      TAG: wreadsb-netonly
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.wreadsb-netonly
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -678,7 +771,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -686,68 +778,80 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.wreadsb-netonly
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
+      # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.wreadsb-netonly
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
 
   deploy_qemu:
     name: Test deploy qemu to ghcr.io
+    # Define any dependant steps
     needs: [deploy_ghcr_base]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.qemu
+      TAG: qemu
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
+            ${{ env.DOCKERFILE }}
             Dockerfile.base
-            Dockerfile.qemu
-
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
+        # Add dependant dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
-
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -756,7 +860,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -764,32 +867,138 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/setup-qemu-action@v1
-
+      # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
         id: patch-dockerfile
-        run: sed -i "s/^FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base/FROM ghcr.io\/sdr-enthusiasts\/docker-baseimage:base-test/g" Dockerfile.qemu
-
+        env:
+          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+        run: |
+          set -x
+          sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
+          grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.qemu
+          file: ${{ env.DOCKERFILE }}
           no-cache: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:qemu-test
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
           labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "::set-output name=cleanupinfo::$TAG"
+
+  matrix:
+    name: Prepare for clean-up
+    # Add each image's job here
+    needs:
+      - deploy_ghcr_base
+      - deploy_ghcr_python
+      - deploy_ghcr_rtlsdr
+      - deploy_ghcr_readsb-netonly
+      - deploy_ghcr_readsb-full
+      - deploy_ghcr_acars-decoder
+      - deploy_soapyrtlsdr
+      - deploy_dump978-full
+      - deploy_wreadsb-netonly
+      - deploy_qemu
+    # Add variable for each image's job
+    env:
+      DEPLOY_GHCR_BASE: ${{ needs.deploy_ghcr_base.outputs.cleanupinfo }}
+      DEPLOY_GHCP_PYTHON: ${{ needs.deploy_ghcr_python.outputs.cleanupinfo }}
+      DEPLOY_GHCR_RTLSDR: ${{ needs.deploy_ghcr_rtlsdr.outputs.cleanupinfo }}
+      DEPLOY_GHCR_READSB_NETONLY: ${{ needs.deploy_ghcr_readsb-netonly.outputs.cleanupinfo }}
+      DEPLOY_GHCR_READSB_FULL: ${{ needs.deploy_ghcr_readsb-full.outputs.cleanupinfo }}
+      DEPLOY_GHCR_ACARS_DECODER: ${{ needs.deploy_ghcr_acars-decoder.outputs.cleanupinfo }}
+      DEPLOY_SOAPYRTLSDR: ${{ needs.deploy_soapyrtlsdr.outputs.cleanupinfo }}
+      DEPLOY_DUMP978_FULL: ${{ needs.deploy_dump978-full.outputs.cleanupinfo }}
+      DEPLOY_WREADSB_NETONLY: ${{ needs.deploy_wreadsb-netonly.outputs.cleanupinfo }}
+      DEPLOY_QEMU: ${{ needs.deploy_qemu.outputs.cleanupinfo }}
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get input from previous jobs
+        id: set-matrix
+        # Add an if statement for each variable
+        run: |
+          set -x
+          matrix=$({
+
+              if [[ -n $DEPLOY_GHCR_BASE ]]; then echo $DEPLOY_GHCR_BASE; fi
+              if [[ -n $DEPLOY_GHCP_PYTHON ]]; then echo $DEPLOY_GHCP_PYTHON; fi
+              if [[ -n $DEPLOY_GHCR_RTLSDR ]]; then echo $DEPLOY_GHCR_RTLSDR; fi
+              if [[ -n $DEPLOY_GHCR_READSB_NETONLY ]]; then echo $DEPLOY_GHCR_READSB_NETONLY; fi
+              if [[ -n $DEPLOY_GHCR_READSB_FULL ]]; then echo $DEPLOY_GHCR_READSB_FULL; fi
+              if [[ -n $DEPLOY_GHCR_ACARS_DECODER ]]; then echo $DEPLOY_GHCR_ACARS_DECODER; fi
+              if [[ -n $DEPLOY_SOAPYRTLSDR ]]; then echo $DEPLOY_SOAPYRTLSDR; fi
+              if [[ -n $DEPLOY_DUMP978_FULL ]]; then echo $DEPLOY_DUMP978_FULL; fi
+              if [[ -n $DEPLOY_WREADSB_NETONLY ]]; then echo $DEPLOY_WREADSB_NETONLY; fi
+              if [[ -n $DEPLOY_QEMU ]]; then echo $DEPLOY_QEMU; fi
+
+            } | jq -crM --slurp --raw-input '{"tag":(split("\n")[:-1])}')
+          echo "matrix:"
+          echo "$matrix"
+          echo "set output:"
+          echo "::set-output name=matrix::$matrix"
+          echo "----"
+
+  # Verify and log the output of the above step (mostly for troubleshooting)
+  check-matrix:
+    name: Verify input to clean-up
+    runs-on: ubuntu-latest
+    needs: matrix
+    steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
+
+      - name: Check matrix definition
+        run: |
+          set -x
+          matrix='${{ needs.matrix.outputs.matrix }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
+
+  # Delete images used by the build process
+  purge-images:
+    name: Clean-up
+    # only run if there's images to clean up (prevents the workflow failing)
+    if: needs.matrix.outputs.matrix != '{"tag":[]}'
+    needs:
+      - matrix
+      - check-matrix
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJSON(needs.matrix.outputs.matrix)}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete image
+        if: always()
+        uses: bots-house/ghcr-delete-image-action@v1.0.0
+        with:
+          # NOTE: only orgs are supported
+          owner: sdr-enthusiasts
+          name: docker-baseimage
+          # NOTE: using Personal Access Token
+          token: ${{ secrets.GH_PAT_MIKENYE }}
+          tag: ${{ matrix.tag }}-test-pr-${{github.event.pull_request.number}}
