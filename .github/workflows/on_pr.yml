@@ -986,6 +986,7 @@ jobs:
     if: needs.matrix.outputs.matrix != '{"tag":[]}'
     needs:
       - matrix
+      - check-matrix
     strategy:
       fail-fast: false
       matrix: ${{fromJSON(needs.matrix.outputs.matrix)}}
