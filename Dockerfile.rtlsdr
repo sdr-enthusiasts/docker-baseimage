@@ -9,6 +9,7 @@ RUN set -x && \
     # packages needed to build rtl-sdr
     TEMP_PACKAGES+=(build-essential) && \
     TEMP_PACKAGES+=(cmake) && \
+    TEMP_PACKAGES+=(pkg-config) && \
     # dependencies for rtl-sdr
     TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
     KEPT_PACKAGES+=(libusb-1.0-0) && \
@@ -19,10 +20,10 @@ RUN set -x && \
         "${TEMP_PACKAGES[@]}" \
         && \
     # rtlsdr: get latest release tag without cloning repo
-    BRANCH_RTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'git://git.osmocom.org/rtl-sdr' | grep -v '\^' | cut -d '/' -f 3 | grep -v '^v.*' | tail -1) && \
+    #BRANCH_RTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'git://git.osmocom.org/rtl-sdr' | grep -v '\^' | cut -d '/' -f 3 | grep -v '^v.*' | tail -1) && \
     # rtlsdr: clone repo
     git clone \
-      --branch "$BRANCH_RTLSDR" \
+      --branch master \
       --depth 1 \
       --single-branch \
       'git://git.osmocom.org/rtl-sdr' \
@@ -33,7 +34,6 @@ RUN set -x && \
     pushd /src/rtl-sdr/build && \
     cmake \
       -DCMAKE_BUILD_TYPE=Release \
-      -DENABLE_ZEROCOPY=ON \
       -DDETACH_KERNEL_DRIVER=ON \
       -DINSTALL_UDEV_RULES=ON \
       ../ \
