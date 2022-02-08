@@ -33,7 +33,7 @@ RUN set -x && \
     pushd /src/rtl-sdr/build && \
     cmake \
       -DCMAKE_BUILD_TYPE=Release \
-      -DENABLE_ZEROCOPY=ON \
+#      -DENABLE_ZEROCOPY=ON \
       -DDETACH_KERNEL_DRIVER=ON \
       -DINSTALL_UDEV_RULES=ON \
       ../ \
