@@ -125,7 +125,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.python
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
@@ -212,7 +212,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.rtlsdr
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
@@ -301,7 +301,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.readsb-netonly
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
@@ -390,7 +390,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.readsb-full
             Dockerfile.base
             Dockerfile.rtlsdr
       - name: Get changed status of parent
@@ -481,7 +481,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.acars-decoder
             Dockerfile.base
             Dockerfile.rtlsdr
       - name: Get changed status of parent
@@ -572,7 +572,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.soapyrtlsdr
             Dockerfile.base
             Dockerfile.rtlsdr
       - name: Get changed status of parent
@@ -662,7 +662,7 @@ jobs:
         uses: tj-actions/changed-files@v17
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.dump978-full
             Dockerfile.base
             Dockerfile.rtlsdr
             Dockerfile.soapyrtlsdr
@@ -754,7 +754,7 @@ jobs:
         uses: tj-actions/changed-files@v17
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.wreadsb-netonly
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
@@ -843,7 +843,7 @@ jobs:
         # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
-            ${{ env.DOCKERFILE }}
+            Dockerfile.qemu
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
