@@ -55,7 +55,7 @@ jobs:
         uses: tj-actions/changed-files@v17
         with:
           files: |
-            ${{ env.Dockerfile }}
+            Dockerfile.base
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
