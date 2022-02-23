@@ -26,6 +26,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(socat) && \
     KEPT_PACKAGES+=(ncat) && \
     KEPT_PACKAGES+=(net-tools) && \
+    KEPT_PACKAGES+=(wget) && \
     # process management
     KEPT_PACKAGES+=(procps) && \
     # install packages
