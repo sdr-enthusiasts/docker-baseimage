@@ -60,5 +60,5 @@ RUN ...
 | `readsb-netonly`  | -                              | - |
 | `soapyrtlsdr`     | `dump978-full`                 | - |
 | `dump978-full`    | -                              | [mikenye/piaware](https://github.com/mikenye/docker-piaware) |
-| `wreadsb-netonly` | -                              | [mikenye/tar1090](https://github.com/mikenye/docker-tar1090) |
+| `wreadsb-netonly` | -                              | [sdr-enthusiasts/tar1090](https://github.com/sdr-enthusiasts/docker-tar1090) |
 | `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24](https://github.com/sdr-enthusiasts/docker-flightradar24) |
