@@ -14,6 +14,7 @@ RUN set -x && \
     TEMP_PACKAGES+=(libncurses5-dev) && \
     KEPT_PACKAGES+=(zlib1g) && \
     TEMP_PACKAGES+=(zlib1g-dev) && \
+    TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -30,7 +31,10 @@ RUN set -x && \
       && \
     # readsb: build & install
     pushd /src/readsb && \
-    make -j $(nproc) && \
+    make \
+      RTLSDR=yes \
+      -j $(nproc) \
+      && \
     find "/src/readsb" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
     popd && \
     ldconfig && \
