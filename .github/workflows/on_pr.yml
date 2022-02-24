@@ -729,14 +729,14 @@ jobs:
         id: set-output
         run: echo "::set-output name=cleanupinfo::$TAG"
 
-  deploy_wreadsb-netonly:
-    name: Test deploy wreadsb-netonly to ghcr.io
+  deploy_wreadsb:
+    name: Test deploy wreadsb to ghcr.io
     # Define any dependant steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
-      DOCKERFILE: Dockerfile.wreadsb-netonly
-      TAG: wreadsb-netonly
+      DOCKERFILE: Dockerfile.wreadsb
+      TAG: wreadsb
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -754,7 +754,7 @@ jobs:
         uses: tj-actions/changed-files@v17
         with:
           files: |
-            Dockerfile.wreadsb-netonly
+            Dockerfile.wreadsb
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
@@ -799,7 +799,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
       # Build & Push
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb-netonly
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: docker/build-push-action@v2
         with:
@@ -918,7 +918,7 @@ jobs:
       - deploy_ghcr_acars-decoder
       - deploy_soapyrtlsdr
       - deploy_dump978-full
-      - deploy_wreadsb-netonly
+      - deploy_wreadsb
       - deploy_qemu
     # Add variable for each image's job
     env:
@@ -930,7 +930,7 @@ jobs:
       DEPLOY_GHCR_ACARS_DECODER: ${{ needs.deploy_ghcr_acars-decoder.outputs.cleanupinfo }}
       DEPLOY_SOAPYRTLSDR: ${{ needs.deploy_soapyrtlsdr.outputs.cleanupinfo }}
       DEPLOY_DUMP978_FULL: ${{ needs.deploy_dump978-full.outputs.cleanupinfo }}
-      DEPLOY_WREADSB_NETONLY: ${{ needs.deploy_wreadsb-netonly.outputs.cleanupinfo }}
+      DEPLOY_WREADSB: ${{ needs.deploy_wreadsb.outputs.cleanupinfo }}
       DEPLOY_QEMU: ${{ needs.deploy_qemu.outputs.cleanupinfo }}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -951,7 +951,7 @@ jobs:
               if [[ -n $DEPLOY_GHCR_ACARS_DECODER ]]; then echo $DEPLOY_GHCR_ACARS_DECODER; fi
               if [[ -n $DEPLOY_SOAPYRTLSDR ]]; then echo $DEPLOY_SOAPYRTLSDR; fi
               if [[ -n $DEPLOY_DUMP978_FULL ]]; then echo $DEPLOY_DUMP978_FULL; fi
-              if [[ -n $DEPLOY_WREADSB_NETONLY ]]; then echo $DEPLOY_WREADSB_NETONLY; fi
+              if [[ -n $DEPLOY_WREADSB ]]; then echo $DEPLOY_WREADSB; fi
               if [[ -n $DEPLOY_QEMU ]]; then echo $DEPLOY_QEMU; fi
 
             } | jq -crM --slurp --raw-input '{"tag":(split("\n")[:-1])}')
