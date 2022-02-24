@@ -1,4 +1,4 @@
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
