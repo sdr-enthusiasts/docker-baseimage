@@ -33,6 +33,7 @@ RUN set -x && \
     pushd /src/readsb && \
     make \
       RTLSDR=yes \
+      AIRCRAFT_HASH_BITS=14 \
       -j $(nproc) \
       && \
     find "/src/readsb" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
