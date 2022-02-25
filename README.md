@@ -59,7 +59,7 @@ RUN ...
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
 | `readsb-netonly`  | -                              | - |
 | `soapyrtlsdr`     | `dump978-full`                 | - |
-| `dump978-full`    | -                              | [mikenye/piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
+| `dump978-full`    | -                              | [sdr-enthusiasts/docker-piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
 | `wreadsb`         | -                              | [sdr-enthusiasts/docker-tar1090][docker-tar1090] |
 | `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24][docker-flightradar24] |
 
@@ -75,7 +75,7 @@ RUN ...
 [docker-dump978]: https://github.com/sdr-enthusiasts/docker-dump978
 [docker-dumpvdl2]: https://github.com/sdr-enthusiasts/docker-dumpvdl2
 [docker-flightradar24]: https://github.com/sdr-enthusiasts/docker-flightradar24
-[docker-piaware]: https://github.com/mikenye/docker-piaware
+[docker-piaware]: https://github.com/sdr-enthusiasts/docker-piaware
 [docker-planefence]: http://github.com/kx1t/docker-planefence
 [docker-radarbox]: https://github.com/sdr-enthusiasts/docker-radarbox
 [docker-radarvirtuel]: https://github.com/sdr-enthusiasts/docker-radarvirtuel
