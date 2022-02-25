@@ -694,3 +694,17 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+
+  trigger_build_sdr-enthusiasts_docker-tar1090:
+    name: Trigger deploy of sdr-enthusiasts/docker-tar1090
+    needs: [deploy_wreadsb-netonly]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-tar1090
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
