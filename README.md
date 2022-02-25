@@ -20,7 +20,7 @@ Provide a basic image, with all normal packages common to all installs of [miken
 | `python` | `base` | [python3](https://packages.debian.org/stable/python3), [python3-pip](https://packages.debian.org/stable/python3-pip), [python3-setuptools](https://packages.debian.org/stable/python3-setuptools), [python3-wheel](https://packages.debian.org/stable/python3-wheel) |
 | `readsb-full` | `rtlsdr` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf](https://github.com/Mictronics/readsb-protobuf) and all prerequisites for full functionality: ([bladeRF](https://github.com/Nuand/bladeRF), [bladeRF FPGA images](https://www.nuand.com/fpga_images/), [libiio (for PlutoSDR)](https://github.com/analogdevicesinc/libiio), [libad9361-iio (for PlutoSDR)](https://github.com/analogdevicesinc/libad9361-iio)) |
 | `readsb-netonly` | `base` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf](https://github.com/Mictronics/readsb-protobuf) intended to operate in network only mode. |
-| `wreadsb-netonly` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb](https://github.com/wiedehopf/readsb) intended to operate in network only mode. |
+| `wreadsb` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb](https://github.com/wiedehopf/readsb) with [rtl-sdr](https://osmocom.org/projects/rtl-sdr/) & [libusb](https://packages.debian.org/stable/libusb-1.0-0). |
 | `rtlsdr` | `base` | Contains the latest tagged release of [rtl-sdr](https://osmocom.org/projects/rtl-sdr/), and prerequisites (eg: [libusb](https://packages.debian.org/stable/libusb-1.0-0)) |
 | `soapyrtlsdr` | `rtlsdr` | Contains the latest tagged release of [SoapySDR](https://github.com/pothosware/SoapySDR) and [SoapyRTLSDR](https://github.com/pothosware/SoapyRTLSDR), and prerequisites ([python3](https://packages.debian.org/stable/python3), [python3-pip](https://packages.debian.org/stable/python3-pip), [python3-setuptools](https://packages.debian.org/stable/python3-setuptools), [python3-wheel](https://packages.debian.org/stable/python3-wheel)) |
 | `dump978-full` | `soapyrtlsdr` | Contains the latest tagged release of [flightaware/dump978](https://github.com/flightaware/dump978), and prerequisites (various boost libraries) |
@@ -60,5 +60,5 @@ RUN ...
 | `readsb-netonly`  | -                              | - |
 | `soapyrtlsdr`     | `dump978-full`                 | - |
 | `dump978-full`    | -                              | [mikenye/piaware](https://github.com/mikenye/docker-piaware) |
-| `wreadsb-netonly` | -                              | [sdr-enthusiasts/tar1090](https://github.com/sdr-enthusiasts/docker-tar1090) |
+| `wreadsb`         | -                              | [mikenye/tar1090](https://github.com/mikenye/docker-tar1090) |
 | `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24](https://github.com/sdr-enthusiasts/docker-flightradar24) |

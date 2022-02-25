@@ -1,4 +1,4 @@
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
@@ -14,6 +14,7 @@ RUN set -x && \
     TEMP_PACKAGES+=(libncurses5-dev) && \
     KEPT_PACKAGES+=(zlib1g) && \
     TEMP_PACKAGES+=(zlib1g-dev) && \
+    TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -30,7 +31,11 @@ RUN set -x && \
       && \
     # readsb: build & install
     pushd /src/readsb && \
-    make -j $(nproc) && \
+    make \
+      RTLSDR=yes \
+      AIRCRAFT_HASH_BITS=14 \
+      -j $(nproc) \
+      && \
     find "/src/readsb" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
     popd && \
     ldconfig && \
