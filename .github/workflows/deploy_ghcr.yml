@@ -740,7 +740,7 @@ jobs:
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
 
-  trigger_build_sdr-enthusiasts_beast-splitter:
+  trigger_build_sdr-enthusiasts_adsbexchange:
     name: Trigger deploy of sdr-enthusiasts/docker-adsbexchange
     needs: [deploy_ghcr_base]
     runs-on: ubuntu-latest
