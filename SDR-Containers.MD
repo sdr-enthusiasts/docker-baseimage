@@ -15,7 +15,7 @@ All links will be for the `:latest` tag for each container.
 
 | Name | DockerHub URL | GHCR URL |
 | ----------------- | ------------------------------ | ------------------------ |
-| [docker-adsbhub](https://github.com/mikenye/docker-adsbhub) | `mikenye/adsbhub` | `NONE` |
+| [docker-adsbhub](https://github.com/sdr-enthusiasts/docker-adsbhub) | `mikenye/adsbhub` | `ghcr.io/sdr-enthusiasts/docker-adsbhub:latest` |
 | [docker-adsbexchange](https://github.com/sdr-enthusiasts/docker-adsbexchange) | `mikenye/adsbexchange` | `ghcr.io/sdr-enthusiasts/docker-adsbexchange:latest` |
 | [docker-flightradar24](https://github.com/sdr-enthusiasts/docker-flightradar24) | `mikenye/flightradar24` | `ghcr.io/sdr-enthusiasts/docker-flightradar24:latest` |
 | [docker-opensky-network](https://github.com/mikenye/docker-opensky-network) | `mikenye/opensky-network` | `NONE` |
