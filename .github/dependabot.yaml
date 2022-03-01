@@ -8,9 +8,16 @@ updates:
       interval: daily
       time: "00:00"
       timezone: "Etc/UTC"
+    assignees:
+      - "fredclausen"
+      - "mikenye"
+      - "kx1t"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    assignees:
+      - "fredclausen"
+      - "mikenye"

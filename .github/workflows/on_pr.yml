@@ -732,7 +732,7 @@ jobs:
   deploy_wreadsb:
     name: Test deploy wreadsb to ghcr.io
     # Define any dependant steps
-    needs: [deploy_ghcr_base]
+    needs: [deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.wreadsb
