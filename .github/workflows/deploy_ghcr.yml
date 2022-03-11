@@ -580,7 +580,7 @@ jobs:
     needs: [deploy_ghcr_acars-decoder]
     runs-on: ubuntu-latest
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -595,7 +595,7 @@ jobs:
     needs: [deploy_ghcr_acars-decoder]
     runs-on: ubuntu-latest
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -610,7 +610,7 @@ jobs:
     needs: [deploy_ghcr_acars-decoder]
     runs-on: ubuntu-latest
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -625,7 +625,7 @@ jobs:
     needs: [deploy_ghcr_python]
     runs-on: ubuntu-latest
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-acarshub
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -685,7 +685,7 @@ jobs:
     needs: [deploy_ghcr_python]
     runs-on: ubuntu-latest
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_FREDCLAUSEN }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-radarvirtuel
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
