@@ -52,7 +52,7 @@ RUN ...
 
 | Tag               | Sub-tags Using                 | Up-Stream Projects Using |
 | ----------------- | ------------------------------ | ------------------------ |
-| `base`            | `ALL`                          | [sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub] |
+| `base`            | `ALL`                          | [sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
 | `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy] |
 | `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | - |
@@ -76,6 +76,7 @@ RUN ...
 [docker-dump978]: https://github.com/sdr-enthusiasts/docker-dump978
 [docker-dumpvdl2]: https://github.com/sdr-enthusiasts/docker-dumpvdl2
 [docker-flightradar24]: https://github.com/sdr-enthusiasts/docker-flightradar24
+[docker-opensky-network]: https://github.com/sdr-enthusiasts/docker-opensky-network
 [docker-piaware]: https://github.com/sdr-enthusiasts/docker-piaware
 [docker-planefence]: http://github.com/kx1t/docker-planefence
 [docker-radarbox]: https://github.com/sdr-enthusiasts/docker-radarbox
