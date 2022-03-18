@@ -32,7 +32,7 @@ RUN set -x && \
         "${TEMP_PACKAGES[@]}"\
         && \
     # libacars
-    git clone git://github.com/szpajder/libacars.git /src/libacars && \
+    git clone https://github.com/szpajder/libacars.git /src/libacars && \
     pushd /src/libacars && \
     git checkout master && \
     mkdir build && \
