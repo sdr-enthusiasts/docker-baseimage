@@ -23,6 +23,7 @@ All links will be for the `:latest` tag for each container.
 | [docker-planefinder](https://github.com/mikenye/docker-planefinder) | `mikenye/planefinder` | `NONE` |
 | [docker-radarbox](https://github.com/sdr-enthusiasts/docker-radarbox) | `mikenye/radarbox` | `ghcr.io/sdr-enthusiasts/docker-radarbox:latest` |
 | [docker-radarvirtuel](https://github.com/sdr-enthusiasts/docker-radarvirtuel) | `kx1t/radarvirtuel` | `ghcr.io/sdr-enthusiasts/docker-radarvirtuel:latest` |
+| [docker-opensky-network](https://github.com/sdr-enthusiasts/docker-opensky-network) | `mikenye/opensky-network` | `ghcr.io/sdr-enthusiasts/docker-opensky-network:latest` |
 
 ## ACARS
 
