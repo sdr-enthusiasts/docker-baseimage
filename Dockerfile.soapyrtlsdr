@@ -42,7 +42,7 @@ RUN set -x && \
       ../ \
       && \
     # SoapySDR: make & install
-    make -j $(nproc) && \
+    make -j "$(nproc)" && \
     make install && \
     ldconfig && \
     popd && \
@@ -61,7 +61,7 @@ RUN set -x && \
       ../ \
       && \
     # SoapyRTLSDR: make & install
-    make -j $(nproc) && \
+    make -j "$(nproc)" && \
     make install && \
     ldconfig && \
     popd && \

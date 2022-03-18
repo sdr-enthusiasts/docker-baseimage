@@ -41,7 +41,7 @@ RUN set -x && \
       ../ \
       && \
     # build
-    make -j $(nproc) && \
+    make -j "$(nproc)" && \
     # install
     make install && \
     ldconfig && \
