@@ -6,24 +6,30 @@ on:
 
 jobs:
 
-  get_current_versions:
-    name: Get versions in images
+  get_current_version_dump978:
+    name: Get dump978-fa version from ghcr.io/${{ github.repository }}:dump978-full
     runs-on: ubuntu-latest
     outputs:
-      current-version-dump978: ${{ steps.current-version-dump978.outputs.currver }}
-      current-version-readsb: ${{ steps.current-version-readsb.outputs.currver }}
+      current-version: ${{ steps.current-version.outputs.currver }}
     steps:
 
-      - name: Get dump978-fa version from ghcr.io/${{ github.repository }}:dump978-full
-        id: current-version-dump978
+      - name: Get current version
+        id: current-version
         run: |
           set -x
           docker pull ghcr.io/${{ github.repository }}:dump978-full
           OUTPUT_VERSION=$(docker run --rm --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
-      - name: Get readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
-        id: current-version-readsb
+  get_current_version_readsb:
+    name: Get readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
         run: |
           set -x
           docker pull ghcr.io/${{ github.repository }}:readsb-netonly
@@ -75,19 +81,20 @@ jobs:
   display_versions:
     name: Display versions
     needs:
-      - get_current_versions
+      - get_current_version_dump978
       - get_latest_version_dump978
+      - get_current_version_readsb
       - get_latest_version_readsb
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
         run: |
           echo "dump978:"
-          echo "  * current-version-dump978: ${{ needs.get_current_versions.outputs.current-version-dump978 }}"
+          echo "  * current-version-dump978: ${{ needs.get_current_version_dump978.outputs.current-version }}"
           echo "  * latest-version-dump978: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
           echo ""
           echo "readsb:"
-          echo "  * current-version-readsb: ${{ needs.get_current_versions.outputs.current-version-readsb }}"
+          echo "  * current-version-readsb: ${{ needs.get_current_version_readsb.outputs.current-version }}"
           echo "  * latest-version-readsb: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
 
 
