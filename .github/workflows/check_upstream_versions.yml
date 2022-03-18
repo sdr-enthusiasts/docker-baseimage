@@ -30,37 +30,43 @@ jobs:
           OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
-  get_latest_versions:
-    name: Get latest versions
+  get_latest_version_dump978:
+    name: Get latest dump978-fa version
     runs-on: ubuntu-latest
     outputs:
-      latest-version-dump978: ${{ steps.latest-version-dump978.outputs.latestver }}
-      latest-version-readsb: ${{ steps.latest-version-readsb.outputs.latestver }}
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
     steps:
 
-      - name: Build dump978
+      - name: Build
         uses: docker/build-push-action@v2
         with:
           push: false
           load: true
           tags: dump978:latest
           file: Dockerfile.dump978-full
-      - name: Get latest dump978-fa version
-        id: latest-version-dump978
+      - name: Get latest version
+        id: latest-version
         run: |
           set -x
           OUTPUT_VERSION=$(docker run --rm --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
-      - name: Build readsb-netonly
+  get_latest_version_readsb:
+    name: Get latest readsb version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
         uses: docker/build-push-action@v2
         with:
           push: false
           load: true
           tags: readsb:latest
           file: Dockerfile.readsb-netonly
-      - name: Get latest readsb version
-        id: latest-version-readsb
+      - name: Get latest version
+        id: latest-version
         run: |
           set -x
           OUTPUT_VERSION=$(docker run --rm --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)
@@ -68,18 +74,21 @@ jobs:
 
   display_versions:
     name: Display versions
-    needs: [get_current_versions, get_latest_versions]
+    needs:
+      - get_current_versions
+      - get_latest_version_dump978
+      - get_latest_version_readsb
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
         run: |
           echo "dump978:"
           echo "  * current-version-dump978: ${{ needs.get_current_versions.outputs.current-version-dump978 }}"
-          echo "  * latest-version-dump978: ${{ needs.get_current_versions.outputs.latest-version-dump978 }}"
+          echo "  * latest-version-dump978: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
           echo ""
           echo "readsb:"
           echo "  * current-version-readsb: ${{ needs.get_current_versions.outputs.current-version-readsb }}"
-          echo "  * latest-version-readsb: ${{ needs.get_current_versions.outputs.latest-version-readsb }}"
+          echo "  * latest-version-readsb: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
 
 
   # echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
