@@ -7,7 +7,7 @@ on:
 jobs:
 
   get_current_version_dump978:
-    name: Get dump978-fa version from ghcr.io/${{ github.repository }}:dump978-full
+    name: Get current dump978-fa version from ghcr.io/${{ github.repository }}:dump978-full
     runs-on: ubuntu-latest
     outputs:
       current-version: ${{ steps.current-version.outputs.currver }}
@@ -22,7 +22,7 @@ jobs:
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
   get_current_version_readsb:
-    name: Get readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
+    name: Get current readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
     runs-on: ubuntu-latest
     outputs:
       current-version: ${{ steps.current-version.outputs.currver }}
