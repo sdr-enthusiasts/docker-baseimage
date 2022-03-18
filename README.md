@@ -61,7 +61,7 @@ RUN ...
 | `soapyrtlsdr`     | `dump978-full`                 | - |
 | `dump978-full`    | -                              | [sdr-enthusiasts/docker-piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
 | `wreadsb`         | -                              | [sdr-enthusiasts/docker-tar1090][docker-tar1090] |
-| `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24][docker-flightradar24] |
+| `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24][docker-flightradar24], [sdr-enthusiasts/docker-planefinder][docker-planefinder] |
 
 <!-- links below here -->
 [bc]: https://packages.debian.org/stable/bc
@@ -79,6 +79,7 @@ RUN ...
 [docker-opensky-network]: https://github.com/sdr-enthusiasts/docker-opensky-network
 [docker-piaware]: https://github.com/sdr-enthusiasts/docker-piaware
 [docker-planefence]: http://github.com/kx1t/docker-planefence
+[docker-planefinder]: (https://github.com/sdr-enthusiasts/docker-planefinder)
 [docker-radarbox]: https://github.com/sdr-enthusiasts/docker-radarbox
 [docker-radarvirtuel]: https://github.com/sdr-enthusiasts/docker-radarvirtuel
 [docker-readsb-protobuf]: https://github.com/sdr-enthusiasts/docker-readsb-protobuf
