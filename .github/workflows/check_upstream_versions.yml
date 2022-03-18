@@ -19,8 +19,7 @@ jobs:
         run: |
           set -x
           docker pull ghcr.io/${{ github.repository }}:dump978-full
-          docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version
-          OUTPUT_VERSION=$(docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)
+          OUTPUT_VERSION=$(docker run --rm --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
       - name: Get readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
@@ -28,8 +27,7 @@ jobs:
         run: |
           set -x
           docker pull ghcr.io/${{ github.repository }}:readsb-netonly
-          docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version
-          OUTPUT_VERSION=$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
   get_latest_versions:
@@ -51,7 +49,7 @@ jobs:
         id: latest-version-dump978
         run: |
           set -x
-          OUTPUT_VERSION=$(docker run --rm -it --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)
+          OUTPUT_VERSION=$(docker run --rm --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
       - name: Build readsb-netonly
@@ -65,7 +63,7 @@ jobs:
         id: latest-version-readsb
         run: |
           set -x
-          OUTPUT_VERSION=$(docker run --rm -it --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
   display_versions:
