@@ -18,13 +18,15 @@ jobs:
         id: current-version-dump978
         run: |
           set -x
-          echo "::set-output name=currver::$(docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)"
+          OUTPUT_VERSION=$(docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
 
       - name: Get readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
         id: current-version-readsb
         run: |
           set -x
-          echo "::set-output name=currver::$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)"
+          OUTPUT_VERSION=$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
       
   get_latest_versions:
     name: Get latest versions
@@ -45,7 +47,8 @@ jobs:
         id: latest-version-dump978
         run: |
           set -x
-          echo "::set-output name=latestver::$(docker run --rm -it --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)"
+          OUTPUT_VERSION=$(docker run --rm -it --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
 
       - name: Build readsb-netonly
         uses: docker/build-push-action@v2
@@ -58,7 +61,8 @@ jobs:
         id: latest-version-readsb
         run: |
           set -x
-          echo "::set-output name=latestver::$(docker run --rm -it --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)"
+          OUTPUT_VERSION=$(docker run --rm -it --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
 
   display_versions:
     name: Display versions
