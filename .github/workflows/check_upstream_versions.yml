@@ -27,7 +27,7 @@ jobs:
           set -x
           OUTPUT_VERSION=$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
-      
+
   get_latest_versions:
     name: Get latest versions
     runs-on: ubuntu-latest
@@ -79,7 +79,7 @@ jobs:
           echo "  * current-version-readsb: ${{ needs.get_current_versions.outputs.current-version-readsb }}"
           echo "  * latest-version-readsb: ${{ needs.get_current_versions.outputs.latest-version-readsb }}"
 
-          
+
   # echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
 
   # trigger_deploy:
