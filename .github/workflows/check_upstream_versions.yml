@@ -1,0 +1,88 @@
+---
+name: Check Upstream Versions
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  get_versions_in_images:
+    name: Get versions in images
+    runs-on: ubuntu-latest
+    outputs:
+      current-version-dump978: ${{ steps.current-version-dump978.outputs.currver }}
+      current-version-readsb: ${{ steps.current-version-readsb.outputs.currver }}
+    steps:
+
+      - name: Get dump978-fa version from ghcr.io/${{ github.repository }}:dump978-full
+        id: current-version-dump978
+        run: |
+          set -x
+          echo "::set-output name=currver::$(docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)"
+
+      - name: Get readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
+        id: current-version-readsb
+        run: |
+          set -x
+          echo "::set-output name=currver::$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)"
+
+  get_latest_versions:
+    name: Get latest versions
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version-dump978: ${{ steps.latest-version-dump978.outputs.latestver }}
+      latest-version-readsb: ${{ steps.latest-version-readsb.outputs.latestver }}
+    steps:
+
+      - name: Build dump978
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: dump978:latest
+          file: Dockerfile.dump978-full
+      - name: Get latest dump978-fa version
+        id: latest-version-dump978
+        run: |
+          set -x
+          echo "::set-output name=latestver::$(docker run --rm -it --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)"
+
+      - name: Build readsb-netonly
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: readsb:latest
+          file: Dockerfile.readsb-netonly
+      - name: Get latest readsb version
+        id: latest-version-readsb
+        run: |
+          set -x
+          echo "::set-output name=latestver::$(docker run --rm -it --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)"
+
+  # display_versions:
+  #   name: Display versions
+  #   needs: [version_in_container, latest_version]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Display versions
+  #       run: |
+  #         echo "versions in ghcr.io/${{ github.repository }}:latest = ${{ needs.version_in_container.outputs.currver }}"
+  #         echo "versions in apt repository = ${{ needs.latest_version.outputs.latestver }}"
+  #         echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
+
+  # trigger_deploy:
+  #   name: Trigger deployment on new versions
+  #   needs: [version_in_container, latest_version]
+  #   if: ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+  #     WORKFLOW_REPO: ${{ github.repository }}
+  #     WORKFLOW_FILE: deploy.yml
+  #     WORKFLOW_REASON: "triggered via check_versions.yml in ${{ github.repository }}"
+  #   steps:
+  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+  #       run: |
+  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
