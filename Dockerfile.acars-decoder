@@ -1,5 +1,7 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # hadolint ignore=DL3008,SC2086,DL3008,SC2039
 RUN set -x && \
     TEMP_PACKAGES=() && \
@@ -30,7 +32,7 @@ RUN set -x && \
         "${TEMP_PACKAGES[@]}"\
         && \
     # libacars
-    git clone git://github.com/szpajder/libacars.git /src/libacars && \
+    git clone https://github.com/szpajder/libacars.git /src/libacars && \
     pushd /src/libacars && \
     git checkout master && \
     mkdir build && \

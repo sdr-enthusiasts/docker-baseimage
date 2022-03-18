@@ -1,5 +1,7 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
     TEMP_PACKAGES=() && \
@@ -40,7 +42,7 @@ RUN set -x && \
       ../ \
       && \
     # SoapySDR: make & install
-    make -j $(nproc) && \
+    make -j "$(nproc)" && \
     make install && \
     ldconfig && \
     popd && \
@@ -59,7 +61,7 @@ RUN set -x && \
       ../ \
       && \
     # SoapyRTLSDR: make & install
-    make -j $(nproc) && \
+    make -j "$(nproc)" && \
     make install && \
     ldconfig && \
     popd && \

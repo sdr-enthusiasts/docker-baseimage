@@ -1,5 +1,7 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
     TEMP_PACKAGES=() && \
@@ -31,7 +33,7 @@ RUN set -x && \
     git clone --depth 1 --branch "$BRANCH_DUMP978" "https://github.com/flightaware/dump978.git" "/src/dump978" && \
     # dump978: make
     pushd /src/dump978 && \
-    make -j $(nproc) all faup978 && \
+    make -j "$(nproc)" all faup978 && \
     popd && \
     # dump978: install
     mkdir -p "/usr/lib/piaware/helpers" && \

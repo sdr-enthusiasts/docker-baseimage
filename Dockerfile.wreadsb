@@ -1,5 +1,7 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
     TEMP_PACKAGES=() && \
@@ -34,7 +36,7 @@ RUN set -x && \
     make \
       RTLSDR=yes \
       AIRCRAFT_HASH_BITS=14 \
-      -j $(nproc) \
+      -j "$(nproc)" \
       && \
     find "/src/readsb" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
     popd && \
