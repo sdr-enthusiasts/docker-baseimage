@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  get_versions_in_images:
+  get_current_versions:
     name: Get versions in images
     runs-on: ubuntu-latest
     outputs:
@@ -26,11 +26,6 @@ jobs:
           set -x
           echo "::set-output name=currver::$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)"
       
-      - name: Show current versions
-        run: |
-          echo "current-version-dump978: ${{ steps.current-version-dump978.outputs.currver }}"
-          echo "current-version-readsb: ${{ steps.current-version-readsb.outputs.currver }}"
-
   get_latest_versions:
     name: Get latest versions
     runs-on: ubuntu-latest
@@ -65,16 +60,23 @@ jobs:
           set -x
           echo "::set-output name=latestver::$(docker run --rm -it --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)"
 
-  # display_versions:
-  #   name: Display versions
-  #   needs: [version_in_container, latest_version]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Display versions
-  #       run: |
-  #         echo "versions in ghcr.io/${{ github.repository }}:latest = ${{ needs.version_in_container.outputs.currver }}"
-  #         echo "versions in apt repository = ${{ needs.latest_version.outputs.latestver }}"
-  #         echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
+  display_versions:
+    name: Display versions
+    needs: [get_current_versions, get_latest_versions]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display versions
+        run: |
+          echo "dump978:"
+          echo "  * current-version-dump978: ${{ needs.get_current_versions.outputs.current-version-dump978 }}"
+          echo "  * latest-version-dump978: ${{ needs.get_current_versions.outputs.latest-version-dump978 }}"
+          echo ""
+          echo "readsb:"
+          echo "  * current-version-readsb: ${{ needs.get_current_versions.outputs.current-version-readsb }}"
+          echo "  * latest-version-readsb: ${{ needs.get_current_versions.outputs.latest-version-readsb }}"
+
+          
+  # echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
