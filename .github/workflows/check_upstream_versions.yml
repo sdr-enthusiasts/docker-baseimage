@@ -18,6 +18,8 @@ jobs:
         id: current-version-dump978
         run: |
           set -x
+          docker pull ghcr.io/${{ github.repository }}:dump978-full
+          docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version
           OUTPUT_VERSION=$(docker run --rm -it --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
@@ -25,6 +27,8 @@ jobs:
         id: current-version-readsb
         run: |
           set -x
+          docker pull ghcr.io/${{ github.repository }}:readsb-netonly
+          docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version
           OUTPUT_VERSION=$(docker run --rm -it --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
