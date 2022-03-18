@@ -31,9 +31,11 @@ RUN set -x && \
       'git://git.osmocom.org/rtl-sdr' \
       /src/rtl-sdr \
       && \
-    # prepare to build
+    # store current commit hash
     mkdir -p /src/rtl-sdr/build && \
     pushd /src/rtl-sdr/build && \
+    git rev-parse HEAD > /CONTAINER_VERSION &&\
+    # prepare to build
     cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DDETACH_KERNEL_DRIVER=ON \
