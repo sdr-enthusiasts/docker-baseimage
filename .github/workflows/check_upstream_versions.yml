@@ -184,9 +184,9 @@ jobs:
           echo "  * latest-version-wreadsb: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
           echo ""
           echo "SoapySDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
-          echo "SoapySDR: $ {{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
+          echo "SoapySDR: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
           echo "SoapyRTLSDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
-          echo "SoapyRTLSDR: $ {{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
+          echo "SoapyRTLSDR: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
