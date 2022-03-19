@@ -50,7 +50,7 @@ jobs:
           docker pull ghcr.io/${{ github.repository }}:wreadsb
           OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:wreadsb --version 2>&1)
           echo "::set-output name=currver::$OUTPUT_VERSION"
-  
+
   get_latest_version_dump978:
     name: Get latest dump978-fa version
     runs-on: ubuntu-latest
