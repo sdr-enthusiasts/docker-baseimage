@@ -69,6 +69,21 @@ jobs:
           OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:wreadsb --version 2>&1)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
+  get_current_version_rtlsdr:
+    name: Get current rtl-sdr version from ghcr.io/${{ github.repository }}:rtlsdr
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:rtlsdr
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat ghcr.io/${{ github.repository }}:rtlsdr /CONTAINER_VERSION)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
   get_latest_version_dump978:
     name: Get latest dump978-fa version
     runs-on: ubuntu-latest
@@ -167,26 +182,33 @@ jobs:
       - get_latest_version_wreadsb
       - get_current_version_soapyrtlsdr
       - get_latest_version_soapyrtlsdr
+      - get_current_version_rtlsdr
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
         run: |
           echo "dump978:"
-          echo "  * current-version-dump978: ${{ needs.get_current_version_dump978.outputs.current-version }}"
-          echo "  * latest-version-dump978: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
+          echo "  * current-version: ${{ needs.get_current_version_dump978.outputs.current-version }}"
+          echo "  * latest-version: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
           echo ""
           echo "readsb:"
-          echo "  * current-version-readsb: ${{ needs.get_current_version_readsb.outputs.current-version }}"
-          echo "  * latest-version-readsb: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
+          echo "  * current-version: ${{ needs.get_current_version_readsb.outputs.current-version }}"
+          echo "  * latest-version: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
           echo ""
           echo "wreadsb:"
-          echo "  * current-version-wreadsb: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
-          echo "  * latest-version-wreadsb: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
+          echo "  * current-version: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
+          echo "  * latest-version: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
           echo ""
-          echo "SoapySDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
-          echo "SoapySDR: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
-          echo "SoapyRTLSDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
-          echo "SoapyRTLSDR: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
+          echo "RTL-SDR"
+          echo "  * current-version: ${{ needs.get_current_version_rtlsdr.outputs.current-version }}"
+          echo ""
+          echo "SoapySDR:"
+          echo "  * current-version: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
+          echo "  * latest-version: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
+          echo ""
+          echo "SoapyRTLSDR:"
+          echo "  * current-version: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
+          echo "  * latest-version: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
