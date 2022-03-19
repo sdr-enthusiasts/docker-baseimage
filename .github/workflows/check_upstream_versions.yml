@@ -208,7 +208,7 @@ jobs:
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
   get_latest_version_acarsdec:
-    name: Get latest acarsdec version
+    name: Get latest libacars version
     runs-on: ubuntu-latest
     outputs:
       latest-version: ${{ steps.latest-version.outputs.latestver }}
