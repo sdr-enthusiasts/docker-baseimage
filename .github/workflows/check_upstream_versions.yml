@@ -93,6 +93,27 @@ jobs:
           OUTPUT_VERSION=$(docker run --rm --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
+  get_latest_version_wreadsb:
+    name: Get latest wreadsb version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: wreadsb:latest
+          file: Dockerfile.readsb-netonly
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint wreadsb readsb:latest --version 2>&1)
+          echo "::set-output name=latestver::$OUTPUT_VERSION" 
+
   display_versions:
     name: Display versions
     needs:
