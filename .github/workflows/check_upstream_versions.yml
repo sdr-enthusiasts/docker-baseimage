@@ -106,7 +106,7 @@ jobs:
           push: false
           load: true
           tags: wreadsb:latest
-          file: Dockerfile.wreadsb-netonly
+          file: Dockerfile.wreadsb
       - name: Get latest version
         id: latest-version
         run: |
