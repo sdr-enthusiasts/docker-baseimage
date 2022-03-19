@@ -121,6 +121,8 @@ jobs:
       - get_latest_version_dump978
       - get_current_version_readsb
       - get_latest_version_readsb
+      - get_current_version_wreadsb
+      - get_latest_version_wreadsb
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
