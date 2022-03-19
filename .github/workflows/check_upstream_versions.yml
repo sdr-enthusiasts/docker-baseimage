@@ -226,7 +226,7 @@ jobs:
         run: |
           set -x
           OUTPUT_VERSION=$(docker run --rm --entrypoint cat acars-decoder:latest /CONTAINER_VERSION)
-          echo "::set-output name=latestver::$OUTPUT_VERSION" 
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
 
   display_versions:
     name: Display versions
