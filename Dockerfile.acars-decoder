@@ -37,6 +37,7 @@ RUN set -x && \
     git checkout master && \
     mkdir build && \
     pushd build && \
+    git rev-parse HEAD > /CONTAINER_VERSION && \
     cmake ../ && \
     make && \
     make install && \
