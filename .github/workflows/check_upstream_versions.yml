@@ -36,6 +36,21 @@ jobs:
           OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
+  get_current_version_soapyrtlsdr:
+    name: Get current SoapySDR version from ghcr.io/${{ github.repository }}:soapyrtlsdr
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:soapyrtlsdr
+          OUTPUT_VERSION=$(docker run --rm --entrypoint SoapySDRUtil ghcr.io/${{ github.repository }}:soapyrtlsdr --info | grep Lib\ Version:)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
   get_current_version_wreadsb:
     name: Get current wreadsb version from ghcr.io/${{ github.repository }}:wreadsb
     runs-on: ubuntu-latest
@@ -123,6 +138,7 @@ jobs:
       - get_latest_version_readsb
       - get_current_version_wreadsb
       - get_latest_version_wreadsb
+      - get_current_version_soapyrtlsdr
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
@@ -138,6 +154,8 @@ jobs:
           echo "wreadsb:"
           echo "  * current-version-wreadsb: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
           echo "  * latest-version-wreadsb: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
+          echo ""
+          echo "SoapySDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version }}"
 
 
   # echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
