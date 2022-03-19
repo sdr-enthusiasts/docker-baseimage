@@ -34,6 +34,7 @@ RUN set -x && \
     # prepare to build
     mkdir -p /src/rtl-sdr/build && \
     pushd /src/rtl-sdr/build && \
+    git rev-parse HEAD > /CONTAINER_VERSION && \
     cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DDETACH_KERNEL_DRIVER=ON \

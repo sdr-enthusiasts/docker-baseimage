@@ -35,6 +35,7 @@ RUN set -x && \
     git clone https://github.com/szpajder/libacars.git /src/libacars && \
     pushd /src/libacars && \
     git checkout master && \
+    git rev-parse HEAD > /CONTAINER_VERSION && \
     mkdir build && \
     pushd build && \
     cmake ../ && \
