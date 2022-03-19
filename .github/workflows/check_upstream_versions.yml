@@ -171,6 +171,27 @@ jobs:
           echo "::set-output name=latestversoapysdr::$SOAPYSDRVER"
           echo "::set-output name=latestversoapyrtlsdr::$SOAPYRTLSDRVER"
 
+  get_latest_version_rtlsdr:
+    name: Get latest rtlsdr version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: rtlsdr:latest
+          file: Dockerfile.rtlsdr
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat rtlsdr:latest /CONTAINER_VERSION)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
+
   display_versions:
     name: Display versions
     needs:
@@ -183,6 +204,7 @@ jobs:
       - get_current_version_soapyrtlsdr
       - get_latest_version_soapyrtlsdr
       - get_current_version_rtlsdr
+      - get_latest_version_rtlsdr
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
@@ -201,6 +223,7 @@ jobs:
           echo ""
           echo "RTL-SDR"
           echo "  * current-version: ${{ needs.get_current_version_rtlsdr.outputs.current-version }}"
+          echo "  * latest-version: ${{ needs.get_latest_version_rtlsdr.outputs.latest-version }}"
           echo ""
           echo "SoapySDR:"
           echo "  * current-version: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
