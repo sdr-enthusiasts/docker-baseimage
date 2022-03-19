@@ -207,6 +207,27 @@ jobs:
           OUTPUT_VERSION=$(docker run --rm --entrypoint cat rtlsdr:latest /CONTAINER_VERSION)
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
+  get_latest_version_acarsdec:
+    name: Get latest acarsdec version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: acars-decoder:latest
+          file: Dockerfile.acars-decoder
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat acars-decoder:latest /CONTAINER_VERSION)
+          echo "::set-output name=latestver::$OUTPUT_VERSION" 
+
   display_versions:
     name: Display versions
     needs:
@@ -221,36 +242,38 @@ jobs:
       - get_current_version_rtlsdr
       - get_latest_version_rtlsdr
       - get_current_version_acarsdec
+      - get_latest_version_acarsdec
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
         run: |
           echo "dump978:"
-          echo "  * current-version: ${{ needs.get_current_version_dump978.outputs.current-version }}"
-          echo "  * latest-version: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
+          echo "  * current: ${{ needs.get_current_version_dump978.outputs.current-version }}"
+          echo "  * latest: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
           echo ""
           echo "readsb:"
-          echo "  * current-version: ${{ needs.get_current_version_readsb.outputs.current-version }}"
-          echo "  * latest-version: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
+          echo "  * current: ${{ needs.get_current_version_readsb.outputs.current-version }}"
+          echo "  * latest: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
           echo ""
           echo "wreadsb:"
-          echo "  * current-version: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
-          echo "  * latest-version: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
+          echo "  * current: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
+          echo "  * latest: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
           echo ""
           echo "RTL-SDR"
-          echo "  * current-version: ${{ needs.get_current_version_rtlsdr.outputs.current-version }}"
-          echo "  * latest-version: ${{ needs.get_latest_version_rtlsdr.outputs.latest-version }}"
+          echo "  * current: ${{ needs.get_current_version_rtlsdr.outputs.current-version }}"
+          echo "  * latest: ${{ needs.get_latest_version_rtlsdr.outputs.latest-version }}"
           echo ""
           echo "SoapySDR:"
-          echo "  * current-version: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
-          echo "  * latest-version: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
+          echo "  * current: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
+          echo "  * latest: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
           echo ""
           echo "SoapyRTLSDR:"
-          echo "  * current-version: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
-          echo "  * latest-version: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
+          echo "  * current: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
+          echo "  * latest: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
           echo ""
           echo "libacars:"
           echo "  * current: ${{ needs.get_current_version_acarsdec.outputs.current-version }}"
+          echo "  * latest: ${{ needs.get_latest_version_acarsdec.outputs.latest-version }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
