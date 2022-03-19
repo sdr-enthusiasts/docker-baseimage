@@ -132,6 +132,10 @@ jobs:
           echo "readsb:"
           echo "  * current-version-readsb: ${{ needs.get_current_version_readsb.outputs.current-version }}"
           echo "  * latest-version-readsb: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
+          echo ""
+          echo "wreadsb:"
+          echo "  * current-version-wreadsb: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
+          echo "  * latest-version-wreadsb: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
 
 
   # echo "will a deployment be triggered = ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}"
