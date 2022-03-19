@@ -166,8 +166,8 @@ jobs:
     name: Get latest SoapySDR version
     runs-on: ubuntu-latest
     outputs:
-      latest-version-soapysdr: ${{ steps.current-version.outputs.latestversoapysdr }}
-      latest-version-soapyrtlsdr: ${{ steps.current-version.outputs.latestversoapyrtlsdr }}
+      latest-version-soapysdr: ${{ steps.latest-version.outputs.latestversoapysdr }}
+      latest-version-soapyrtlsdr: ${{ steps.latest-version.outputs.latestversoapyrtlsdr }}
     steps:
 
       - name: Build
@@ -249,31 +249,31 @@ jobs:
         run: |
           echo "dump978:"
           echo "  * current: ${{ needs.get_current_version_dump978.outputs.current-version }}"
-          echo "  * latest: ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
           echo ""
           echo "readsb:"
           echo "  * current: ${{ needs.get_current_version_readsb.outputs.current-version }}"
-          echo "  * latest: ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
           echo ""
           echo "wreadsb:"
           echo "  * current: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
-          echo "  * latest: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
           echo ""
           echo "RTL-SDR"
           echo "  * current: ${{ needs.get_current_version_rtlsdr.outputs.current-version }}"
-          echo "  * latest: ${{ needs.get_latest_version_rtlsdr.outputs.latest-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_rtlsdr.outputs.latest-version }}"
           echo ""
           echo "SoapySDR:"
           echo "  * current: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
-          echo "  * latest: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
+          echo "  * latest:  ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
           echo ""
           echo "SoapyRTLSDR:"
           echo "  * current: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
-          echo "  * latest: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
+          echo "  * latest:  ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
           echo ""
           echo "libacars:"
           echo "  * current: ${{ needs.get_current_version_acarsdec.outputs.current-version }}"
-          echo "  * latest: ${{ needs.get_latest_version_acarsdec.outputs.latest-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_acarsdec.outputs.latest-version }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
