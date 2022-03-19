@@ -40,7 +40,8 @@ jobs:
     name: Get current SoapySDR version from ghcr.io/${{ github.repository }}:soapyrtlsdr
     runs-on: ubuntu-latest
     outputs:
-      current-version: ${{ steps.current-version.outputs.currver }}
+      current-version-soapysdr: ${{ steps.current-version.outputs.currversoapysdr }}
+      current-version-soapyrtlsdr: ${{ steps.current-version.outputs.currversoapyrtlsdr }}
     steps:
 
       - name: Get current version
@@ -48,10 +49,10 @@ jobs:
         run: |
           set -x
           docker pull ghcr.io/${{ github.repository }}:soapyrtlsdr
-          OUTPUT_VERSION=$(docker run --rm --entrypoint SoapySDRUtil ghcr.io/${{ github.repository }}:soapyrtlsdr --info | grep Lib\ Version:)
-          echo "::set-output name=currver::$OUTPUT_VERSION"
-
-# SoapySDRUtil --info | grep librtlsdrSupport.so
+          SOAPYSDRVER=$(docker run --rm --entrypoint SoapySDRUtil ghcr.io/${{ github.repository }}:soapyrtlsdr --info | grep Lib\ Version:)
+          SOAPYRTLSDRVER=$(docker run --rm --entrypoint SoapySDRUtil ghcr.io/${{ github.repository }}:soapyrtlsdr --info | grep librtlsdrSupport.so)
+          echo "::set-output name=currversoapysdr::$SOAPYSDRVER"
+          echo "::set-output name=currversoapyrtlsdr::$SOAPYRTLSDRVER"
 
   get_current_version_wreadsb:
     name: Get current wreadsb version from ghcr.io/${{ github.repository }}:wreadsb
@@ -135,7 +136,8 @@ jobs:
     name: Get latest SoapySDR version
     runs-on: ubuntu-latest
     outputs:
-      latest-version: ${{ steps.latest-version.outputs.latestver }}
+      latest-version-soapysdr: ${{ steps.current-version.outputs.latestversoapysdr }}
+      latest-version-soapyrtlsdr: ${{ steps.current-version.outputs.latestversoapyrtlsdr }}
     steps:
 
       - name: Build
@@ -149,8 +151,10 @@ jobs:
         id: latest-version
         run: |
           set -x
-          OUTPUT_VERSION=$(docker run --rm --entrypoint SoapySDRUtil soapyrtlsdr:latest --info | grep Lib\ Version:)
-          echo "::set-output name=latestver::$OUTPUT_VERSION"
+          SOAPYSDRVER=$(docker run --rm --entrypoint SoapySDRUtil soapyrtlsdr:latest --info | grep Lib\ Version:)
+          SOAPYRTLSDRVER=$(docker run --rm --entrypoint SoapySDRUtil soapyrtlsdr:latest --info | grep librtlsdrSupport.so)
+          echo "::set-output name=latestversoapysdr::$SOAPYSDRVER"
+          echo "::set-output name=latestversoapyrtlsdr::$SOAPYRTLSDRVER"
 
   display_versions:
     name: Display versions
@@ -179,8 +183,10 @@ jobs:
           echo "  * current-version-wreadsb: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
           echo "  * latest-version-wreadsb: ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
           echo ""
-          echo "SoapySDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version }}"
-          echo "SoapySDR: $ {{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version }}"
+          echo "SoapySDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
+          echo "SoapySDR: $ {{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
+          echo "SoapyRTLSDR: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
+          echo "SoapyRTLSDR: $ {{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
