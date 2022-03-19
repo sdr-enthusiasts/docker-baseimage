@@ -106,13 +106,13 @@ jobs:
           push: false
           load: true
           tags: wreadsb:latest
-          file: Dockerfile.readsb-netonly
+          file: Dockerfile.wreadsb-netonly
       - name: Get latest version
         id: latest-version
         run: |
           set -x
-          OUTPUT_VERSION=$(docker run --rm --entrypoint wreadsb readsb:latest --version 2>&1)
-          echo "::set-output name=latestver::$OUTPUT_VERSION" 
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb readsb:latest --version 2>&1)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
 
   display_versions:
     name: Display versions
