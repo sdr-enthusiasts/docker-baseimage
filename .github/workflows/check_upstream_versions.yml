@@ -84,6 +84,21 @@ jobs:
           OUTPUT_VERSION=$(docker run --rm --entrypoint cat ghcr.io/${{ github.repository }}:rtlsdr /CONTAINER_VERSION)
           echo "::set-output name=currver::$OUTPUT_VERSION"
 
+  get_current_version_acarsdec:
+    name: Get current libacars version from ghcr.io/${{ github.repository }}:acars-decoder
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:acars-decoder
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat ghcr.io/${{ github.repository }}:acars-decoder /CONTAINER_VERSION)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
   get_latest_version_dump978:
     name: Get latest dump978-fa version
     runs-on: ubuntu-latest
@@ -205,6 +220,7 @@ jobs:
       - get_latest_version_soapyrtlsdr
       - get_current_version_rtlsdr
       - get_latest_version_rtlsdr
+      - get_current_version_acarsdec
     runs-on: ubuntu-latest
     steps:
       - name: Display versions
@@ -232,6 +248,9 @@ jobs:
           echo "SoapyRTLSDR:"
           echo "  * current-version: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
           echo "  * latest-version: ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
+          echo ""
+          echo "libacars:"
+          echo "  * current: ${{ needs.get_current_version_acarsdec.outputs.current-version }}"
 
   # trigger_deploy:
   #   name: Trigger deployment on new versions
