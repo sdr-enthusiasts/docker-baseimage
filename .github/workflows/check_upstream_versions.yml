@@ -111,7 +111,7 @@ jobs:
         id: latest-version
         run: |
           set -x
-          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb readsb:latest --version 2>&1)
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb wreadsb:latest --version 2>&1)
           echo "::set-output name=latestver::$OUTPUT_VERSION"
 
   display_versions:
