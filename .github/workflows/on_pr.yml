@@ -83,7 +83,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -172,7 +172,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -259,7 +259,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -348,7 +348,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -439,7 +439,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -530,7 +530,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -621,7 +621,7 @@ jobs:
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -713,7 +713,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile.dump978-full
@@ -801,7 +801,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -890,7 +890,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
