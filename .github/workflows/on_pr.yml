@@ -68,7 +68,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -146,7 +146,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -233,7 +233,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -322,7 +322,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -413,7 +413,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -504,7 +504,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -595,7 +595,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -687,7 +687,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -775,7 +775,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
@@ -864,7 +864,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
