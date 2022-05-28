@@ -25,12 +25,14 @@ RUN set -x && \
     # packages for acarsserv
     TEMP_PACKAGES+=(libsqlite3-dev) && \
     KEPT_PACKAGES+=(libsqlite3-0) && \
+    # packages for rewriting the output JSON
+    KEPT_PACKAGES+=(jq) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}"\
-        && \
+    "${KEPT_PACKAGES[@]}" \
+    "${TEMP_PACKAGES[@]}"\
+    && \
     # libacars
     git clone https://github.com/szpajder/libacars.git /src/libacars && \
     pushd /src/libacars && \
