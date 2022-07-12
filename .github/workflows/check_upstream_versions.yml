@@ -1,0 +1,292 @@
+---
+name: Check Upstream Versions
+
+on:
+  pull_request:
+
+jobs:
+
+  get_current_version_dump978:
+    name: Get current dump978-fa version from ghcr.io/${{ github.repository }}:dump978-full
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:dump978-full
+          OUTPUT_VERSION=$(docker run --rm --entrypoint dump978-fa ghcr.io/${{ github.repository }}:dump978-full --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
+  get_current_version_readsb:
+    name: Get current readsb version from ghcr.io/${{ github.repository }}:readsb-netonly
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:readsb-netonly
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:readsb-netonly --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
+  get_current_version_soapyrtlsdr:
+    name: Get current SoapySDR version from ghcr.io/${{ github.repository }}:soapyrtlsdr
+    runs-on: ubuntu-latest
+    outputs:
+      current-version-soapysdr: ${{ steps.current-version.outputs.currversoapysdr }}
+      current-version-soapyrtlsdr: ${{ steps.current-version.outputs.currversoapyrtlsdr }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:soapyrtlsdr
+          SOAPYSDRVER=$(docker run --rm --entrypoint SoapySDRUtil ghcr.io/${{ github.repository }}:soapyrtlsdr --info | grep Lib\ Version:)
+          SOAPYRTLSDRVER=$(docker run --rm --entrypoint SoapySDRUtil ghcr.io/${{ github.repository }}:soapyrtlsdr --info | grep librtlsdrSupport.so)
+          echo "::set-output name=currversoapysdr::$SOAPYSDRVER"
+          echo "::set-output name=currversoapyrtlsdr::$SOAPYRTLSDRVER"
+
+  get_current_version_wreadsb:
+    name: Get current wreadsb version from ghcr.io/${{ github.repository }}:wreadsb
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:wreadsb
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb ghcr.io/${{ github.repository }}:wreadsb --version 2>&1)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
+  get_current_version_rtlsdr:
+    name: Get current rtl-sdr version from ghcr.io/${{ github.repository }}:rtlsdr
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:rtlsdr
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat ghcr.io/${{ github.repository }}:rtlsdr /CONTAINER_VERSION)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
+  get_current_version_acarsdec:
+    name: Get current libacars version from ghcr.io/${{ github.repository }}:acars-decoder
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.current-version.outputs.currver }}
+    steps:
+
+      - name: Get current version
+        id: current-version
+        run: |
+          set -x
+          docker pull ghcr.io/${{ github.repository }}:acars-decoder
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat ghcr.io/${{ github.repository }}:acars-decoder /CONTAINER_VERSION)
+          echo "::set-output name=currver::$OUTPUT_VERSION"
+
+  get_latest_version_dump978:
+    name: Get latest dump978-fa version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: dump978:latest
+          file: Dockerfile.dump978-full
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint dump978-fa dump978:latest --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
+
+  get_latest_version_readsb:
+    name: Get latest readsb version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: readsb:latest
+          file: Dockerfile.readsb-netonly
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb readsb:latest --version 2>&1 | cut -d " " -f 2)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
+
+  get_latest_version_wreadsb:
+    name: Get latest wreadsb version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: wreadsb:latest
+          file: Dockerfile.wreadsb
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint readsb wreadsb:latest --version 2>&1)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
+
+  get_latest_version_soapyrtlsdr:
+    name: Get latest SoapySDR version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version-soapysdr: ${{ steps.latest-version.outputs.latestversoapysdr }}
+      latest-version-soapyrtlsdr: ${{ steps.latest-version.outputs.latestversoapyrtlsdr }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: soapyrtlsdr:latest
+          file: Dockerfile.soapyrtlsdr
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          SOAPYSDRVER=$(docker run --rm --entrypoint SoapySDRUtil soapyrtlsdr:latest --info | grep Lib\ Version:)
+          SOAPYRTLSDRVER=$(docker run --rm --entrypoint SoapySDRUtil soapyrtlsdr:latest --info | grep librtlsdrSupport.so)
+          echo "::set-output name=latestversoapysdr::$SOAPYSDRVER"
+          echo "::set-output name=latestversoapyrtlsdr::$SOAPYRTLSDRVER"
+
+  get_latest_version_rtlsdr:
+    name: Get latest rtlsdr version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: rtlsdr:latest
+          file: Dockerfile.rtlsdr
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat rtlsdr:latest /CONTAINER_VERSION)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
+
+  get_latest_version_acarsdec:
+    name: Get latest libacars version
+    runs-on: ubuntu-latest
+    outputs:
+      latest-version: ${{ steps.latest-version.outputs.latestver }}
+    steps:
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          load: true
+          tags: acars-decoder:latest
+          file: Dockerfile.acars-decoder
+      - name: Get latest version
+        id: latest-version
+        run: |
+          set -x
+          OUTPUT_VERSION=$(docker run --rm --entrypoint cat acars-decoder:latest /CONTAINER_VERSION)
+          echo "::set-output name=latestver::$OUTPUT_VERSION"
+
+  display_versions:
+    name: Display versions
+    needs:
+      - get_current_version_dump978
+      - get_latest_version_dump978
+      - get_current_version_readsb
+      - get_latest_version_readsb
+      - get_current_version_wreadsb
+      - get_latest_version_wreadsb
+      - get_current_version_soapyrtlsdr
+      - get_latest_version_soapyrtlsdr
+      - get_current_version_rtlsdr
+      - get_latest_version_rtlsdr
+      - get_current_version_acarsdec
+      - get_latest_version_acarsdec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display versions
+        run: |
+          echo "dump978:"
+          echo "  * current: ${{ needs.get_current_version_dump978.outputs.current-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_dump978.outputs.latest-version }}"
+          echo ""
+          echo "readsb:"
+          echo "  * current: ${{ needs.get_current_version_readsb.outputs.current-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_readsb.outputs.latest-version }}"
+          echo ""
+          echo "wreadsb:"
+          echo "  * current: ${{ needs.get_current_version_wreadsb.outputs.current-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_wreadsb.outputs.latest-version }}"
+          echo ""
+          echo "RTL-SDR"
+          echo "  * current: ${{ needs.get_current_version_rtlsdr.outputs.current-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_rtlsdr.outputs.latest-version }}"
+          echo ""
+          echo "SoapySDR:"
+          echo "  * current: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapysdr }}"
+          echo "  * latest:  ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapysdr }}"
+          echo ""
+          echo "SoapyRTLSDR:"
+          echo "  * current: ${{ needs.get_current_version_soapyrtlsdr.outputs.current-version-soapyrtlsdr }}"
+          echo "  * latest:  ${{ needs.get_latest_version_soapyrtlsdr.outputs.latest-version-soapyrtlsdr }}"
+          echo ""
+          echo "libacars:"
+          echo "  * current: ${{ needs.get_current_version_acarsdec.outputs.current-version }}"
+          echo "  * latest:  ${{ needs.get_latest_version_acarsdec.outputs.latest-version }}"
+
+  # trigger_deploy:
+  #   name: Trigger deployment on new versions
+  #   needs: [version_in_container, latest_version]
+  #   if: ${{ needs.version_in_container.outputs.currver != needs.latest_version.outputs.latestver }}
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+  #     WORKFLOW_REPO: ${{ github.repository }}
+  #     WORKFLOW_FILE: deploy.yml
+  #     WORKFLOW_REASON: "triggered via check_versions.yml in ${{ github.repository }}"
+  #   steps:
+  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+  #       run: |
+  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"

@@ -40,6 +40,7 @@ RUN set -x && \
     git rev-parse HEAD > /CONTAINER_VERSION && \
     mkdir build && \
     pushd build && \
+    git rev-parse HEAD > /CONTAINER_VERSION && \
     cmake ../ && \
     make && \
     make install && \
