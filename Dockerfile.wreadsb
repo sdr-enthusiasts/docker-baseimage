@@ -18,6 +18,7 @@ RUN set -x && \
     TEMP_PACKAGES+=(zlib1g-dev) && \
     TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
     TEMP_PACKAGES+=(libzstd-dev) && \
+    KEPT_PACKAGES+=(libzstd) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
