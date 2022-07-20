@@ -52,7 +52,7 @@ RUN ...
 
 | Tag               | Sub-tags Using                 | Up-Stream Projects Using |
 | ----------------- | ------------------------------ | ------------------------ |
-| `base`            | `ALL`                          | [sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network] |
+| `base`            | `ALL`                          | [sdr-enthusiasts][acars_router][sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
 | `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy] |
 | `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | - |
@@ -64,6 +64,7 @@ RUN ...
 | `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24][docker-flightradar24], [sdr-enthusiasts/docker-planefinder][docker-planefinder] |
 
 <!-- links below here -->
+[acars_router]: https://github.com/sdr-enthusiasts/acars-router
 [bc]: https://packages.debian.org/stable/bc
 [bladeRF FPGA images]: https://www.nuand.com/fpga_images/
 [bladeRF]: https://github.com/Nuand/bladeRF
