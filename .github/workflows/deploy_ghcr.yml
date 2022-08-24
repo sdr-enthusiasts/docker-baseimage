@@ -11,13 +11,13 @@ on:
       - main
     # Don't trigger if it's just a documentation update
     paths-ignore:
-      - '**.md'
-      - '**.MD'
-      - '**.yml'
-      - 'LICENSE'
-      - '.gitattributes'
-      - '.gitignore'
-      - '.dockerignore'
+      - "**.md"
+      - "**.MD"
+      - "**.yml"
+      - "LICENSE"
+      - ".gitattributes"
+      - ".gitignore"
+      - ".dockerignore"
 
   # Build and deploy the image nightly (to ensure we pick up any security updates)
   # schedule:
@@ -47,7 +47,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -99,7 +98,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -109,7 +107,7 @@ jobs:
       # Get changed files
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v28
+        uses: tj-actions/changed-files@v29.0.0
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
@@ -155,7 +153,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -206,7 +203,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -257,7 +253,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -309,7 +304,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -361,7 +355,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -413,7 +406,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -465,7 +457,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -517,7 +508,6 @@ jobs:
       packages: write
 
     steps:
-
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
@@ -794,6 +784,21 @@ jobs:
       WORKFLOW_REPO: sdr-enthusiasts/docker-planefinder
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-planefinder"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+
+  trigger_build_sdr-enthusiasts_acars_router:
+    name: Trigger deploy of sdr-enthusiasts/acars_router
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/acars_router
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
       - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
