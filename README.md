@@ -80,10 +80,10 @@ RUN ...
 [docker-opensky-network]: https://github.com/sdr-enthusiasts/docker-opensky-network
 [docker-piaware]: https://github.com/sdr-enthusiasts/docker-piaware
 [docker-planefence]: http://github.com/kx1t/docker-planefence
-[docker-planefinder]: (https://github.com/sdr-enthusiasts/docker-planefinder)
+[docker-planefinder]: https://github.com/sdr-enthusiasts/docker-planefinder
 [docker-radarbox]: https://github.com/sdr-enthusiasts/docker-radarbox
 [docker-radarvirtuel]: https://github.com/sdr-enthusiasts/docker-radarvirtuel
-[docker-raspberry-noaa-v2]:[https://github.com/kx1t/docker-raspberry-noaa-v2]
+[docker-raspberry-noaa-v2]: https://github.com/kx1t/docker-raspberry-noaa-v2
 [docker-readsb-protobuf]: https://github.com/sdr-enthusiasts/docker-readsb-protobuf
 [docker-reversewebproxy]: https://github.com/sdr-enthusiasts/docker-reversewebproxy
 [docker-tar1090]: https://github.com/sdr-enthusiasts/docker-tar1090
