@@ -54,7 +54,7 @@ RUN ...
 | ----------------- | ------------------------------ | ------------------------ |
 | `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
-| `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy] |
+| `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
 | `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | - |
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
 | `readsb-netonly`  | -                              | - |
@@ -83,6 +83,7 @@ RUN ...
 [docker-planefinder]: (https://github.com/sdr-enthusiasts/docker-planefinder)
 [docker-radarbox]: https://github.com/sdr-enthusiasts/docker-radarbox
 [docker-radarvirtuel]: https://github.com/sdr-enthusiasts/docker-radarvirtuel
+[docker-raspberry-noaa-v2]:[https://github.com/kx1t/docker-raspberry-noaa-v2]
 [docker-readsb-protobuf]: https://github.com/sdr-enthusiasts/docker-readsb-protobuf
 [docker-reversewebproxy]: https://github.com/sdr-enthusiasts/docker-reversewebproxy
 [docker-tar1090]: https://github.com/sdr-enthusiasts/docker-tar1090
