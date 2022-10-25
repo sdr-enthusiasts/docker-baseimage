@@ -119,6 +119,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -206,6 +208,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -295,6 +299,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -384,6 +390,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -475,6 +483,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -566,6 +576,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -657,6 +669,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -749,6 +763,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -837,6 +853,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
