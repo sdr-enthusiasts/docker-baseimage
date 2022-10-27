@@ -19,7 +19,6 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-
   hadolint:
     name: Run hadolint against docker files
     runs-on: ubuntu-latest
@@ -49,6 +48,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -97,7 +98,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_ghcr_python:
     name: Test deploy python to ghcr.io
@@ -118,6 +119,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -186,7 +189,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_ghcr_rtlsdr:
     name: Test deploy rtlsdr to ghcr.io
@@ -205,6 +208,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -273,7 +278,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_ghcr_readsb-netonly:
     name: Test deploy readsb-netonly to ghcr.io
@@ -294,6 +299,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -362,7 +369,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_ghcr_readsb-full:
     name: Test deploy readsb-full to ghcr.io
@@ -383,6 +390,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -453,7 +462,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_ghcr_acars-decoder:
     name: Test deploy acars-decoder to ghcr.io
@@ -474,6 +483,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -544,7 +555,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_soapyrtlsdr:
     name: Test deploy soapyrtlsdr to ghcr.io
@@ -565,6 +576,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -635,7 +648,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_dump978-full:
     name: Test deploy dump978-full to ghcr.io
@@ -656,6 +669,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -727,7 +742,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_wreadsb:
     name: Test deploy wreadsb to ghcr.io
@@ -748,6 +763,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -815,7 +832,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   deploy_qemu:
     name: Test deploy qemu to ghcr.io
@@ -836,6 +853,8 @@ jobs:
       # Check out our code
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
@@ -904,7 +923,7 @@ jobs:
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
-        run: echo "::set-output name=cleanupinfo::$TAG"
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   matrix:
     name: Prepare for clean-up
@@ -958,7 +977,7 @@ jobs:
           echo "matrix:"
           echo "$matrix"
           echo "set output:"
-          echo "::set-output name=matrix::$matrix"
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
           echo "----"
 
   # Verify and log the output of the above step (mostly for troubleshooting)
