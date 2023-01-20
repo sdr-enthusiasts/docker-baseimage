@@ -1,4 +1,4 @@
-FROM debian:bullseye-20221205-slim
+FROM debian:bullseye-20230109-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     S6OVERLAY_VERSION=v2.2.0.3
