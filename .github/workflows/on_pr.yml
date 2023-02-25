@@ -1013,7 +1013,7 @@ jobs:
     steps:
       - name: Delete image
         if: always()
-        uses: bots-house/ghcr-delete-image-action@v1.0.1
+        uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
           # NOTE: only orgs are supported
           owner: sdr-enthusiasts
