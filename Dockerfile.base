@@ -56,9 +56,9 @@ RUN set -x && \
       /opt/healthchecks-framework/tests \
       && \
     # Add additional stuff
-    mkdir -p /scripts && \
+    mkdir -p /scripts /etc/cont-init.d && \
     curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 -o /etc/cont-init.d/00-libsecomp2 && \
-    curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/scripts/chk_enabled -o /scripts/chk_enabled && \
+    curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/scripts/common -o /scripts/common && \
     # Clean up
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -y && \
