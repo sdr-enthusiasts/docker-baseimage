@@ -998,26 +998,26 @@ jobs:
           echo $matrix | jq .
           echo $matrix | json2yaml
 
-  # Delete images used by the build process
-  purge-images:
-    name: Clean-up
-    # only run if there's images to clean up (prevents the workflow failing)
-    if: needs.matrix.outputs.matrix != '{"tag":[]}'
-    needs:
-      - matrix
-      - check-matrix
-    strategy:
-      fail-fast: false
-      matrix: ${{fromJSON(needs.matrix.outputs.matrix)}}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete image
-        if: always()
-        uses: bots-house/ghcr-delete-image-action@v1.1.0
-        with:
-          # NOTE: only orgs are supported
-          owner: sdr-enthusiasts
-          name: docker-baseimage
-          # NOTE: using Personal Access Token
-          token: ${{ secrets.GH_PAT_MIKENYE }}
-          tag: ${{ matrix.tag }}-test-pr-${{github.event.pull_request.number}}
+  # # Delete images used by the build process
+  # purge-images:
+  #   name: Clean-up
+  #   # only run if there's images to clean up (prevents the workflow failing)
+  #   if: needs.matrix.outputs.matrix != '{"tag":[]}'
+  #   needs:
+  #     - matrix
+  #     - check-matrix
+  #   strategy:
+  #     fail-fast: false
+  #     matrix: ${{fromJSON(needs.matrix.outputs.matrix)}}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Delete image
+  #       if: always()
+  #       uses: bots-house/ghcr-delete-image-action@v1.1.0
+  #       with:
+  #         # NOTE: only orgs are supported
+  #         owner: sdr-enthusiasts
+  #         name: docker-baseimage
+  #         # NOTE: using Personal Access Token
+  #         token: ${{ secrets.GH_PAT_MIKENYE }}
+  #         tag: ${{ matrix.tag }}-test-pr-${{github.event.pull_request.number}}
