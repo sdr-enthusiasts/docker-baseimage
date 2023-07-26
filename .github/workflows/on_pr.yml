@@ -925,78 +925,78 @@ jobs:
         id: set-output
         run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
-  matrix:
-    name: Prepare for clean-up
-    # Add each image's job here
-    needs:
-      - deploy_ghcr_base
-      - deploy_ghcr_python
-      - deploy_ghcr_rtlsdr
-      - deploy_ghcr_readsb-netonly
-      - deploy_ghcr_readsb-full
-      - deploy_ghcr_acars-decoder
-      - deploy_soapyrtlsdr
-      - deploy_dump978-full
-      - deploy_wreadsb
-      - deploy_qemu
-    # Add variable for each image's job
-    env:
-      DEPLOY_GHCR_BASE: ${{ needs.deploy_ghcr_base.outputs.cleanupinfo }}
-      DEPLOY_GHCP_PYTHON: ${{ needs.deploy_ghcr_python.outputs.cleanupinfo }}
-      DEPLOY_GHCR_RTLSDR: ${{ needs.deploy_ghcr_rtlsdr.outputs.cleanupinfo }}
-      DEPLOY_GHCR_READSB_NETONLY: ${{ needs.deploy_ghcr_readsb-netonly.outputs.cleanupinfo }}
-      DEPLOY_GHCR_READSB_FULL: ${{ needs.deploy_ghcr_readsb-full.outputs.cleanupinfo }}
-      DEPLOY_GHCR_ACARS_DECODER: ${{ needs.deploy_ghcr_acars-decoder.outputs.cleanupinfo }}
-      DEPLOY_SOAPYRTLSDR: ${{ needs.deploy_soapyrtlsdr.outputs.cleanupinfo }}
-      DEPLOY_DUMP978_FULL: ${{ needs.deploy_dump978-full.outputs.cleanupinfo }}
-      DEPLOY_WREADSB: ${{ needs.deploy_wreadsb.outputs.cleanupinfo }}
-      DEPLOY_QEMU: ${{ needs.deploy_qemu.outputs.cleanupinfo }}
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get input from previous jobs
-        id: set-matrix
-        # Add an if statement for each variable
-        run: |
-          set -x
-          matrix=$({
+  # matrix:
+  #   name: Prepare for clean-up
+  #   # Add each image's job here
+  #   needs:
+  #     - deploy_ghcr_base
+  #     - deploy_ghcr_python
+  #     - deploy_ghcr_rtlsdr
+  #     - deploy_ghcr_readsb-netonly
+  #     - deploy_ghcr_readsb-full
+  #     - deploy_ghcr_acars-decoder
+  #     - deploy_soapyrtlsdr
+  #     - deploy_dump978-full
+  #     - deploy_wreadsb
+  #     - deploy_qemu
+  #   # Add variable for each image's job
+  #   env:
+  #     DEPLOY_GHCR_BASE: ${{ needs.deploy_ghcr_base.outputs.cleanupinfo }}
+  #     DEPLOY_GHCP_PYTHON: ${{ needs.deploy_ghcr_python.outputs.cleanupinfo }}
+  #     DEPLOY_GHCR_RTLSDR: ${{ needs.deploy_ghcr_rtlsdr.outputs.cleanupinfo }}
+  #     DEPLOY_GHCR_READSB_NETONLY: ${{ needs.deploy_ghcr_readsb-netonly.outputs.cleanupinfo }}
+  #     DEPLOY_GHCR_READSB_FULL: ${{ needs.deploy_ghcr_readsb-full.outputs.cleanupinfo }}
+  #     DEPLOY_GHCR_ACARS_DECODER: ${{ needs.deploy_ghcr_acars-decoder.outputs.cleanupinfo }}
+  #     DEPLOY_SOAPYRTLSDR: ${{ needs.deploy_soapyrtlsdr.outputs.cleanupinfo }}
+  #     DEPLOY_DUMP978_FULL: ${{ needs.deploy_dump978-full.outputs.cleanupinfo }}
+  #     DEPLOY_WREADSB: ${{ needs.deploy_wreadsb.outputs.cleanupinfo }}
+  #     DEPLOY_QEMU: ${{ needs.deploy_qemu.outputs.cleanupinfo }}
+  #   outputs:
+  #     matrix: ${{ steps.set-matrix.outputs.matrix }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get input from previous jobs
+  #       id: set-matrix
+  #       # Add an if statement for each variable
+  #       run: |
+  #         set -x
+  #         matrix=$({
 
-              if [[ -n $DEPLOY_GHCR_BASE ]]; then echo $DEPLOY_GHCR_BASE; fi
-              if [[ -n $DEPLOY_GHCP_PYTHON ]]; then echo $DEPLOY_GHCP_PYTHON; fi
-              if [[ -n $DEPLOY_GHCR_RTLSDR ]]; then echo $DEPLOY_GHCR_RTLSDR; fi
-              if [[ -n $DEPLOY_GHCR_READSB_NETONLY ]]; then echo $DEPLOY_GHCR_READSB_NETONLY; fi
-              if [[ -n $DEPLOY_GHCR_READSB_FULL ]]; then echo $DEPLOY_GHCR_READSB_FULL; fi
-              if [[ -n $DEPLOY_GHCR_ACARS_DECODER ]]; then echo $DEPLOY_GHCR_ACARS_DECODER; fi
-              if [[ -n $DEPLOY_SOAPYRTLSDR ]]; then echo $DEPLOY_SOAPYRTLSDR; fi
-              if [[ -n $DEPLOY_DUMP978_FULL ]]; then echo $DEPLOY_DUMP978_FULL; fi
-              if [[ -n $DEPLOY_WREADSB ]]; then echo $DEPLOY_WREADSB; fi
-              if [[ -n $DEPLOY_QEMU ]]; then echo $DEPLOY_QEMU; fi
+  #             if [[ -n $DEPLOY_GHCR_BASE ]]; then echo $DEPLOY_GHCR_BASE; fi
+  #             if [[ -n $DEPLOY_GHCP_PYTHON ]]; then echo $DEPLOY_GHCP_PYTHON; fi
+  #             if [[ -n $DEPLOY_GHCR_RTLSDR ]]; then echo $DEPLOY_GHCR_RTLSDR; fi
+  #             if [[ -n $DEPLOY_GHCR_READSB_NETONLY ]]; then echo $DEPLOY_GHCR_READSB_NETONLY; fi
+  #             if [[ -n $DEPLOY_GHCR_READSB_FULL ]]; then echo $DEPLOY_GHCR_READSB_FULL; fi
+  #             if [[ -n $DEPLOY_GHCR_ACARS_DECODER ]]; then echo $DEPLOY_GHCR_ACARS_DECODER; fi
+  #             if [[ -n $DEPLOY_SOAPYRTLSDR ]]; then echo $DEPLOY_SOAPYRTLSDR; fi
+  #             if [[ -n $DEPLOY_DUMP978_FULL ]]; then echo $DEPLOY_DUMP978_FULL; fi
+  #             if [[ -n $DEPLOY_WREADSB ]]; then echo $DEPLOY_WREADSB; fi
+  #             if [[ -n $DEPLOY_QEMU ]]; then echo $DEPLOY_QEMU; fi
 
-            } | jq -crM --slurp --raw-input '{"tag":(split("\n")[:-1])}')
-          echo "matrix:"
-          echo "$matrix"
-          echo "set output:"
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
-          echo "----"
+  #           } | jq -crM --slurp --raw-input '{"tag":(split("\n")[:-1])}')
+  #         echo "matrix:"
+  #         echo "$matrix"
+  #         echo "set output:"
+  #         echo "matrix=$matrix" >> $GITHUB_OUTPUT
+  #         echo "----"
 
   # Verify and log the output of the above step (mostly for troubleshooting)
-  check-matrix:
-    name: Verify input to clean-up
-    runs-on: ubuntu-latest
-    needs: matrix
-    steps:
-      - name: Install json2yaml
-        run: |
-          sudo npm install -g json2yaml
+  # check-matrix:
+  #   name: Verify input to clean-up
+  #   runs-on: ubuntu-latest
+  #   needs: matrix
+  #   steps:
+  #     - name: Install json2yaml
+  #       run: |
+  #         sudo npm install -g json2yaml
 
-      - name: Check matrix definition
-        run: |
-          set -x
-          matrix='${{ needs.matrix.outputs.matrix }}'
-          echo $matrix
-          echo $matrix | jq .
-          echo $matrix | json2yaml
+  #     - name: Check matrix definition
+  #       run: |
+  #         set -x
+  #         matrix='${{ needs.matrix.outputs.matrix }}'
+  #         echo $matrix
+  #         echo $matrix | jq .
+  #         echo $matrix | json2yaml
 
   # # Delete images used by the build process
   # purge-images:
