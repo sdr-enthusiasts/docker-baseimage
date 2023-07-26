@@ -4,50 +4,50 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN set -x && \
-    TEMP_PACKAGES=() && \
-    KEPT_PACKAGES=() && \
-    # packages needed to install
-    TEMP_PACKAGES+=(git) && \
-    # packages needed to build rtl-sdr
-    TEMP_PACKAGES+=(build-essential) && \
-    TEMP_PACKAGES+=(cmake) && \
-    TEMP_PACKAGES+=(pkg-config) && \
-    # dependencies for rtl-sdr
-    TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
-    KEPT_PACKAGES+=(libusb-1.0-0) && \
-    # install packages
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}" \
-        && \
-    # rtlsdr: get latest release tag without cloning repo
-    #BRANCH_RTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'git://git.osmocom.org/rtl-sdr' | grep -v '\^' | cut -d '/' -f 3 | grep -v '^v.*' | tail -1) && \
-    # rtlsdr: clone repo
-    git clone \
-      --branch master \
-      --depth 1 \
-      --single-branch \
-      'git://git.osmocom.org/rtl-sdr' \
-      /src/rtl-sdr \
-      && \
-    # prepare to build
-    mkdir -p /src/rtl-sdr/build && \
-    pushd /src/rtl-sdr/build && \
-    git rev-parse HEAD > /CONTAINER_VERSION && \
-    cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DDETACH_KERNEL_DRIVER=ON \
-      -DINSTALL_UDEV_RULES=ON \
-      ../ \
-      && \
-    # build
-    make -j "$(nproc)" && \
-    # install
-    make install && \
-    ldconfig && \
-    popd && \
-    # Clean up
-    apt-get remove -y "${TEMP_PACKAGES[@]}" && \
-    apt-get autoremove -y && \
-    rm -rf /src/* /tmp/* /var/lib/apt/lists/*
+  TEMP_PACKAGES=() && \
+  KEPT_PACKAGES=() && \
+  # packages needed to install
+  TEMP_PACKAGES+=(git) && \
+  # packages needed to build rtl-sdr
+  TEMP_PACKAGES+=(build-essential) && \
+  TEMP_PACKAGES+=(cmake) && \
+  TEMP_PACKAGES+=(pkg-config) && \
+  # dependencies for rtl-sdr
+  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+  KEPT_PACKAGES+=(libusb-1.0-0) && \
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${KEPT_PACKAGES[@]}" \
+  "${TEMP_PACKAGES[@]}" \
+  && \
+  # rtlsdr: get latest release tag without cloning repo
+  #BRANCH_RTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'git://git.osmocom.org/rtl-sdr' | grep -v '\^' | cut -d '/' -f 3 | grep -v '^v.*' | tail -1) && \
+  # rtlsdr: clone repo
+  git clone \
+  --branch master \
+  --depth 1 \
+  --single-branch \
+  'git://git.osmocom.org/rtl-sdr' \
+  /src/rtl-sdr \
+  && \
+  # prepare to build
+  mkdir -p /src/rtl-sdr/build && \
+  pushd /src/rtl-sdr/build && \
+  git rev-parse HEAD > /CONTAINER_VERSION && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DDETACH_KERNEL_DRIVER=ON \
+  -DINSTALL_UDEV_RULES=ON \
+  ../ \
+  && \
+  # build
+  make -j "$(nproc)" && \
+  # install
+  make install && \
+  ldconfig && \
+  popd && \
+  # Clean up
+  apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+  apt-get autoremove -y && \
+  rm -rf /src/* /tmp/* /var/lib/apt/lists/*

@@ -13,9 +13,9 @@ RUN set -x && \
     KEPT_PACKAGES+=(python3-wheel) && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}"\
-        && \
+    "${KEPT_PACKAGES[@]}" \
+    "${TEMP_PACKAGES[@]}"\
+    && \
     # Clean up
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -y && \
