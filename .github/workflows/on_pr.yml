@@ -92,7 +92,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -162,7 +162,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -183,7 +183,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -251,7 +251,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -272,7 +272,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -342,7 +342,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -363,7 +363,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -435,7 +435,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -456,7 +456,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -528,7 +528,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -549,7 +549,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -621,7 +621,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -642,7 +642,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -715,7 +715,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -736,7 +736,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -805,7 +805,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -826,7 +826,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -896,7 +896,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -917,7 +917,7 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -1020,4 +1020,4 @@ jobs:
   #         name: docker-baseimage
   #         # NOTE: using Personal Access Token
   #         token: ${{ secrets.GH_PAT_MIKENYE }}
-  #         tag: ${{ matrix.tag }}-test-pr-${{github.event.pull_request.number}}
+  #         tag: ${{ matrix.tag }}-test-pr
