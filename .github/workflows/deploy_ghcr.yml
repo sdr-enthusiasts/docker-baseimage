@@ -20,7 +20,7 @@ on:
       - ".dockerignore"
   repository_dispatch:
     types: build_on_wreadsb_update
-    
+
   # Build and deploy the image nightly (to ensure we pick up any security updates)
   # schedule:
   #   - cron: "0 12 * * *"
