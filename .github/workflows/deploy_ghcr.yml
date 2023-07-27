@@ -629,7 +629,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarbox:
     name: Trigger deploy of sdr-enthusiasts/docker-radarbox
-    needs: [deploy_ghcr_base]
+    needs: [deploy_qemu]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
