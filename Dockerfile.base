@@ -1,7 +1,7 @@
 FROM debian:bookworm-20230703-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6OVERLAY_VERSION=v2.2.0.3
+  S6OVERLAY_VERSION="v3.1.5.0"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -44,7 +44,7 @@ RUN set -x && \
   "${TEMP_PACKAGES[@]}" \
   && \
   # install S6 Overlay
-  curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh && \
+  curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/fredclausen/deploy-s6-overlay/v3/deploy-s6-overlay-v3.sh && \
   sh /tmp/deploy-s6-overlay.sh && \
   rm -f /tmp/deploy-s6-overlay.sh && \
   # deploy healthchecks framework
@@ -68,12 +68,13 @@ RUN set -x && \
   # Add additional stuff
   mkdir -p /scripts /etc/cont-init.d && \
   curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 -o /etc/cont-init.d/00-libsecomp2 && \
+  chmod +x /etc/cont-init.d/00-libsecomp2 && \
   curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/scripts/common -o /scripts/common && \
   # Clean up
   apt-get remove -y "${TEMP_PACKAGES[@]}" && \
   apt-get autoremove -y && \
   rm -rf /src/* /tmp/* /var/lib/apt/lists/*
 
-# ADD https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 /etc/cont-init.d/00-libsecomp2
+#ADD https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 /etc/cont-init.d/00-libsecomp2
 
 ENTRYPOINT [ "/init" ]
