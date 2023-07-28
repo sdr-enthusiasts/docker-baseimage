@@ -89,7 +89,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -180,7 +180,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -269,7 +269,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -360,7 +360,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -453,7 +453,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -546,7 +546,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -639,7 +639,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -733,7 +733,7 @@ jobs:
           context: .
           file: ./Dockerfile.dump978-full
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -823,7 +823,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -914,7 +914,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
