@@ -1119,65 +1119,66 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
-  # trigger_build_sdr-enthusiasts_acars_router:
-  #   name: Trigger deploy of sdr-enthusiasts/acars_router
-  #   needs: [deploy_ghcr_base]
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-  #     WORKFLOW_REPO: sdr-enthusiasts/acars_router
-  #     WORKFLOW_FILE: deploy.yml
-  #     WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
-  #   steps:
-  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
 
-  # trigger_build_sdr-enthusiasts_docker-acarsdec:
-  #   name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
-  #   needs: [deploy_ghcr_acars-decoder]
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-  #     WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
-  #     WORKFLOW_FILE: deploy.yml
-  #     WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
-  #   steps:
-  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+  trigger_build_sdr-enthusiasts_acars_router:
+    name: Trigger deploy of sdr-enthusiasts/acars_router
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/acars_router
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
-  # trigger_build_sdr-enthusiasts_docker-dumpvdl2:
-  #   name: Trigger deploy of sdr-enthusiasts/docker-dumpvdl2
-  #   needs: [deploy_ghcr_acars-decoder]
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-  #     WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
-  #     WORKFLOW_FILE: deploy.yml
-  #     WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
-  #   steps:
-  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+  trigger_build_sdr-enthusiasts_docker-acarsdec:
+    name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
-  # trigger_build_sdr-enthusiasts_docker-vdlm2dec:
-  #   name: Trigger deploy of sdr-enthusiasts/docker-vdlm2dec
-  #   needs: [deploy_ghcr_acars-decoder]
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-  #     WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
-  #     WORKFLOW_FILE: deploy.yml
-  #     WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
-  #   steps:
-  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+  trigger_build_sdr-enthusiasts_docker-dumpvdl2:
+    name: Trigger deploy of sdr-enthusiasts/docker-dumpvdl2
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-vdlm2dec:
+    name: Trigger deploy of sdr-enthusiasts/docker-vdlm2dec
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
   # trigger_build_sdr-enthusiasts_docker-acarshub-baseimage:
   #   name: Trigger deploy of sdr-enthusiasts/docker-acarshub
