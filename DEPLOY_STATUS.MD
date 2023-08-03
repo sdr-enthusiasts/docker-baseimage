@@ -3,6 +3,17 @@
 | Image | Status |
 |-----------|-----------|
 | Base Image | [![BaseImage](https://github.com/sdr-enthusiasts/docker-baseimage/actions/workflows/deploy_ghcr.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-baseimage/actions/workflows/deploy_ghcr.yml) |
+
+| ACARS Images | Status |
+|-----------|-----------|
+| acarsdec | [![acarsdec](https://github.com/sdr-enthusiasts/docker-acarsdec/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-acarsdec/actions/workflows/deploy.yml) |
+| ACARS Hub | [![ACARS Hub](https://github.com/sdr-enthusiasts/docker-acarshub/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-acarshub/actions/workflows/deploy.yml) |
+| acars_router | [![acars_router](https://github.com/sdr-enthusiasts/acars_router/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/acars_router/actions/workflows/deploy.yml) |
+| dumpvdl2 | [![Deploy](https://github.com/sdr-enthusiasts/docker-dumpvdl2/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-dumpvdl2/actions/workflows/deploy.yml) |
+| vdlm2dec | [![vdlm2dec](https://github.com/sdr-enthusiasts/docker-vdlm2dec/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-vdlm2dec/actions/workflows/deploy.yml) |
+
+| ADSB Images | Status |
+|-----------|-----------|
 | ADSB Exchange | [![ADSB Exchange](https://github.com/sdr-enthusiasts/docker-adsbexchange/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-adsbexchange/actions/workflows/deploy.yml) |
 | ADSB Hub | [![ADSB Hub](https://github.com/sdr-enthusiasts/docker-adsbhub/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-adsbhub/actions/workflows/deploy.yml) |
 | Beast Splitter | [![Beast Splitter](https://github.com/sdr-enthusiasts/docker-beast-splitter/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-beast-splitter/actions/workflows/deploy.yml) |
@@ -16,3 +27,7 @@
 | readsb-protobuf | [![readsb-protobuf](https://github.com/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/deploy.yml) |
 | tar1090 | [![tar1090](https://github.com/sdr-enthusiasts/docker-tar1090/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-tar1090/actions/workflows/deploy.yml) |
 | Ultra Feeder | [![Ultra Feeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder/actions/workflows/deploy.yml) |
+
+| Other Images | Status |
+|-----------|-----------|
+| rtlsdrairband | [![rtlsdrairband](https://github.com/sdr-enthusiasts/docker-rtlsdrairband/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-rtlsdrairband/actions/workflows/deploy.yml) |
