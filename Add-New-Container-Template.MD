@@ -155,7 +155,7 @@
 
 * Under the `matrix:` job, under the `needs:` section, add the job id from the job in the previous step
 * Under the `matrix:` job, under the `env:` section:
-  * Add a new env var `DEPLOY_<IMAGE_NAME>`, set to `${{ needs.deploy_<your image name>.outputs.cleanupinfo }}`
+    * Add a new env var `DEPLOY_<IMAGE_NAME>`, set to `${{ needs.deploy_<your image name>.outputs.cleanupinfo }}`
 * Under the `matrix:` job, under the `steps:` section, under the `run:` section, add an if statement with the same format as the others.
 
 ## Triggering build of upstream image
