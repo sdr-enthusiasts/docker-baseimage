@@ -16,6 +16,7 @@
 |-----------|-----------|
 | ADSB Exchange | [![ADSB Exchange](https://github.com/sdr-enthusiasts/docker-adsbexchange/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-adsbexchange/actions/workflows/deploy.yml) |
 | ADSB Hub | [![ADSB Hub](https://github.com/sdr-enthusiasts/docker-adsbhub/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-adsbhub/actions/workflows/deploy.yml) |
+| airspy | [![Airspy](https://github.com/sdr-enthusiasts/airspy_adsb/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/airspy_adsb/actions/workflows/deploy.yml) |
 | Beast Splitter | [![Beast Splitter](https://github.com/sdr-enthusiasts/docker-beast-splitter/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-beast-splitter/actions/workflows/deploy.yml) |
 | dump978 | [![dump978](https://github.com/sdr-enthusiasts/docker-dump978/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-dump978/actions/workflows/deploy.yml) |
 | Flight Radar 24 | [![flightRadar24](https://github.com/sdr-enthusiasts/docker-flightradar24/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-flightradar24/actions/workflows/deploy.yml) |
