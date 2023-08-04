@@ -31,7 +31,7 @@ jobs:
 
   deploy_ghcr_base:
     name: Test deploy base to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [hadolint]
     # Define dockerfile and image tag
     env:
@@ -102,7 +102,7 @@ jobs:
 
   deploy_ghcr_python:
     name: Test deploy python to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
@@ -125,7 +125,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.python
@@ -133,7 +133,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -214,7 +214,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -222,7 +222,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -282,7 +282,7 @@ jobs:
 
   deploy_ghcr_readsb-netonly:
     name: Test deploy readsb-netonly to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
@@ -305,7 +305,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.readsb-netonly
@@ -313,7 +313,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -373,7 +373,7 @@ jobs:
 
   deploy_ghcr_readsb-full:
     name: Test deploy readsb-full to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -396,7 +396,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.readsb-full
@@ -405,7 +405,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -466,7 +466,7 @@ jobs:
 
   deploy_ghcr_acars-decoder:
     name: Test deploy acars-decoder to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -489,7 +489,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.acars-decoder
@@ -498,7 +498,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -559,7 +559,7 @@ jobs:
 
   deploy_soapyrtlsdr:
     name: Test deploy soapyrtlsdr to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -582,7 +582,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.soapyrtlsdr
@@ -591,7 +591,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -652,7 +652,7 @@ jobs:
 
   deploy_dump978-full:
     name: Test deploy dump978-full to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_soapyrtlsdr]
     # Define dockerfile and image tag
     env:
@@ -684,7 +684,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.soapyrtlsdr
@@ -746,7 +746,7 @@ jobs:
 
   deploy_wreadsb:
     name: Test deploy wreadsb to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -776,7 +776,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -836,7 +836,7 @@ jobs:
 
   deploy_qemu:
     name: Test deploy qemu to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
@@ -859,7 +859,7 @@ jobs:
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.qemu
@@ -867,7 +867,7 @@ jobs:
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v37.5.1
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
