@@ -58,6 +58,8 @@ RUN set -x && \
   /opt/healthchecks-framework/*.md \
   /opt/healthchecks-framework/tests \
   && \
+  # fix healthchecks framework pathing
+  sed -i 's/S6_SERVICE_PATH="\/run\/s6\/services"/S6_SERVICE_PATH="\/run\/s6\/legacy-services"/g' /opt/healthchecks-framework/checks/check_s6_service_abnormal_death_tally.sh && \
   # Add s6wrap
   pushd /tmp && \
   git clone --depth=1 https://github.com/wiedehopf/s6wrap.git && \
