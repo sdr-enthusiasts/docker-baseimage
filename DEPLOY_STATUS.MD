@@ -31,5 +31,6 @@
 | Ultra Feeder | [![Ultra Feeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder/actions/workflows/deploy.yml) |
 
 | Other Images | Status |
-|-----------|-----------|
+|-----------|---------- |
+| Reverse Web Proxy | [![Reverse Web Proxy](https://github.com/sdr-enthusiasts/docker-reversewebproxy/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-reversewebproxy/actions/workflows/deploy.yml) |
 | rtlsdrairband | [![rtlsdrairband](https://github.com/sdr-enthusiasts/docker-rtlsdrairband/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-rtlsdrairband/actions/workflows/deploy.yml) |
