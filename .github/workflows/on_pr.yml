@@ -1224,3 +1224,18 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"  -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_reverse_web_proxy:
+    name: Trigger deploy of sdr-enthusiasts/docker-reversewebproxy
+    needs: [deploy_ghcr_python]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-reversewebproxy
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-reversewebproxy"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
