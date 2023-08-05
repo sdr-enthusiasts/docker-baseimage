@@ -8,6 +8,7 @@
 |-----------|-----------|
 | acarsdec | [![acarsdec](https://github.com/sdr-enthusiasts/docker-acarsdec/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-acarsdec/actions/workflows/deploy.yml) |
 | ACARS Hub | [![ACARS Hub](https://github.com/sdr-enthusiasts/docker-acarshub/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-acarshub/actions/workflows/deploy.yml) |
+| acars_oxide | [![ACARS Oxide](https://github.com/sdr-enthusiasts/acars-oxide/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/acars-oxide/actions/workflows/deploy.yml)
 | acars_router | [![acars_router](https://github.com/sdr-enthusiasts/acars_router/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/acars_router/actions/workflows/deploy.yml) |
 | dumpvdl2 | [![Deploy](https://github.com/sdr-enthusiasts/docker-dumpvdl2/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-dumpvdl2/actions/workflows/deploy.yml) |
 | vdlm2dec | [![vdlm2dec](https://github.com/sdr-enthusiasts/docker-vdlm2dec/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-vdlm2dec/actions/workflows/deploy.yml) |

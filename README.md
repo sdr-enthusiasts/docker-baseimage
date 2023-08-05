@@ -55,7 +55,7 @@ RUN ...
 | `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/airspy-adsb][airspy], [sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network], [sdr-enthusiasts/docker-rtlsdrairband][docker-rtlsdrairband] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
 | `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
-| `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | - |
+| `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | [sdr-enthusiasts/acars-oxide][acars-oxide] |
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
 | `readsb-netonly`  | -                              | - |
 | `soapyrtlsdr`     | `dump978-full`                 | - |
@@ -65,6 +65,7 @@ RUN ...
 
 <!-- links below here -->
 [acars_router]: https://github.com/sdr-enthusiasts/acars-router
+[acars-oxide]: https://github.com/sdr-enthusiasts/acars-oxide
 [airspy]: https://github.com/sdr-enthusiasts/airspy_adsb
 [bc]: https://packages.debian.org/stable/bc
 [bladeRF FPGA images]: https://www.nuand.com/fpga_images/
