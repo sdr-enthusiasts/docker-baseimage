@@ -24,9 +24,9 @@ RUN set -x && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}" \
-        && \
+    "${KEPT_PACKAGES[@]}" \
+    "${TEMP_PACKAGES[@]}" \
+    && \
     # dump978: get latest tag
     BRANCH_DUMP978=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/flightaware/dump978.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^v.*' | tail -1) && \
     # dump978: clone latest tag

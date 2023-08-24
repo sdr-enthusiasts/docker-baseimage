@@ -31,7 +31,7 @@ jobs:
 
   deploy_ghcr_base:
     name: Test deploy base to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [hadolint]
     # Define dockerfile and image tag
     env:
@@ -53,7 +53,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
+        uses: tj-actions/changed-files@v37.5.2
         with:
           files: |
             Dockerfile.base
@@ -89,10 +89,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -102,7 +102,7 @@ jobs:
 
   deploy_ghcr_python:
     name: Test deploy python to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
@@ -124,16 +124,16 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.python
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -162,7 +162,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -180,10 +180,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -213,16 +213,16 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.rtlsdr
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -251,7 +251,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -269,10 +269,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -282,7 +282,7 @@ jobs:
 
   deploy_ghcr_readsb-netonly:
     name: Test deploy readsb-netonly to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
@@ -304,16 +304,16 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.readsb-netonly
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -342,7 +342,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -360,10 +360,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -373,7 +373,7 @@ jobs:
 
   deploy_ghcr_readsb-full:
     name: Test deploy readsb-full to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -395,8 +395,8 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.readsb-full
@@ -404,8 +404,8 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -435,7 +435,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -453,10 +453,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -466,7 +466,7 @@ jobs:
 
   deploy_ghcr_acars-decoder:
     name: Test deploy acars-decoder to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -488,8 +488,8 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.acars-decoder
@@ -497,8 +497,8 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -528,7 +528,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -546,10 +546,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -559,7 +559,7 @@ jobs:
 
   deploy_soapyrtlsdr:
     name: Test deploy soapyrtlsdr to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -581,8 +581,8 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.soapyrtlsdr
@@ -590,8 +590,8 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.rtlsdr
@@ -621,7 +621,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -639,10 +639,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -652,7 +652,7 @@ jobs:
 
   deploy_dump978-full:
     name: Test deploy dump978-full to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_soapyrtlsdr]
     # Define dockerfile and image tag
     env:
@@ -674,7 +674,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
+        uses: tj-actions/changed-files@v37.5.2
         with:
           files: |
             Dockerfile.dump978-full
@@ -683,8 +683,8 @@ jobs:
             Dockerfile.soapyrtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.soapyrtlsdr
@@ -715,7 +715,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -733,10 +733,10 @@ jobs:
           context: .
           file: ./Dockerfile.dump978-full
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -746,7 +746,7 @@ jobs:
 
   deploy_wreadsb:
     name: Test deploy wreadsb to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_rtlsdr]
     # Define dockerfile and image tag
     env:
@@ -768,15 +768,15 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
+        uses: tj-actions/changed-files@v37.5.2
         with:
           files: |
             Dockerfile.wreadsb
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -805,7 +805,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -823,10 +823,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -836,7 +836,7 @@ jobs:
 
   deploy_qemu:
     name: Test deploy qemu to ghcr.io
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base]
     # Define dockerfile and image tag
     env:
@@ -858,16 +858,16 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             Dockerfile.qemu
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v37.5.0
-        # Add dependant dockerfiles, one per line
+        uses: tj-actions/changed-files@v37.5.2
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -896,7 +896,7 @@ jobs:
         id: patch-dockerfile
         env:
           SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr-${{github.event.pull_request.number}}
+          SED_TO_APPEND: -test-pr
         run: |
           set -x
           sed -i "/^FROM ${SED_SEARCH//\//\\/}/ s/$/${SED_TO_APPEND}/" "$DOCKERFILE"
@@ -914,10 +914,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr-${{github.event.pull_request.number}}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
           labels: ${{ steps.meta.outputs.labels }}
       # Set output variable for dynamic matrix in clean-up steps
       - name: Set clean-up info
@@ -925,99 +925,317 @@ jobs:
         id: set-output
         run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
-  matrix:
-    name: Prepare for clean-up
-    # Add each image's job here
-    needs:
-      - deploy_ghcr_base
-      - deploy_ghcr_python
-      - deploy_ghcr_rtlsdr
-      - deploy_ghcr_readsb-netonly
-      - deploy_ghcr_readsb-full
-      - deploy_ghcr_acars-decoder
-      - deploy_soapyrtlsdr
-      - deploy_dump978-full
-      - deploy_wreadsb
-      - deploy_qemu
-    # Add variable for each image's job
+  trigger_build_sdr-enthusiasts_docker-readsb-protobuf:
+    name: Trigger deploy of sdr-enthusiasts/docker-readsb-protobuf
+    needs: [deploy_ghcr_readsb-full]
+    runs-on: ubuntu-latest
     env:
-      DEPLOY_GHCR_BASE: ${{ needs.deploy_ghcr_base.outputs.cleanupinfo }}
-      DEPLOY_GHCP_PYTHON: ${{ needs.deploy_ghcr_python.outputs.cleanupinfo }}
-      DEPLOY_GHCR_RTLSDR: ${{ needs.deploy_ghcr_rtlsdr.outputs.cleanupinfo }}
-      DEPLOY_GHCR_READSB_NETONLY: ${{ needs.deploy_ghcr_readsb-netonly.outputs.cleanupinfo }}
-      DEPLOY_GHCR_READSB_FULL: ${{ needs.deploy_ghcr_readsb-full.outputs.cleanupinfo }}
-      DEPLOY_GHCR_ACARS_DECODER: ${{ needs.deploy_ghcr_acars-decoder.outputs.cleanupinfo }}
-      DEPLOY_SOAPYRTLSDR: ${{ needs.deploy_soapyrtlsdr.outputs.cleanupinfo }}
-      DEPLOY_DUMP978_FULL: ${{ needs.deploy_dump978-full.outputs.cleanupinfo }}
-      DEPLOY_WREADSB: ${{ needs.deploy_wreadsb.outputs.cleanupinfo }}
-      DEPLOY_QEMU: ${{ needs.deploy_qemu.outputs.cleanupinfo }}
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    runs-on: ubuntu-latest
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
-      - name: Get input from previous jobs
-        id: set-matrix
-        # Add an if statement for each variable
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
-          set -x
-          matrix=$({
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
-              if [[ -n $DEPLOY_GHCR_BASE ]]; then echo $DEPLOY_GHCR_BASE; fi
-              if [[ -n $DEPLOY_GHCP_PYTHON ]]; then echo $DEPLOY_GHCP_PYTHON; fi
-              if [[ -n $DEPLOY_GHCR_RTLSDR ]]; then echo $DEPLOY_GHCR_RTLSDR; fi
-              if [[ -n $DEPLOY_GHCR_READSB_NETONLY ]]; then echo $DEPLOY_GHCR_READSB_NETONLY; fi
-              if [[ -n $DEPLOY_GHCR_READSB_FULL ]]; then echo $DEPLOY_GHCR_READSB_FULL; fi
-              if [[ -n $DEPLOY_GHCR_ACARS_DECODER ]]; then echo $DEPLOY_GHCR_ACARS_DECODER; fi
-              if [[ -n $DEPLOY_SOAPYRTLSDR ]]; then echo $DEPLOY_SOAPYRTLSDR; fi
-              if [[ -n $DEPLOY_DUMP978_FULL ]]; then echo $DEPLOY_DUMP978_FULL; fi
-              if [[ -n $DEPLOY_WREADSB ]]; then echo $DEPLOY_WREADSB; fi
-              if [[ -n $DEPLOY_QEMU ]]; then echo $DEPLOY_QEMU; fi
-
-            } | jq -crM --slurp --raw-input '{"tag":(split("\n")[:-1])}')
-          echo "matrix:"
-          echo "$matrix"
-          echo "set output:"
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
-          echo "----"
-
-  # Verify and log the output of the above step (mostly for troubleshooting)
-  check-matrix:
-    name: Verify input to clean-up
+  trigger_build_sdr-enthusiasts_docker-radarbox:
+    name: Trigger deploy of sdr-enthusiasts/docker-radarbox
+    needs: [deploy_qemu]
     runs-on: ubuntu-latest
-    needs: matrix
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-radarbox
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+      WORKFLOW_USE_TEST_IMAGE: true
     steps:
-      - name: Install json2yaml
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
         run: |
-          sudo npm install -g json2yaml
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
-      - name: Check matrix definition
-        run: |
-          set -x
-          matrix='${{ needs.matrix.outputs.matrix }}'
-          echo $matrix
-          echo $matrix | jq .
-          echo $matrix | json2yaml
-
-  # Delete images used by the build process
-  purge-images:
-    name: Clean-up
-    # only run if there's images to clean up (prevents the workflow failing)
-    if: needs.matrix.outputs.matrix != '{"tag":[]}'
-    needs:
-      - matrix
-      - check-matrix
-    strategy:
-      fail-fast: false
-      matrix: ${{fromJSON(needs.matrix.outputs.matrix)}}
+  trigger_build_sdr-enthusiasts_beast-splitter:
+    name: Trigger deploy of sdr-enthusiasts/docker-beast-splitter
+    needs: [deploy_ghcr_base]
     runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-beast-splitter
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
-      - name: Delete image
-        if: always()
-        uses: bots-house/ghcr-delete-image-action@v1.1.0
-        with:
-          # NOTE: only orgs are supported
-          owner: sdr-enthusiasts
-          name: docker-baseimage
-          # NOTE: using Personal Access Token
-          token: ${{ secrets.GH_PAT_MIKENYE }}
-          tag: ${{ matrix.tag }}-test-pr-${{github.event.pull_request.number}}
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-flightradar24:
+    name: Trigger deploy of sdr-enthusiasts/docker-flightradar24
+    needs: [deploy_qemu]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-flightradar24
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-radarvirtuel:
+    name: Trigger deploy of sdr-enthusiasts/docker-radarvirtuel
+    needs: [deploy_ghcr_python]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-radarvirtuel
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-tar1090:
+    name: Trigger deploy of sdr-enthusiasts/docker-tar1090
+    needs: [deploy_wreadsb]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-tar1090
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+  trigger_build_sdr-enthusiasts_docker-dump978:
+    name: Trigger deploy of sdr-enthusiasts/docker-dump978
+    needs: [deploy_dump978-full]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-dump978
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-piaware:
+    name: Trigger deploy of sdr-enthusiasts/docker-piaware
+    needs: [deploy_dump978-full]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-piaware
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_adsbexchange:
+    name: Trigger deploy of sdr-enthusiasts/docker-adsbexchange
+    needs: [deploy_ghcr_python]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-adsbexchange
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-adsbexchange"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_adsbhub:
+    name: Trigger deploy of sdr-enthusiasts/docker-adsbhub
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-adsbhub
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-adsbhub"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_opensky_network:
+    name: Trigger deploy of sdr-enthusiasts/docker-opensky-network
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-opensky-network
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-opensky-network"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_planefinder:
+    name: Trigger deploy of sdr-enthusiasts/docker-planefinder
+    needs: [deploy_qemu]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-planefinder
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-planefinder"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_rtlsdrairband:
+    name: Trigger deploy of sdr-enthusiasts/docker-rtlsdrairband
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-rtlsdrairband
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-rtlairband"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_acars_router:
+    name: Trigger deploy of sdr-enthusiasts/acars_router
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/acars_router
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-acarsdec:
+    name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-dumpvdl2:
+    name: Trigger deploy of sdr-enthusiasts/docker-dumpvdl2
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-vdlm2dec:
+    name: Trigger deploy of sdr-enthusiasts/docker-vdlm2dec
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_docker-acarshub-baseimage:
+    name: Trigger deploy of sdr-enthusiasts/docker-acarshub
+    needs: [deploy_ghcr_python]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-acarshub
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_airspy_adsb:
+    name: Trigger deploy of sdr-enthusiasts/airspy_adsb
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/adsb_airspy
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/adsb_airspy"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"  -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_acars-oxide:
+    name: Trigger deploy of sdr-enthusiasts/acars-oxide
+    needs: [deploy_ghcr_rtlsdr]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/acars-oxide
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/acars-oxide"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"  -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_reverse_web_proxy:
+    name: Trigger deploy of sdr-enthusiasts/docker-reversewebproxy
+    needs: [deploy_ghcr_python]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-reversewebproxy
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-reversewebproxy"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true

@@ -65,7 +65,7 @@
 ```yaml
   deploy_ghcr_<name of your image>:
     name: Test deploy <name of your image> to ghcr.io # Modify this line
-    # Define any dependant steps
+    # Define any dependent steps
     needs: [deploy_ghcr_base] # Modify this line.....add in the name of any jobs (aka containers) that your container depends on, comma separated
     # Define dockerfile and image tag
     env:
@@ -86,7 +86,7 @@
       - name: Get specific changed files
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.3
-        # Add dependant dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
+        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
             ${{ env.DOCKERFILE }}
@@ -94,7 +94,7 @@
       - name: Get changed status of parent
         id: changed-files-parent
         uses: tj-actions/changed-files@v14.3
-        # Add dependant dockerfiles, one per line
+        # Add dependent dockerfiles, one per line
         with:
           files: |
             Dockerfile.base
@@ -155,7 +155,7 @@
 
 * Under the `matrix:` job, under the `needs:` section, add the job id from the job in the previous step
 * Under the `matrix:` job, under the `env:` section:
-  * Add a new env var `DEPLOY_<IMAGE_NAME>`, set to `${{ needs.deploy_<your image name>.outputs.cleanupinfo }}`
+    * Add a new env var `DEPLOY_<IMAGE_NAME>`, set to `${{ needs.deploy_<your image name>.outputs.cleanupinfo }}`
 * Under the `matrix:` job, under the `steps:` section, under the `run:` section, add an if statement with the same format as the others.
 
 ## Triggering build of upstream image

@@ -52,10 +52,10 @@ RUN ...
 
 | Tag               | Sub-tags Using                 | Up-Stream Projects Using |
 | ----------------- | ------------------------------ | ------------------------ |
-| `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network] |
+| `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/airspy-adsb][airspy], [sdr-enthusiasts/docker-radarbox][docker-radarbox], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network], [sdr-enthusiasts/docker-rtlsdrairband][docker-rtlsdrairband] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
 | `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
-| `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | - |
+| `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | [sdr-enthusiasts/acars-oxide][acars-oxide] |
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
 | `readsb-netonly`  | -                              | - |
 | `soapyrtlsdr`     | `dump978-full`                 | - |
@@ -65,6 +65,8 @@ RUN ...
 
 <!-- links below here -->
 [acars_router]: https://github.com/sdr-enthusiasts/acars-router
+[acars-oxide]: https://github.com/sdr-enthusiasts/acars-oxide
+[airspy]: https://github.com/sdr-enthusiasts/airspy_adsb
 [bc]: https://packages.debian.org/stable/bc
 [bladeRF FPGA images]: https://www.nuand.com/fpga_images/
 [bladeRF]: https://github.com/Nuand/bladeRF
@@ -86,6 +88,7 @@ RUN ...
 [docker-raspberry-noaa-v2]: https://github.com/kx1t/docker-raspberry-noaa-v2
 [docker-readsb-protobuf]: https://github.com/sdr-enthusiasts/docker-readsb-protobuf
 [docker-reversewebproxy]: https://github.com/sdr-enthusiasts/docker-reversewebproxy
+[docker-rtlsdrairband]: https://github.com/sdr-enthusiasts/docker-rtlsdrairband
 [docker-tar1090]: https://github.com/sdr-enthusiasts/docker-tar1090
 [docker-vdlm2dec]: https://github.com/sdr-enthusiasts/docker-vdlm2dec
 [flightaware/dump978]: https://github.com/flightaware/dump978

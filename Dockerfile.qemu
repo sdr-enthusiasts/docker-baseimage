@@ -10,9 +10,9 @@ RUN set -x && \
     KEPT_PACKAGES+=(qemu-user-static) && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        "${KEPT_PACKAGES[@]}" \
-        "${TEMP_PACKAGES[@]}" \
-        && \
+    "${KEPT_PACKAGES[@]}" \
+    "${TEMP_PACKAGES[@]}" \
+    && \
     # Simple checks
     qemu-arm-static --version && \
     qemu-aarch64-static --version && \
