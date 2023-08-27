@@ -74,14 +74,13 @@ RUN set -x && \
   popd && \
   # Add additional stuff
   mkdir -p /scripts /etc/cont-init.d && \
-  curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 -o /etc/cont-init.d/00-libsecomp2 && \
-  chmod +x /etc/cont-init.d/00-libsecomp2 && \
+  curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/install_libseccomp2.sh | bash && \
+  chmod +x /etc/s6-overlay/s6-rc.d/libseccomp2/up && \
+  chmod +x /etc/s6-overlay/scripts/libseccomp2_check.sh && \
   curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/scripts/common -o /scripts/common && \
   # Clean up
   apt-get remove -y "${TEMP_PACKAGES[@]}" && \
   apt-get autoremove -y && \
   rm -rf /src/* /tmp/* /var/lib/apt/lists/*
-
-#ADD https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/00-libseccomp2 /etc/cont-init.d/00-libsecomp2
 
 ENTRYPOINT [ "/init" ]
