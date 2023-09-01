@@ -6,7 +6,11 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
   # that worked fine under v2, but v3 is more strict and will kill a startup process
   # if it takes more than 5 seconds. tar1090 and rtlsdrairband are the hardest hit
   # but we may have others.
-  S6_CMD_WAIT_FOR_SERVICES_MAXTIME="0"
+  S6_CMD_WAIT_FOR_SERVICES_MAXTIME="0" \
+  # this fix is for making sure that the proper pathing is available for scripts
+  # We seem to have an issue (I think it's an upstream bug) that `with-contenv` shebangs will not wor
+  # outside of the S6 supervision tree. This is a workaround for that.
+  PATH="/command:$PATH"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
