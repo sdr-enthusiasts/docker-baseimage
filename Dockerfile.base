@@ -41,6 +41,10 @@ RUN set -x && \
   # needed to compile s6wrap:
   TEMP_PACKAGES+=(gcc) && \
   TEMP_PACKAGES+=(build-essential) && \
+  # needed for diagnostics
+  KEPT_PACKAGES+=(nano) && \
+  KEPT_PACKAGES+=(iputils-ping) && \
+  KEPT_PACKAGES+=(dnsutils) && \
   # install packages
   ## Builder fixes...
   mkdir -p /usr/sbin/ && \
