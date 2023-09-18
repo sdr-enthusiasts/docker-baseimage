@@ -23,7 +23,7 @@ jobs:
     name: Run hadolint against docker files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Pull hadolint/hadolint:latest Image
         run: docker pull hadolint/hadolint:latest
       - name: Run hadolint against Dockerfiles
@@ -47,20 +47,20 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         with:
           files: |
             Dockerfile.base
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -75,7 +75,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -84,7 +84,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -118,13 +118,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -132,7 +132,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -140,7 +140,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -155,7 +155,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -175,7 +175,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -207,13 +207,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -221,7 +221,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -229,7 +229,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -244,7 +244,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -264,7 +264,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -298,13 +298,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -312,7 +312,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -320,7 +320,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -335,7 +335,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -355,7 +355,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -389,13 +389,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -403,8 +403,8 @@ jobs:
             Dockerfile.base
             Dockerfile.rtlsdr
       - name: Get changed status of parent
-        id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        id: changed-files-paren
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -413,7 +413,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -428,7 +428,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -448,7 +448,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -482,13 +482,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -497,7 +497,7 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -506,7 +506,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -521,7 +521,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -541,7 +541,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -575,13 +575,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -590,7 +590,7 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -599,7 +599,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -614,7 +614,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -634,7 +634,7 @@ jobs:
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -668,13 +668,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         with:
           files: |
             Dockerfile.dump978-full
@@ -683,7 +683,7 @@ jobs:
             Dockerfile.soapyrtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -693,7 +693,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -708,7 +708,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -728,7 +728,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile.dump978-full
@@ -762,20 +762,20 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         with:
           files: |
             Dockerfile.wreadsb
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -783,7 +783,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -798,7 +798,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -818,7 +818,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -852,13 +852,13 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -866,7 +866,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v38.2.0
+        uses: tj-actions/changed-files@v39.0.3
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -874,7 +874,7 @@ jobs:
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -889,7 +889,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -909,7 +909,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
