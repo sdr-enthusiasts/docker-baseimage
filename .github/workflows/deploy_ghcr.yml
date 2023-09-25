@@ -75,7 +75,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -86,7 +86,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:base
@@ -118,7 +118,7 @@ jobs:
       # Get changed files
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v39.0.3
+        uses: tj-actions/changed-files@v39.1.2
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
@@ -131,7 +131,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -142,7 +142,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       # Build & Push Dockerfile.python (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:python
         uses: docker/build-push-action@v5
@@ -181,7 +181,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -192,7 +192,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       # Build & Push Dockerfile.rtlsdr (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
         uses: docker/build-push-action@v5
@@ -231,7 +231,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -242,7 +242,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       # Build & Push Dockerfile.readsb-netonly (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly
         uses: docker/build-push-action@v5
@@ -281,7 +281,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -292,7 +292,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile.readsb-full (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
@@ -332,7 +332,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -343,7 +343,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
@@ -383,7 +383,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -394,7 +394,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
@@ -434,7 +434,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -445,7 +445,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
@@ -485,7 +485,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -496,7 +496,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
@@ -536,7 +536,7 @@ jobs:
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -547,7 +547,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
