@@ -567,7 +567,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -583,7 +583,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-acarsdec
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -599,7 +599,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-dumpvdl2
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -615,7 +615,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-vdlm2dec
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -631,7 +631,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-acarshub
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -647,7 +647,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-radarbox
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -663,7 +663,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-beast-splitter
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -679,7 +679,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-flightradar24
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -695,7 +695,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-radarvirtuel
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -711,7 +711,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-tar1090
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -727,7 +727,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-dump978
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -743,7 +743,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-piaware
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -759,7 +759,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-adsbexchange
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-adsbexchange"
@@ -775,7 +775,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-adsbhub
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-adsbhub"
@@ -791,7 +791,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-opensky-network
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-opensky-network"
@@ -807,7 +807,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-planefinder
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-planefinder"
@@ -823,7 +823,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/acars_router
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
@@ -839,7 +839,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-rtlsdrairband
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-rtlsdrairband"
@@ -855,7 +855,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/adsb_airspy
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/adsb_airspy"
@@ -871,7 +871,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/acars-oxide
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/acars-oxide"
@@ -887,7 +887,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_NTT }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-reversewebproxy
       WORKFLOW_FILE: deploy.yml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-reversewebproxy"
