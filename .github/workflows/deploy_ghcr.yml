@@ -19,20 +19,11 @@ on:
     branches:
       - main
     # Don't trigger if it's just a documentation update
-    paths-ignore:
-      - "**.md"
-      - "**.MD"
-      - "**.yml"
-      - "LICENSE"
-      - ".gitattributes"
-      - ".gitignore"
-      - ".dockerignore"
+    paths:
+      - "Dockerfile**"
+
   repository_dispatch:
     types: build_on_wreadsb_update
-
-  # Build and deploy the image nightly (to ensure we pick up any security updates)
-  # schedule:
-  #   - cron: "0 12 * * *"
 
 env:
   REGISTRY: ghcr.io
