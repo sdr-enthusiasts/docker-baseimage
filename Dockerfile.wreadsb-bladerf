@@ -1,0 +1,52 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+  TEMP_PACKAGES=() && \
+  KEPT_PACKAGES=() && \
+  # packages needed to install
+  TEMP_PACKAGES+=(git) && \
+  # packages needed to build
+  TEMP_PACKAGES+=(build-essential) && \
+  TEMP_PACKAGES+=(pkg-config) && \
+  # prerequisites for readsb \
+  KEPT_PACKAGES+=(libncurses5) && \
+  TEMP_PACKAGES+=(libncurses5-dev) && \
+  KEPT_PACKAGES+=(zlib1g) && \
+  TEMP_PACKAGES+=(zlib1g-dev) && \
+  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+  TEMP_PACKAGES+=(libzstd-dev) && \
+  KEPT_PACKAGES+=(libzstd1) && \
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${KEPT_PACKAGES[@]}" \
+  "${TEMP_PACKAGES[@]}" \
+  && \
+  # readsb: clone repo
+  git clone \
+  --branch "dev" \
+  --depth 1 \
+  --single-branch \
+  'https://github.com/wiedehopf/readsb.git' \
+  '/src/readsb' \
+  && \
+  # readsb: build & install
+  pushd /src/readsb && \
+  make \
+  BLADERF=yes \
+  AIRCRAFT_HASH_BITS=14 \
+  -j "$(nproc)" \
+  && \
+  find "/src/readsb" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
+  popd && \
+  ldconfig && \
+  # readsb: simple tests
+  readsb --version && \
+  viewadsb --version && \
+  # Clean up
+  apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+  apt-get autoremove -y && \
+  rm -rf /src/* /tmp/* /var/lib/apt/lists/*
