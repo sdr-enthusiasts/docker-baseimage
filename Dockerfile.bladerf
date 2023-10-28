@@ -1,0 +1,56 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+  TEMP_PACKAGES=() && \
+  KEPT_PACKAGES=() && \
+  # packages needed to install
+  TEMP_PACKAGES+=(git) && \
+  # packages needed to build bladeRF
+  TEMP_PACKAGES+=(build-essential) && \
+  TEMP_PACKAGES+=(cmake) && \
+  TEMP_PACKAGES+=(pkg-config) && \
+  TEMP_PACKAGES+=(wget) && \
+  # dependencies for bladeRF
+  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+  KEPT_PACKAGES+=(libusb-1.0-0) && \
+  TEMP_PACKAGES+=(libncurses5-dev) && \
+  KEPT_PACKAGES+=(libncurses5) && \
+  TEMP_PACKAGES+=(libtecla-dev) && \
+  KEPT_PACKAGES+=(libtecla1) && \
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${KEPT_PACKAGES[@]}" \
+  "${TEMP_PACKAGES[@]}" \
+  && \
+  # bladeRF: clone repo
+  git clone \
+  --branch master \
+  --depth 1 \
+  --single-branch \
+  'https://github.com/Nuand/bladeRF.git' \
+  /src/bladeRF \
+  && \
+  # prepare to build
+  mkdir -p /src/bladeRF/build && \
+  pushd /src/bladeRF/build && \
+  git rev-parse HEAD > /CONTAINER_VERSION && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr/local \
+  -DINSTALL_UDEV_RULES=ON \
+  ../ \
+  && \
+  # build
+  make -j "$(nproc)" && \
+  # install
+  make install && \
+  ldconfig && \
+  popd && \
+  # Clean up
+  apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+  apt-get autoremove -y && \
+  rm -rf /src/* /tmp/* /var/lib/apt/lists/*
