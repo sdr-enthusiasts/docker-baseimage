@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 # This script can be sourced in services.d run and cont-init.d/cont-finish.d modules
 # It provides some basic common functions
 
@@ -5,6 +7,7 @@
 exec 2>&1
 
 # all errors will show a line number and the command used to produce the error
+# shellcheck disable=SC2148,SC2164
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd)/$(basename "$0")"
 trap 'echo -e "[ERROR] $SCRIPT_PATH in line $LINENO when executing: $BASH_COMMAND"' ERR
 
@@ -33,3 +36,11 @@ function chk_disabled ()
     esac;
     return 1
 }
+
+# The following simplifies the most common use of s6wrap. Now, you can use either
+# s6wrap as originally designed, or, instead of having to define the arguments below,
+# you can do things like:
+# "${s6wrap[@]}" echo "hello world"
+#
+# shellcheck disable=SC2034
+s6wrap=(s6wrap --quiet --timestamps --prepend="$(basename "$0")" --args)

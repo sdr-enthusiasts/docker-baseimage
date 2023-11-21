@@ -1,0 +1,55 @@
+# This container is meant to be used as a build/download container for Wiedehopf's mlat-client
+# it uses ghcr.io/sdr-enthusiasts/docker-baseimage:python as basis
+# ----------------------------------------------------------------------------------------
+# HOW TO USE IN YOUR Dockerfile:
+# 1. Create a downloader image like this:
+# FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlat-client as downloader
+#
+# 2. In your target image, make sure to add this to the APT install list:
+# KEPT_PACKAGES+=(PACKAGES+=(python3-setuptools) && \
+#
+# 3. Copy the following files into your target container:
+# COPY --from=downloader /mlatclient.tgz /mlatclient.tgz
+#
+# 4. In a RUN directive after copying /mlatclient.tgz, do this:
+# tar zxvf /mlatclient.tgz -C / && rm -f /mlatclient.tgz && \
+# ----------------------------------------------------------------------------------------
+FROM debian:bookworm-20231030-slim
+
+ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL3003
+RUN set -x && \
+  PACKAGES=() && \
+  # packages needed to install
+  PACKAGES+=(git) && \
+  PACKAGES+=(gcc) && \
+  PACKAGES+=(python3-dev) && \
+  PACKAGES+=(python3-setuptools) && \
+  PACKAGES+=(build-essential) && \
+  PACKAGES+=(ca-certificates) && \
+  # needed for diagnostics
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    "${PACKAGES[@]}" \
+  && \
+  #
+  # Get and install mlat-client:
+  git clone --depth=1 "$MLATCLIENT_REPO" /src/mlat-client && \
+  cd /src/mlat-client && \
+  python3 setup.py build && \
+  python3 setup.py install && \
+  #
+  # Now create a tgz tarball of the mlat-client that facilitates installing on the target:
+  dist_pkg_target="$(ls -d /usr/local/lib/python*/dist-packages)" && \
+  mlatclient_target="$(which mlat-client)" && \
+  tar zcvf /mlatclient.tgz "${dist_pkg_target}" "${mlatclient_target}" && \
+  #
+  # Clean up to keep the build image small:
+  apt-get remove -y "${PACKAGES[@]}" && \
+  apt-get autoremove -y && \
+  apt-get clean && \
+  rm -rf /src/* /tmp/* /var/lib/apt/lists/* "${dist_pkg_target}" "${mlatclient_target}"
