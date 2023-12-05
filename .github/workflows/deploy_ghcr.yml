@@ -91,6 +91,57 @@ jobs:
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:base
           labels: ${{ steps.meta.outputs.labels }}
 
+  deploy_ghcr_mlat_client:
+    name: Deploy MLAT client image to ghcr.io
+    needs: [hadolint]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.mlatclient
+          no-cache: true
+          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
+          labels: ${{ steps.meta.outputs.labels }}
+
   deploy_ghcr_python:
     name: Deploy python to ghcr.io
     runs-on: ubuntu-latest
@@ -682,7 +733,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarvirtuel:
     name: Trigger deploy of sdr-enthusiasts/docker-radarvirtuel
-    needs: [deploy_ghcr_python]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -698,7 +749,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-tar1090:
     name: Trigger deploy of sdr-enthusiasts/docker-tar1090
-    needs: [deploy_wreadsb]
+    needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -746,7 +797,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_adsbexchange:
     name: Trigger deploy of sdr-enthusiasts/docker-adsbexchange
-    needs: [deploy_ghcr_python]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
