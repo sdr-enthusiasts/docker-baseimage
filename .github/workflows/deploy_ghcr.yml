@@ -685,7 +685,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarbox:
     name: Trigger deploy of sdr-enthusiasts/docker-radarbox
-    needs: [deploy_qemu]
+    needs: [deploy_qemu, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
