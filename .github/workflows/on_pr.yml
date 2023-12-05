@@ -107,7 +107,7 @@ jobs:
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.mlatclient
-      TAG: base
+      TAG: mlatclient
     runs-on: ubuntu-latest
     permissions:
       contents: read
