@@ -1059,7 +1059,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarvirtuel:
     name: Trigger deploy of sdr-enthusiasts/docker-radarvirtuel
-    needs: [deploy_ghcr_python]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1074,7 +1074,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-tar1090:
     name: Trigger deploy of sdr-enthusiasts/docker-tar1090
-    needs: [deploy_wreadsb]
+    needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1118,7 +1118,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_adsbexchange:
     name: Trigger deploy of sdr-enthusiasts/docker-adsbexchange
-    needs: [deploy_ghcr_python]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
