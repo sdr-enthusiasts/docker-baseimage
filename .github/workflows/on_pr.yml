@@ -89,7 +89,78 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          push: true
+          # Append "-test-pr-XXX" to image name
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
+          labels: ${{ steps.meta.outputs.labels }}
+      # Set output variable for dynamic matrix in clean-up steps
+      - name: Set clean-up info
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: set-output
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
+
+  deploy_ghcr_mlat_client:
+    name: Test MLAT Client to ghcr.io
+    # Define any dependent steps
+    needs: [hadolint]
+    # Define dockerfile and image tag
+    env:
+      DOCKERFILE: Dockerfile.mlatclient
+      TAG: mlatclient
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    # Define output (used to clean-up PR images pushed to ghcr.io)
+    outputs:
+      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
+    steps:
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # List of files to check to trigger a rebuild on this job
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v40.2.1
+        with:
+          files: |
+            Dockerfile.mlatclient
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/setup-qemu-action@v3
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      # Build & Push
+      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ env.DOCKERFILE }}
+          no-cache: true
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -180,7 +251,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -269,7 +340,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -360,7 +431,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -453,7 +524,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -546,7 +617,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -639,7 +710,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -733,7 +804,7 @@ jobs:
           context: .
           file: ./Dockerfile.dump978-full
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -823,7 +894,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -914,7 +985,7 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: true
           # Append "-test-pr-XXX" to image name
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
@@ -942,7 +1013,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarbox:
     name: Trigger deploy of sdr-enthusiasts/docker-radarbox
-    needs: [deploy_qemu]
+    needs: [deploy_qemu, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -988,7 +1059,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarvirtuel:
     name: Trigger deploy of sdr-enthusiasts/docker-radarvirtuel
-    needs: [deploy_ghcr_python]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1003,7 +1074,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-tar1090:
     name: Trigger deploy of sdr-enthusiasts/docker-tar1090
-    needs: [deploy_wreadsb]
+    needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1047,7 +1118,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_adsbexchange:
     name: Trigger deploy of sdr-enthusiasts/docker-adsbexchange
-    needs: [deploy_ghcr_python]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1239,3 +1310,35 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_radar1090:
+    name: Trigger deploy of sdr-enthusiasts/docker-radar1090
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-radar1090
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-radar1090"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
+  trigger_build_sdr-enthusiasts_flightairmap:
+    name: Trigger deploy of sdr-enthusiasts/docker-flightairmap
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-flightairmap
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-flightairmap"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref master --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true

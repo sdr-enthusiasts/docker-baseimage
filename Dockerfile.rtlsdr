@@ -28,7 +28,7 @@ RUN set -x && \
   --branch master \
   --depth 1 \
   --single-branch \
-  'git://git.osmocom.org/rtl-sdr' \
+  https://gitea.osmocom.org/sdr/rtl-sdr.git \
   # 'https://github.com/rtlsdrblog/rtl-sdr-blog.git' \
   /src/rtl-sdr \
   && \
