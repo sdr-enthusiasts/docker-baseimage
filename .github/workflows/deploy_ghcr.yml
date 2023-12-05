@@ -86,7 +86,7 @@ jobs:
           context: .
           file: ./Dockerfile.base
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:base
           labels: ${{ steps.meta.outputs.labels }}
@@ -137,7 +137,7 @@ jobs:
           context: .
           file: ./Dockerfile.mlatclient
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
           labels: ${{ steps.meta.outputs.labels }}
@@ -192,7 +192,7 @@ jobs:
           context: .
           file: ./Dockerfile.python
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:python
           labels: ${{ steps.meta.outputs.labels }}
@@ -242,7 +242,7 @@ jobs:
           context: .
           file: ./Dockerfile.rtlsdr
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
           labels: ${{ steps.meta.outputs.labels }}
@@ -292,7 +292,7 @@ jobs:
           context: .
           file: ./Dockerfile.readsb-netonly
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-netonly
           labels: ${{ steps.meta.outputs.labels }}
@@ -343,7 +343,7 @@ jobs:
           context: .
           file: ./Dockerfile.readsb-full
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
           labels: ${{ steps.meta.outputs.labels }}
@@ -394,7 +394,7 @@ jobs:
           context: .
           file: ./Dockerfile.acars-decoder
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
           labels: ${{ steps.meta.outputs.labels }}
@@ -445,7 +445,7 @@ jobs:
           context: .
           file: ./Dockerfile.soapyrtlsdr
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
           labels: ${{ steps.meta.outputs.labels }}
@@ -496,7 +496,7 @@ jobs:
           context: .
           file: ./Dockerfile.dump978-full
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
           labels: ${{ steps.meta.outputs.labels }}
@@ -547,7 +547,7 @@ jobs:
           context: .
           file: ./Dockerfile.wreadsb
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
           labels: ${{ steps.meta.outputs.labels }}
@@ -598,7 +598,7 @@ jobs:
           context: .
           file: ./Dockerfile.qemu
           no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:qemu
           labels: ${{ steps.meta.outputs.labels }}
