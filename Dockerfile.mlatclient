@@ -14,7 +14,7 @@
 # 4. In a RUN directive after copying /mlatclient.tgz, do this:
 # tar zxvf /mlatclient.tgz -C / && rm -f /mlatclient.tgz && \
 # ----------------------------------------------------------------------------------------
-FROM debian:bookworm-20231120-slim
+FROM debian:bookworm-20231218-slim
 
 ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 
