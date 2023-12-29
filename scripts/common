@@ -41,6 +41,12 @@ function chk_disabled ()
 # s6wrap as originally designed, or, instead of having to define the arguments below,
 # you can do things like:
 # "${s6wrap[@]}" echo "hello world"
-#
+
+# grab the basename of the script that called this script and remove the extension
+
+# shellcheck disable=SC2164
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_NAME="${SCRIPT_NAME%.*}"
+
 # shellcheck disable=SC2034
-s6wrap=(s6wrap --quiet --timestamps --prepend="$(basename "$0")" --args)
+s6wrap=(s6wrap --quiet --timestamps --prepend="$SCRIPT_NAME" --args)

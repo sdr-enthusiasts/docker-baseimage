@@ -1,7 +1,7 @@
-FROM debian:bookworm-20231120-slim
+FROM debian:bookworm-20231218-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6OVERLAY_VERSION="v3.1.5.0" \
+  S6OVERLAY_VERSION="v3.1.6.2" \
   # Fix for any issues with the S6 overlay. We have quite a few legacy services
   # that worked fine under v2, but v3 is more strict and will kill a startup process
   # if it takes more than 5 seconds. tar1090 and rtlsdrairband are the hardest hit
@@ -57,8 +57,8 @@ RUN set -x && \
   "${TEMP_PACKAGES[@]}" \
   && \
   # install S6 Overlay
-  curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/fredclausen/deploy-s6-overlay/remove-s6-legacy/deploy-s6-overlay-v3.sh && \
-  # curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay-v3.sh && \
+  #curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/fredclausen/deploy-s6-overlay/remove-s6-legacy/deploy-s6-overlay-v3.sh && \
+  curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay-v3.sh && \
   sh /tmp/deploy-s6-overlay.sh && \
   rm -f /tmp/deploy-s6-overlay.sh && \
   # deploy healthchecks framework
