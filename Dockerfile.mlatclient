@@ -1,18 +1,18 @@
 # This container is meant to be used as a build/download container for Wiedehopf's mlat-client
-# it uses ghcr.io/sdr-enthusiasts/docker-baseimage:python as basis
+# it uses debian:bookworm-slim as basis
 # ----------------------------------------------------------------------------------------
 # HOW TO USE IN YOUR Dockerfile:
 # 1. Create a downloader image like this:
 # FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlat-client as downloader
 #
 # 2. In your target image, make sure to add this to the APT install list:
-# KEPT_PACKAGES+=(PACKAGES+=(python3-setuptools) && \
+# KEPT_PACKAGES+=(python3-setuptools) && \
 #
 # 3. Copy the following files into your target container:
 # COPY --from=downloader /mlatclient.tgz /mlatclient.tgz
 #
-# 4. In a RUN directive after copying /mlatclient.tgz, do this:
-# tar zxvf /mlatclient.tgz -C / && rm -f /mlatclient.tgz && \
+# 4. In a RUN directive for the target image, and after copying /mlatclient.tgz, do this:
+# tar zxf /mlatclient.tgz -C / && rm -f /mlatclient.tgz && \
 # ----------------------------------------------------------------------------------------
 FROM debian:bookworm-20240311-slim
 
