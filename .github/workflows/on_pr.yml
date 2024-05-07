@@ -1251,6 +1251,21 @@ jobs:
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
+  trigger_build_sdr-enthusiasts_docker-dumphfdl:
+    name: Trigger deploy of sdr-enthusiasts/docker-dumphfdl
+    needs: [deploy_ghcr_acars-decoder]
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+      WORKFLOW_REPO: sdr-enthusiasts/docker-dumphfdl
+      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
+    steps:
+      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
+
   trigger_build_sdr-enthusiasts_docker-acarshub-baseimage:
     name: Trigger deploy of sdr-enthusiasts/docker-acarshub
     needs: [deploy_ghcr_python]
