@@ -23,7 +23,7 @@
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3.1.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -32,22 +32,22 @@
       # Get metadata from repo
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5.5.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3.0.0
 
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3.3.0
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:<your container tag> # Modify this line
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           file: ./<your container's Dockerfile> # Modify this line
@@ -101,7 +101,7 @@
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3.1.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -110,13 +110,13 @@
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5.5.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3.0.0
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -132,11 +132,11 @@
       - name: Set up Docker Buildx
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3.3.0
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
