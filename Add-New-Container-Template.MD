@@ -151,7 +151,6 @@
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
         run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
-        run: echo "::set-output name=cleanupinfo::$TAG"
 ```
 
 * Under the `matrix:` job, under the `needs:` section, add the job id from the job in the previous step
