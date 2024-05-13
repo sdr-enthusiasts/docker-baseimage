@@ -150,6 +150,7 @@
       - name: Set clean-up info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
+        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
         run: echo "::set-output name=cleanupinfo::$TAG"
 ```
 
