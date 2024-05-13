@@ -17,7 +17,7 @@
 
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.5
         with:
           fetch-depth: 2
 
@@ -81,7 +81,7 @@
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.5
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
