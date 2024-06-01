@@ -160,7 +160,7 @@ jobs:
       # Get changed files
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44.5.1
+        uses: tj-actions/changed-files@v44.5.2
 
       # Log into ghcr (so we can push images)
       - name: Login to ghcr.io
