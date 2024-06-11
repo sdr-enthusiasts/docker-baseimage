@@ -91,7 +91,7 @@ RUN \
   cp /app/scripts/* /scripts/ && \
   # Clean up
   apt-get remove -y "${TEMP_PACKAGES[@]}" && \
-  apt-get autoremove -y && \
+  apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   rm -rf /src/* && \
   bash /scripts/clean-build.sh
 

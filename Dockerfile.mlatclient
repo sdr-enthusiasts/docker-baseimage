@@ -52,7 +52,7 @@ RUN \
   #
   # Clean up to keep the build image small:
   apt-get remove -y "${PACKAGES[@]}" && \
-  apt-get autoremove -y && \
+  apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   apt-get clean && \
   rm -rf /src/* "${dist_pkg_target}" "${mlatclient_target}" && \
   bash /app/scripts/clean-build.sh
