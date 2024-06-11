@@ -22,9 +22,6 @@ on:
     paths:
       - "Dockerfile**"
 
-  repository_dispatch:
-    types: build_on_wreadsb_update
-
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
