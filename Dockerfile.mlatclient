@@ -21,7 +21,9 @@ ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL3003
-RUN set -x && \
+RUN \
+  --mount=type=bind,source=./,target=/app/ \
+  set -x && \
   PACKAGES=() && \
   # packages needed to install
   PACKAGES+=(git) && \
@@ -52,4 +54,5 @@ RUN set -x && \
   apt-get remove -y "${PACKAGES[@]}" && \
   apt-get autoremove -y && \
   apt-get clean && \
-  rm -rf /src/* /tmp/* /var/lib/apt/lists/* "${dist_pkg_target}" "${mlatclient_target}"
+  rm -rf /src/* "${dist_pkg_target}" "${mlatclient_target}" && \
+  bash /app/scripts/clean-build.sh
