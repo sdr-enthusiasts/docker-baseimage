@@ -18,10 +18,10 @@ FROM debian:bookworm-20240513-slim
 
 ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL3003
-RUN set -x && \
+RUN \
   PACKAGES=() && \
   # packages needed to install
   PACKAGES+=(git) && \
