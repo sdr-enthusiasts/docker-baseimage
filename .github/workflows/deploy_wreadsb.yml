@@ -1,5 +1,5 @@
 ---
-name: Deploy
+name: Deploy wreadsb
 
 on:
   # Enable manual running of action if necessary
