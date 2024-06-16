@@ -23,7 +23,7 @@ jobs:
     name: Run hadolint against docker files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: Pull hadolint/hadolint:latest Image
         run: docker pull hadolint/hadolint:latest
       - name: Run hadolint against Dockerfiles
@@ -47,7 +47,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -84,7 +84,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -118,7 +118,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -155,7 +155,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -189,7 +189,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -246,7 +246,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -278,7 +278,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -335,7 +335,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -369,7 +369,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -426,7 +426,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -460,7 +460,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -519,7 +519,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -553,7 +553,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -612,7 +612,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -646,7 +646,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -705,7 +705,7 @@ jobs:
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -739,7 +739,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -799,7 +799,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ./Dockerfile.dump978-full
@@ -833,7 +833,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -889,7 +889,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
@@ -923,7 +923,7 @@ jobs:
     steps:
       # Check out our code
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       # List of files to check to trigger a rebuild on this job
@@ -980,7 +980,7 @@ jobs:
       # Build & Push
       - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
