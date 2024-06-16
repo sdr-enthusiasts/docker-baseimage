@@ -1,7 +1,7 @@
 FROM debian:bookworm-20240513-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6OVERLAY_VERSION="v3.1.6.2" \
+  S6OVERLAY_VERSION="v3.2.0.0" \
   # Fix for any issues with the S6 overlay. We have quite a few legacy services
   # that worked fine under v2, but v3 is more strict and will kill a startup process
   # if it takes more than 5 seconds. tar1090 and rtlsdrairband are the hardest hit
