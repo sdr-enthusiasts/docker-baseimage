@@ -1,7 +1,7 @@
-FROM debian:bookworm-20240513-slim
+FROM debian:bookworm-20240612-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6OVERLAY_VERSION="v3.1.6.2" \
+  S6OVERLAY_VERSION="v3.2.0.0" \
   # Fix for any issues with the S6 overlay. We have quite a few legacy services
   # that worked fine under v2, but v3 is more strict and will kill a startup process
   # if it takes more than 5 seconds. tar1090 and rtlsdrairband are the hardest hit
@@ -15,7 +15,9 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL3003
-RUN set -x && \
+RUN \
+  --mount=type=bind,source=./,target=/app/ \
+  set -x && \
   TEMP_PACKAGES=() && \
   KEPT_PACKAGES=() && \
   # packages needed to install
@@ -86,10 +88,11 @@ RUN set -x && \
   curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/install_libseccomp2.sh | bash && \
   chmod +x /etc/s6-overlay/s6-rc.d/libseccomp2/up && \
   chmod +x /etc/s6-overlay/scripts/libseccomp2_check.sh && \
-  curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/scripts/common -o /scripts/common && \
+  cp /app/scripts/* /scripts/ && \
   # Clean up
   apt-get remove -y "${TEMP_PACKAGES[@]}" && \
-  apt-get autoremove -y && \
-  rm -rf /src/* /tmp/* /var/lib/apt/lists/*
+  apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
+  rm -rf /src/* && \
+  bash /scripts/clean-build.sh
 
 ENTRYPOINT [ "/init" ]

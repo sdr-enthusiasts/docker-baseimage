@@ -5,23 +5,25 @@
 # 1. Create a downloader image like this:
 # FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlat-client as downloader
 #
-# 2. In your target image, make sure to add this to the APT install list:
-# KEPT_PACKAGES+=(python3-setuptools) && \
+# 2. In your target image, start your RUN command like this:
+# RUN --mount=type=bind,from=downloader,source=/,target=/downloader set -x && \
 #
-# 3. Copy the following files into your target container:
-# COPY --from=downloader /mlatclient.tgz /mlatclient.tgz
+# 3. In your target image in that same RUN command, make sure to add this to the APT install list:
+# KEPT_PACKAGES+=(python3-pkg-resources) && \
 #
-# 4. In a RUN directive for the target image, and after copying /mlatclient.tgz, do this:
-# tar zxf /mlatclient.tgz -C / && rm -f /mlatclient.tgz && \
+# 4. Also in the same RUN command for your target image, do this:
+# tar zxf /downloader/mlatclient.tgz -C / && \
 # ----------------------------------------------------------------------------------------
-FROM debian:bookworm-20240513-slim
+FROM debian:bookworm-20240612-slim
 
 ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL3003
-RUN set -x && \
+RUN \
+  --mount=type=bind,source=./,target=/app/ \
+  set -x && \
   PACKAGES=() && \
   # packages needed to install
   PACKAGES+=(git) && \
@@ -50,6 +52,7 @@ RUN set -x && \
   #
   # Clean up to keep the build image small:
   apt-get remove -y "${PACKAGES[@]}" && \
-  apt-get autoremove -y && \
+  apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   apt-get clean && \
-  rm -rf /src/* /tmp/* /var/lib/apt/lists/* "${dist_pkg_target}" "${mlatclient_target}"
+  rm -rf /src/* "${dist_pkg_target}" "${mlatclient_target}" && \
+  bash /app/scripts/clean-build.sh
