@@ -75,7 +75,6 @@ jobs:
 
   deploy_ghcr_mlat_client:
     name: Deploy MLAT client image to ghcr.io
-    needs: [hadolint]
     runs-on: ubuntu-latest
     permissions:
       contents: read
