@@ -13,22 +13,12 @@ RUN set -x && \
   TEMP_PACKAGES+=(cmake) && \
   TEMP_PACKAGES+=(pkg-config) && \
   # dependencies for SoapySDR
-  KEPT_PACKAGES+=(python3) && \
-  KEPT_PACKAGES+=(python3-pip) && \
-  KEPT_PACKAGES+=(python3-setuptools) && \
-  KEPT_PACKAGES+=(python3-wheel) && \
-  TEMP_PACKAGES+=(libpython3-dev) && \
-  KEPT_PACKAGES+=(libpython3.11) && \
-  KEPT_PACKAGES+=(python3-numpy) && \
-  KEPT_PACKAGES+=(swig) && \
   # install packages
   apt-get update && \
   apt-get install -y --no-install-recommends \
   "${KEPT_PACKAGES[@]}" \
   "${TEMP_PACKAGES[@]}" \
   && \
-  # symlink for default python interpreter
-  ln -s /usr/bin/python3 /usr/bin/python && \
   # SoapySDR: get latest tag
   BRANCH_SOAPYSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/pothosware/SoapySDR.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^soapy-sdr-.*' | tail -1) && \
   # SoapySDR: clone latest tag
