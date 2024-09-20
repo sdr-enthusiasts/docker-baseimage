@@ -21,6 +21,9 @@ RUN set -x && \
     TEMP_PACKAGES+=(libboost-regex1.74-dev) && \
     KEPT_PACKAGES+=(libboost-filesystem1.74.0) && \
     TEMP_PACKAGES+=(libboost-filesystem1.74-dev) && \
+    # this baseimage is used by docker-piaware and docker-dump978
+    # piaware needs python for mlat-client, dump978 for autogain, install it in this baseimage
+    KEPT_PACKAGES+=(python3) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
