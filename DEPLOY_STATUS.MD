@@ -8,7 +8,7 @@
 |-----------|-----------|
 | acarsdec | [![acarsdec](https://github.com/sdr-enthusiasts/docker-acarsdec/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-acarsdec/actions/workflows/deploy.yml) |
 | ACARS Hub | [![ACARS Hub](https://github.com/sdr-enthusiasts/docker-acarshub/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-acarshub/actions/workflows/deploy.yml) |
-| acars_oxide | [![ACARS Oxide](https://github.com/sdr-enthusiasts/acars-oxide/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/acars-oxide/actions/workflows/deploy.yml)
+| acars_oxide | [![ACARS Oxide](https://github.com/sdr-enthusiasts/acars-oxide/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/acars-oxide/actions/workflows/deploy.yml) |
 | acars_router | [![acars_router](https://github.com/sdr-enthusiasts/acars_router/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/acars_router/actions/workflows/deploy.yml) |
 | dumpvdl2 | [![Deploy](https://github.com/sdr-enthusiasts/docker-dumpvdl2/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-dumpvdl2/actions/workflows/deploy.yml) |
 | vdlm2dec | [![vdlm2dec](https://github.com/sdr-enthusiasts/docker-vdlm2dec/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-vdlm2dec/actions/workflows/deploy.yml) |
@@ -24,7 +24,7 @@
 | OpenSky | [![OpenSky](https://github.com/sdr-enthusiasts/docker-opensky-network/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-opensky-network/actions/workflows/deploy.yml) |
 | Piaware | [![PiAware](https://github.com/sdr-enthusiasts/docker-piaware/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-piaware/actions/workflows/deploy.yml) |
 | PlaneFinder | [![PlaneFinder](https://github.com/sdr-enthusiasts/docker-planefinder/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-planefinder/actions/workflows/deploy.yml) |
-| Radarbox | [![RadarBox](https://github.com/sdr-enthusiasts/docker-radarbox/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-radarbox/actions/workflows/deploy.yml) |
+| AirNav Radar | [![Airnav Radar](https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/deploy.yml) |
 | Radar Virtuel | [![RadarVirtuel](https://github.com/sdr-enthusiasts/docker-radarvirtuel/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-radarvirtuel/actions/workflows/deploy.yml) |
 | readsb-protobuf | [![readsb-protobuf](https://github.com/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-readsb-protobuf/actions/workflows/deploy.yml) |
 | tar1090 | [![tar1090](https://github.com/sdr-enthusiasts/docker-tar1090/actions/workflows/deploy.yml/badge.svg)](https://github.com/sdr-enthusiasts/docker-tar1090/actions/workflows/deploy.yml) |

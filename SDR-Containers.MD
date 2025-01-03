@@ -8,7 +8,7 @@ All links will be for the `:latest` tag for each container.
 
 | Name | DockerHub URL | GHCR URL |
 | ----------------- | ------------------------------ | ------------------------ |
-| [docker-readsb-protobuf](https://github.com/sdr-enthusiasts/docker-readsb-protobuf)| `mikenye/readsb-protobuf` | `ghcr.io/sdr-enthusiasts/docker-readsb-protobuf:latest` |  |
+| [docker-readsb-protobuf](https://github.com/sdr-enthusiasts/docker-readsb-protobuf)| `mikenye/readsb-protobuf` | `ghcr.io/sdr-enthusiasts/docker-readsb-protobuf:latest` |
 | [docker-dump978](https://github.com/sdr-enthusiasts/docker-dump978) | `mikenye/dump978` |`ghcr.io/sdr-enthusiasts/docker-dump978:latest` |
 | [docker-adsb-ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) | `none` | `ghcr.io/sdr-enthusiasts/docker-adsb-ultrafeeder:latest` |
 
@@ -22,7 +22,7 @@ All links will be for the `:latest` tag for each container.
 | [docker-opensky-network](https://github.com/sdr-enthusiasts/docker-opensky-network) | `mikenye/opensky-network` | `ghcr.io/sdr-enthusiasts/docker-opensky-network:latest` |
 | [docker-piaware](https://github.com/sdr-enthusiasts/docker-piaware) | `mikenye/piaware` | `ghcr.io/sdr-enthusiasts/docker-piaware:latest` |
 | [docker-planefinder](https://github.com/sdr-enthusiasts/docker-planefinder) | `mikenye/planefinder` | `ghcr.io/sdr-enthusiasts/docker-planefinder:latest` |
-| [docker-radarbox](https://github.com/sdr-enthusiasts/docker-radarbox) | `mikenye/radarbox` | `ghcr.io/sdr-enthusiasts/docker-radarbox:latest` |
+| [docker-airnavradar](https://github.com/sdr-enthusiasts/docker-airnavradar) | `mikenye/radarbox` | `ghcr.io/sdr-enthusiasts/docker-airnavradar:latest` |
 | [docker-radarvirtuel](https://github.com/sdr-enthusiasts/docker-radarvirtuel) | `kx1t/radarvirtuel` | `ghcr.io/sdr-enthusiasts/docker-radarvirtuel:latest` |
 
 ## ACARS
