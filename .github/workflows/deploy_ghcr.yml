@@ -396,6 +396,57 @@ jobs:
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
           labels: ${{ steps.meta.outputs.labels }}
 
+  deploy_ghcr_acars-decoder-soapy:
+    name: Deploy acars-decoder-soapy to ghcr.io
+    runs-on: ubuntu-latest
+    needs: [deploy_soapy-full]
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Check out our code
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 2
+
+      # Log into ghcr (so we can push images)
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Get metadata from repo
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5.6.1
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Set up QEMU for multi-arch builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3.2.0
+
+      # Set up buildx for multi platform builds
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3.8.0
+
+      # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
+      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-soapy
+        uses: docker/build-push-action@v6.10.0
+        with:
+          context: .
+          file: ./Dockerfile.acars-decoder-soapy
+          no-cache: true
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-soapy
+          labels: ${{ steps.meta.outputs.labels }}
+
   deploy_soapyrtlsdr:
     name: Deploy soapyrtlsdr to ghcr.io
     needs: [deploy_ghcr_rtlsdr]

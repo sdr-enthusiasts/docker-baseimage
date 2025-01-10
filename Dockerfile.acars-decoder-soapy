@@ -1,0 +1,51 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:soapy-full
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL3008,SC2039
+RUN set -x && \
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    # Required for building multiple packages.
+    TEMP_PACKAGES+=(build-essential) && \
+    TEMP_PACKAGES+=(pkg-config) && \
+    TEMP_PACKAGES+=(cmake) && \
+    TEMP_PACKAGES+=(git) && \
+    TEMP_PACKAGES+=(automake) && \
+    TEMP_PACKAGES+=(autoconf) && \
+    # required for S6 overlay
+    # curl kept for healthcheck
+    # ca-certificates kept for python
+    TEMP_PACKAGES+=(gnupg2) && \
+    # packages for libacars
+    TEMP_PACKAGES+=(zlib1g-dev) && \
+    TEMP_PACKAGES+=(libxml2-dev) && \
+    KEPT_PACKAGES+=(zlib1g) && \
+    KEPT_PACKAGES+=(libxml2) && \
+    # packages for acarsserv
+    TEMP_PACKAGES+=(libsqlite3-dev) && \
+    KEPT_PACKAGES+=(libsqlite3-0) && \
+    # packages for rewriting the output JSON
+    KEPT_PACKAGES+=(jq) && \
+    # install packages
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    "${KEPT_PACKAGES[@]}" \
+    "${TEMP_PACKAGES[@]}"\
+    && \
+    # libacars
+    git clone https://github.com/szpajder/libacars.git /src/libacars && \
+    pushd /src/libacars && \
+    git checkout master && \
+    git rev-parse HEAD > /CONTAINER_VERSION && \
+    mkdir build && \
+    pushd build && \
+    cmake ../ && \
+    make && \
+    make install && \
+    popd && popd && \
+    # Clean up
+    apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+    apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
+    rm -rf /src/* && \
+    bash /scripts/clean-build.sh
