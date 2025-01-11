@@ -631,7 +631,7 @@ jobs:
   deploy_ghcr_acars-decoder-soapy:
     name: Test deploy acars-decoder-soapy to ghcr.io
     # Define any dependent steps
-    needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
+    needs: [deploy_soapy-full]
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.acars-decoder-soapy
