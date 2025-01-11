@@ -20,31 +20,33 @@ RUN set -x && \
   "${KEPT_PACKAGES[@]}" \
   "${TEMP_PACKAGES[@]}" \
   && \
-  # install sdrplay
-  curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
-  chmod +x /tmp/install_sdrplay.sh && \
-  /tmp/install_sdrplay.sh && \
-  # Deploy SoapyRTLTCP
-  git clone https://github.com/pothosware/SoapyRTLTCP.git /src/SoapyRTLTCP && \
-  pushd /src/SoapyRTLTCP && \
-  mkdir -p /src/SoapyRTLTCP/build && \
-  pushd /src/SoapyRTLTCP/build && \
-  cmake ../ -DCMAKE_BUILD_TYPE=Release && \
-  make all && \
-  make install && \
-  popd && popd && \
-  ldconfig && \
-  # deploy SoapySDRPlay
-  git clone https://github.com/pothosware/SoapySDRPlay.git /src/SoapySDRPlay && \
-  pushd /src/SoapySDRPlay && \
-  mkdir build && \
-  pushd build && \
-  cmake .. && \
-  make && \
-  make install && \
-  popd && \
-  popd && \
-  ldconfig && \
+  if ! uname -m | grep -qs armv7; then \
+    # install sdrplay
+    curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
+    chmod +x /tmp/install_sdrplay.sh && \
+    /tmp/install_sdrplay.sh && \
+    # Deploy SoapyRTLTCP
+    git clone https://github.com/pothosware/SoapyRTLTCP.git /src/SoapyRTLTCP && \
+    pushd /src/SoapyRTLTCP && \
+    mkdir -p /src/SoapyRTLTCP/build && \
+    pushd /src/SoapyRTLTCP/build && \
+    cmake ../ -DCMAKE_BUILD_TYPE=Release && \
+    make all && \
+    make install && \
+    popd && popd && \
+    ldconfig && \
+    # deploy SoapySDRPlay
+    git clone https://github.com/pothosware/SoapySDRPlay.git /src/SoapySDRPlay && \
+    pushd /src/SoapySDRPlay && \
+    mkdir build && \
+    pushd build && \
+    cmake .. && \
+    make && \
+    make install && \
+    popd && \
+    popd && \
+    ldconfig; \
+  fi && \
   # deploy libmirisdr
   git clone https://github.com/ericek111/libmirisdr-5.git /src/libmirisdr-5 && \
   pushd /src/libmirisdr-5 && \
