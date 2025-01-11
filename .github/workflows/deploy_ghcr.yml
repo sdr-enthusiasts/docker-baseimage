@@ -720,7 +720,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-acarsdec:
     name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
-    needs: [deploy_ghcr_acars-decoder]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -736,7 +736,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-dumpvdl2:
     name: Trigger deploy of sdr-enthusiasts/docker-dumpvdl2
-    needs: [deploy_ghcr_acars-decoder]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -752,7 +752,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-vdlm2dec:
     name: Trigger deploy of sdr-enthusiasts/docker-vdlm2dec
-    needs: [deploy_ghcr_acars-decoder]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -991,7 +991,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_rtlsdrairband:
     name: Trigger deploy of sdr-enthusiasts/docker-rtlsdrairband
-    needs: [deploy_ghcr_base]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:

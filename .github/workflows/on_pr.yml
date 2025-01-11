@@ -1372,7 +1372,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_rtlsdrairband:
     name: Trigger deploy of sdr-enthusiasts/docker-rtlsdrairband
-    needs: [deploy_ghcr_base]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1402,7 +1402,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-acarsdec:
     name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
-    needs: [deploy_ghcr_acars-decoder]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1417,7 +1417,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-dumpvdl2:
     name: Trigger deploy of sdr-enthusiasts/docker-dumpvdl2
-    needs: [deploy_ghcr_acars-decoder]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1447,7 +1447,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-dumphfdl:
     name: Trigger deploy of sdr-enthusiasts/docker-dumphfdl
-    needs: [deploy_ghcr_acars-decoder]
+    needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
