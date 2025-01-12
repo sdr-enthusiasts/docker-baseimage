@@ -41,7 +41,10 @@ RUN set -x && \
   DISABLE_RTLSDR_ZEROCOPY_WORKAROUND=yes \
   -j "$(nproc)" \
   && \
-  find "/src/readsb" -maxdepth 1 -executable -type f -exec cp -v {} /usr/local/bin/ \; && \
+  cp readsb /usr/local/bin/ && \
+  popd && \
+  pushd /usr/local/bin && \
+  ln -s readsb viewadsb && \
   popd && \
   ldconfig && \
   # readsb: simple tests
