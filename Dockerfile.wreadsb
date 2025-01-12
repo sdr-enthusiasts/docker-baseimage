@@ -1,9 +1,12 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient AS buildimage
+
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
-RUN set -x && \
+RUN \
+  --mount=type=bind,from=buildimage,source=/,target=/buildimage/ \
   TEMP_PACKAGES=() && \
   KEPT_PACKAGES=() && \
   # packages needed to install
@@ -19,6 +22,9 @@ RUN set -x && \
   TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
   TEMP_PACKAGES+=(libzstd-dev) && \
   KEPT_PACKAGES+=(libzstd1) && \
+  # Needed to run the mlat_client:
+  KEPT_PACKAGES+=(python3-minimal) && \
+  KEPT_PACKAGES+=(python3-pkg-resources) && \
   # install packages
   apt-get update && \
   apt-get install -y --no-install-recommends \
@@ -50,8 +56,15 @@ RUN set -x && \
   # readsb: simple tests
   readsb --version && \
   viewadsb --version && \
+  # Get mlat-client
+  tar zxf /buildimage/mlatclient.tgz -C / && \
+  ln -s /usr/local/bin/mlat-client /usr/bin/mlat-client && \
   # Clean up
   apt-get remove -y "${TEMP_PACKAGES[@]}" && \
   apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
+  # test mlat-client
+  /usr/bin/mlat-client --help > /dev/null && \
+  # remove pycache introduced by testing mlat-client
+  { find /usr | grep -E "/__pycache__$" | xargs rm -rf || true; } && \
   rm -rf /src/* && \
   bash /scripts/clean-build.sh
