@@ -25,6 +25,7 @@ jobs:
 
   deploy_wreadsb:
     name: Deploy wreadsb to ghcr.io
+    needs: [deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     permissions:
       contents: read
