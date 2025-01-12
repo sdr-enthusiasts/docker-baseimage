@@ -918,7 +918,7 @@ jobs:
   deploy_dump978-full:
     name: Test deploy dump978-full to ghcr.io
     # Define any dependent steps
-    needs: [deploy_soapyrtlsdr]
+    needs: [deploy_wreadsb]
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.dump978-full
@@ -1012,7 +1012,7 @@ jobs:
   deploy_wreadsb:
     name: Test deploy wreadsb to ghcr.io
     # Define any dependent steps
-    needs: [deploy_ghcr_rtlsdr]
+    needs: [deploy_ghcr_soapyrtlsdr, deploy_ghcr_mlat_client]
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.wreadsb
