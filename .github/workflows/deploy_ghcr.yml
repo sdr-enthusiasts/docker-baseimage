@@ -551,7 +551,7 @@ jobs:
 
   deploy_dump978-full:
     name: Deploy dump978-full to ghcr.io
-    needs: [deploy_soapyrtlsdr]
+    needs: [deploy_wreadsb]
     runs-on: ubuntu-latest
     permissions:
       contents: read
