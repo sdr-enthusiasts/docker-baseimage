@@ -47,8 +47,6 @@ RUN \
   KEPT_PACKAGES+=(nano) && \
   KEPT_PACKAGES+=(iputils-ping) && \
   KEPT_PACKAGES+=(dnsutils) && \
-  # used by enough images to warrant installing it in common (adds 17 MB to image size)
-  KEPT_PACKAGES+=(python3-minimal) && \
   # install packages
   ## Builder fixes...
   mkdir -p /usr/sbin/ && \
