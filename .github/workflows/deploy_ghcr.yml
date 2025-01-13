@@ -799,7 +799,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-airnavradar:
     name: Trigger deploy of sdr-enthusiasts/docker-airnavradar
-    needs: [deploy_qemu, deploy_ghcr_mlat_client]
+    needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -847,7 +847,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-radarvirtuel:
     name: Trigger deploy of sdr-enthusiasts/docker-radarvirtuel
-    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
+    needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
