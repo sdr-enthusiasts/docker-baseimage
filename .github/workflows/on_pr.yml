@@ -690,7 +690,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v3.2.0
+        uses: docker/setup-qemu-action@v3.3.0
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
@@ -879,7 +879,7 @@ jobs:
       # Set up QEMU for multi-arch builds
       - name: Set up QEMU
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v3.2.0
+        uses: docker/setup-qemu-action@v3.3.0
       # Patch dockerfile to pull from PR-generated image
       - name: Patch dockerfile
         if: steps.changed-files-parent.outputs.any_changed == 'true'
