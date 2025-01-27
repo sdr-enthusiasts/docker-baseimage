@@ -652,7 +652,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.5
+        uses: tj-actions/changed-files@v45.0.6
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -663,7 +663,7 @@ jobs:
             Dockerfile.acars-decoder-soapy
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.5
+        uses: tj-actions/changed-files@v45.0.6
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -843,7 +843,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.5
+        uses: tj-actions/changed-files@v45.0.6
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -853,7 +853,7 @@ jobs:
             Dockerfile.soapy-full
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.5
+        uses: tj-actions/changed-files@v45.0.6
         # Add dependent dockerfiles, one per line
         with:
           files: |
