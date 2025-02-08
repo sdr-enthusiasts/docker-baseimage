@@ -1,4 +1,4 @@
-FROM debian:bookworm-20250113-slim
+FROM debian:bookworm-20250203-slim
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
   S6OVERLAY_VERSION="v3.2.0.2" \
