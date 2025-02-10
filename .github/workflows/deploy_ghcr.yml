@@ -29,7 +29,7 @@ env:
 jobs:
   hadolint:
     name: Run hadolint against docker files
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Pull hadolint/hadolint:latest Image
@@ -40,7 +40,7 @@ jobs:
   deploy_ghcr_base:
     name: Deploy base image to ghcr.io
     needs: [hadolint]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -91,7 +91,7 @@ jobs:
   deploy_ghcr_mlat_client:
     name: Deploy MLAT client image to ghcr.io
     needs: [hadolint]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -141,7 +141,7 @@ jobs:
 
   deploy_ghcr_python:
     name: Deploy python to ghcr.io
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [deploy_ghcr_base]
     permissions:
       contents: read
@@ -196,7 +196,7 @@ jobs:
 
   deploy_ghcr_rtlsdr:
     name: Deploy rtlsdr to ghcr.io
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [deploy_ghcr_base]
     permissions:
       contents: read
@@ -246,7 +246,7 @@ jobs:
 
   deploy_ghcr_readsb-netonly:
     name: Deploy readsb-netonly to ghcr.io
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [deploy_ghcr_base]
     permissions:
       contents: read
@@ -296,7 +296,7 @@ jobs:
 
   deploy_ghcr_readsb-full:
     name: Deploy readsb-full to ghcr.io
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
     permissions:
       contents: read
@@ -347,7 +347,7 @@ jobs:
 
   deploy_ghcr_acars-decoder:
     name: Deploy acars-decoder to ghcr.io
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
     permissions:
       contents: read
@@ -398,7 +398,7 @@ jobs:
 
   deploy_ghcr_acars-decoder-soapy:
     name: Deploy acars-decoder-soapy to ghcr.io
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [deploy_soapy-full]
     permissions:
       contents: read
@@ -450,7 +450,7 @@ jobs:
   deploy_soapyrtlsdr:
     name: Deploy soapyrtlsdr to ghcr.io
     needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -501,7 +501,7 @@ jobs:
   deploy_soapy-full:
     name: Deploy soapy-full to ghcr.io
     needs: [deploy_soapyrtlsdr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -552,7 +552,7 @@ jobs:
   deploy_dump978-full:
     name: Deploy dump978-full to ghcr.io
     needs: [deploy_wreadsb]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -603,7 +603,7 @@ jobs:
   deploy_wreadsb:
     name: Deploy wreadsb to ghcr.io
     needs: [deploy_soapyrtlsdr, deploy_ghcr_mlat_client]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -654,7 +654,7 @@ jobs:
   deploy_qemu:
     name: Deploy qemu to ghcr.io
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -705,7 +705,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-readsb-protobuf:
     name: Trigger deploy of sdr-enthusiasts/docker-readsb-protobuf
     needs: [deploy_ghcr_readsb-full]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -721,7 +721,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-acarsdec:
     name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
     needs: [deploy_ghcr_acars-decoder-soapy]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -737,7 +737,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-dumpvdl2:
     name: Trigger deploy of sdr-enthusiasts/docker-dumpvdl2
     needs: [deploy_ghcr_acars-decoder-soapy]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -753,7 +753,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-vdlm2dec:
     name: Trigger deploy of sdr-enthusiasts/docker-vdlm2dec
     needs: [deploy_ghcr_acars-decoder-soapy]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -769,7 +769,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-dumphfdl:
     name: Trigger deploy of sdr-enthusiasts/docker-dumphfdl
     needs: [deploy_ghcr_acars-decoder-soapy]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-dumphfdl
@@ -784,7 +784,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-acarshub:
     name: Trigger deploy of sdr-enthusiasts/docker-acarshub
     needs: [deploy_ghcr_python]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -800,7 +800,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-planefence:
     name: Trigger deploy of sdr-enthusiasts/docker-planefence
     needs: [deploy_wreadsb]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -816,7 +816,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-airnavradar:
     name: Trigger deploy of sdr-enthusiasts/docker-airnavradar
     needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -832,7 +832,7 @@ jobs:
   trigger_build_sdr-enthusiasts_beast-splitter:
     name: Trigger deploy of sdr-enthusiasts/docker-beast-splitter
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -848,7 +848,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-flightradar24:
     name: Trigger deploy of sdr-enthusiasts/docker-flightradar24
     needs: [deploy_qemu]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -864,7 +864,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-radarvirtuel:
     name: Trigger deploy of sdr-enthusiasts/docker-radarvirtuel
     needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -880,7 +880,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-tar1090:
     name: Trigger deploy of sdr-enthusiasts/docker-tar1090
     needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -896,7 +896,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-dump978:
     name: Trigger deploy of sdr-enthusiasts/docker-dump978
     needs: [deploy_dump978-full]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -912,7 +912,7 @@ jobs:
   trigger_build_sdr-enthusiasts_docker-piaware:
     name: Trigger deploy of sdr-enthusiasts/docker-piaware
     needs: [deploy_dump978-full]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -928,7 +928,7 @@ jobs:
   trigger_build_sdr-enthusiasts_adsbexchange:
     name: Trigger deploy of sdr-enthusiasts/docker-adsbexchange
     needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -944,7 +944,7 @@ jobs:
   trigger_build_sdr-enthusiasts_adsbhub:
     name: Trigger deploy of sdr-enthusiasts/docker-adsbhub
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -960,7 +960,7 @@ jobs:
   trigger_build_sdr-enthusiasts_opensky_network:
     name: Trigger deploy of sdr-enthusiasts/docker-opensky-network
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -976,7 +976,7 @@ jobs:
   trigger_build_sdr-enthusiasts_planefinder:
     name: Trigger deploy of sdr-enthusiasts/docker-planefinder
     needs: [deploy_qemu]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -992,7 +992,7 @@ jobs:
   trigger_build_sdr-enthusiasts_acars_router:
     name: Trigger deploy of sdr-enthusiasts/acars_router
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1008,7 +1008,7 @@ jobs:
   trigger_build_sdr-enthusiasts_rtlsdrairband:
     name: Trigger deploy of sdr-enthusiasts/docker-rtlsdrairband
     needs: [deploy_ghcr_acars-decoder-soapy]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1024,7 +1024,7 @@ jobs:
   trigger_build_sdr-enthusiasts_sdrplay_beast1090:
     name: Trigger deploy of sdr-enthusiasts/docker-sdrplay-beast1090
     needs: [deploy_ghcr_rtlsdr, deploy_wreadsb]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1040,7 +1040,7 @@ jobs:
   trigger_build_sdr-enthusiasts_airspy_adsb:
     name: Trigger deploy of sdr-enthusiasts/airspy_adsb
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1056,7 +1056,7 @@ jobs:
   trigger_build_sdr-enthusiasts_acars-oxide:
     name: Trigger deploy of sdr-enthusiasts/acars-oxide
     needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1072,7 +1072,7 @@ jobs:
   trigger_build_sdr-enthusiasts_reverse_web_proxy:
     name: Trigger deploy of sdr-enthusiasts/docker-reversewebproxy
     needs: [deploy_ghcr_python]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1088,7 +1088,7 @@ jobs:
   trigger_build_sdr-enthusiasts_radar1090:
     name: Trigger deploy of sdr-enthusiasts/docker-radar1090
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1104,7 +1104,7 @@ jobs:
   trigger_build_sdr-enthusiasts_flightairmap:
     name: Trigger deploy of sdr-enthusiasts/docker-flightairmap
     needs: [deploy_ghcr_base]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1120,7 +1120,7 @@ jobs:
   trigger_build_sdr-enthusiasts_shipfeeder:
     name: Trigger deploy of sdr-enthusiasts/docker-shipfeeder
     needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1136,7 +1136,7 @@ jobs:
   trigger_build_sdr-enthusiasts_aprstracker:
     name: Trigger deploy of sdr-enthusiasts/docker-aprs-tracker
     needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
@@ -1152,7 +1152,7 @@ jobs:
   trigger_build_sdr-enthusiasts_vesselalert:
     name: Trigger deploy of sdr-enthusiasts/docker-vesselalert
     needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
