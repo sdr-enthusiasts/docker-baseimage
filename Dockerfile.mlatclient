@@ -14,7 +14,7 @@
 # 4. Also in the same RUN command for your target image, do this:
 # tar zxf /downloader/mlatclient.tgz -C / && \
 # ----------------------------------------------------------------------------------------
-FROM debian:bookworm-20250113-slim
+FROM debian:bookworm-20250203-slim
 
 ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 
