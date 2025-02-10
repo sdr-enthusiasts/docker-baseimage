@@ -1,0 +1,18 @@
+name: Update pre-commit hooks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 0
+
+jobs:
+  pre-commit-update:
+    runs-on: ubuntu-latest
+    name: Updates
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Update pre-commit hooks
+        uses: brokenpip3/action-pre-commit-update@0.0.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
