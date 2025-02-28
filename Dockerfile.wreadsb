@@ -1,8 +1,99 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient AS buildimage
 
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:python
 
 SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
+
+# this RUN is a carbon copy of Dockerfile.rtlsdr
+# it's only 2 MB so commonality is less important than python commonality which is 23 MB
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+  TEMP_PACKAGES=() && \
+  KEPT_PACKAGES=() && \
+  # packages needed to install
+  TEMP_PACKAGES+=(git) && \
+  # packages needed to build
+  TEMP_PACKAGES+=(build-essential) && \
+  TEMP_PACKAGES+=(cmake) && \
+  TEMP_PACKAGES+=(pkg-config) && \
+  # dependencies for rtl-sdr
+  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+  KEPT_PACKAGES+=(libusb-1.0-0) && \
+  # dependencies for SoapySDR
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${KEPT_PACKAGES[@]}" \
+  "${TEMP_PACKAGES[@]}" \
+  && \
+  # rtlsdr: clone repo
+  git clone \
+  --branch master \
+  --depth 1 \
+  --single-branch \
+  https://gitea.osmocom.org/sdr/rtl-sdr.git \
+  # 'https://github.com/rtlsdrblog/rtl-sdr-blog.git' \
+  /src/rtl-sdr \
+  && \
+  # prepare to build
+  mkdir -p /src/rtl-sdr/build && \
+  pushd /src/rtl-sdr/build && \
+  git rev-parse HEAD > /CONTAINER_VERSION && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DDETACH_KERNEL_DRIVER=ON \
+  -DINSTALL_UDEV_RULES=ON \
+  ../ \
+  && \
+  # build
+  make -j "$(nproc)" && \
+  # install
+  make install && \
+  ldconfig && \
+  popd && \
+  # SoapySDR: get latest tag
+  BRANCH_SOAPYSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/pothosware/SoapySDR.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^soapy-sdr-.*' | tail -1) && \
+  # SoapySDR: clone latest tag
+  git clone --depth 1 --branch "$BRANCH_SOAPYSDR" "https://github.com/pothosware/SoapySDR.git" "/src/SoapySDR" && \
+  # SoapySDR: prepare to build
+  mkdir -p /src/SoapySDR/build && \
+  pushd /src/SoapySDR/build && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -Wno-dev \
+  ../ \
+  && \
+  # SoapySDR: make & install
+  make -j "$(nproc)" && \
+  make install && \
+  ldconfig && \
+  popd && \
+  # SoapySDR: simple test
+  SoapySDRUtil --info && \
+  # SoapyRTLSDR: get latest tag
+  BRANCH_SOAPYRTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/pothosware/SoapyRTLSDR.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^soapy-rtl-.*' | tail -1) && \
+  # SoapyRTLSDR: clone latest tag
+  git clone --depth 1 --branch "$BRANCH_SOAPYRTLSDR" "https://github.com/pothosware/SoapyRTLSDR.git" "/src/SoapyRTLSDR" && \
+  # SoapyRTLSDR: prepare to build
+  mkdir -p /src/SoapyRTLSDR/build && \
+  pushd /src/SoapyRTLSDR/build && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -Wno-dev \
+  ../ \
+  && \
+  # SoapyRTLSDR: make & install
+  make -j "$(nproc)" && \
+  make install && \
+  ldconfig && \
+  popd && \
+  # SoapyRTLSDR: simple test
+  SoapySDRUtil --check=rtlsdr && \
+  # Clean up
+  apt-get remove -y "${TEMP_PACKAGES[@]}" && \
+  apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
+  rm -rf /src/* && \
+  bash /scripts/clean-build.sh
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN \
@@ -22,9 +113,6 @@ RUN \
   TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
   TEMP_PACKAGES+=(libzstd-dev) && \
   KEPT_PACKAGES+=(libzstd1) && \
-  # Needed to run the mlat_client:
-  KEPT_PACKAGES+=(python3-minimal) && \
-  KEPT_PACKAGES+=(python3-pkg-resources) && \
   # install packages
   apt-get update && \
   apt-get install -y --no-install-recommends \

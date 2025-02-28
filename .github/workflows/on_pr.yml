@@ -913,7 +913,7 @@ jobs:
   deploy_wreadsb:
     name: Test deploy wreadsb to ghcr.io
     # Define any dependent steps
-    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.wreadsb
@@ -938,6 +938,7 @@ jobs:
         with:
           files: |
             Dockerfile.wreadsb
+            Dockerfile.python
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent

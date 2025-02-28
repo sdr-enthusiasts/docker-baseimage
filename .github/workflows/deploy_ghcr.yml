@@ -551,7 +551,7 @@ jobs:
 
   deploy_wreadsb:
     name: Deploy wreadsb to ghcr.io
-    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client]
+    needs: [deploy_ghcr_python, deploy_ghcr_mlat_client]
     runs-on: ubuntu-22.04
     permissions:
       contents: read
