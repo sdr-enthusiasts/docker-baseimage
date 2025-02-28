@@ -1236,7 +1236,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_docker-flightradar24:
     name: Trigger deploy of sdr-enthusiasts/docker-flightradar24
-    needs: [deploy_qemu]
+    needs: [deploy_ghcr_base]
     runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
@@ -1364,7 +1364,7 @@ jobs:
 
   trigger_build_sdr-enthusiasts_planefinder:
     name: Trigger deploy of sdr-enthusiasts/docker-planefinder
-    needs: [deploy_qemu]
+    needs: [deploy_ghcr_base]
     runs-on: ubuntu-22.04
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     env:
