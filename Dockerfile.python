@@ -8,9 +8,7 @@ RUN set -x && \
     KEPT_PACKAGES=() && \
     # packages for python
     KEPT_PACKAGES+=(python3) && \
-    KEPT_PACKAGES+=(python3-pip) && \
-    KEPT_PACKAGES+=(python3-setuptools) && \
-    KEPT_PACKAGES+=(python3-wheel) && \
+    KEPT_PACKAGES+=(python3-pkg-resources) && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
     "${KEPT_PACKAGES[@]}" \

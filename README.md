@@ -17,7 +17,7 @@ Provide a basic image, with all normal packages common to all installs of [miken
 | --- | ------- | ------------------|
 | `base` | - | [s6-overlay][s6-overlay] (via [mikenye/deploy-s6-overlay][mikenye/deploy-s6-overlay]), [mikenye/docker-healthchecks-framework][mikenye/docker-healthchecks-framework], [bc][bc], [ca-certificates][ca-certificates], [curl][curl], [gawk][gawk], [ncat][ncat], [net-tools][net-tools], [procps][procps], [socat][socat] |
 | `acars-decoder` | `rtlsdr` | [libacars][libacars] and all prerequisites for full functionality: ([zlib1g][zlib1g], [libxml2][libxml2], [libsqlite3][libsqlite3]) |
-| `python` | `base` | [python3][python3], [python3-pip][python3-pip], [python3-setuptools][python3-setuptools], [python3-wheel][python3-wheel] |
+| `python` | `base` | [python3][python3], [python3-pkg-resources][python3-pkg-resources] |
 | `readsb-full` | `rtlsdr` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf] and all prerequisites for full functionality: ([bladeRF][bladeRF], [bladeRF FPGA images][bladeRF FPGA images], [libiio (for PlutoSDR)][libiio], [libad9361-iio (for PlutoSDR)][libad9361-iio]) |
 | `readsb-netonly` | `base` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf][Mictronics/readsb-protobuf] intended to operate in network only mode. |
 | `wreadsb` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb][wiedehopf/readsb] with [rtl-sdr][rtl-sdr] & [libusb][libusb]. |
