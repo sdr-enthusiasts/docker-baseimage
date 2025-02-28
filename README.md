@@ -21,9 +21,8 @@ Provide a basic image, with all normal packages common to all installs of [miken
 | `readsb-full` | `rtlsdr` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf] and all prerequisites for full functionality: ([bladeRF][bladeRF], [bladeRF FPGA images][bladeRF FPGA images], [libiio (for PlutoSDR)][libiio], [libad9361-iio (for PlutoSDR)][libad9361-iio]) |
 | `readsb-netonly` | `base` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf][Mictronics/readsb-protobuf] intended to operate in network only mode. |
 | `wreadsb` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb][wiedehopf/readsb] with [rtl-sdr][rtl-sdr] & [libusb][libusb]. |
-| `rtlsdr` | `base` | Contains the latest tagged release of [rtl-sdr][rtl-sdr], and prerequisites (eg: [libusb][libusb]) |
-| `soapyrtlsdr` | `rtlsdr` | Contains the latest tagged release of [SoapySDR][SoapySDR] and [SoapyRTLSDR][SoapyRTLSDR], and prerequisites ([python3][python3], [python3-pip][python3-pip], [python3-setuptools][python3-setuptools], [python3-wheel][python3-wheel]) |
-| `dump978-full` | `soapyrtlsdr` | Contains the latest tagged release of [flightaware/dump978][flightaware/dump978], and prerequisites (various boost libraries) |
+| `rtlsdr` | `base` | Contains the latest master branch of [rtl-sdr][rtl-sdr] and latest tagged release of [SoapyRTLSDR][SoapyRTLSDR], and prerequisites (eg: [libusb][libusb]) |
+| `dump978-full` | `wreadsb` | Contains the latest tagged release of [flightaware/dump978][flightaware/dump978], and prerequisites (various boost libraries) |
 | `qemu` | `base` | Contains [qemu-user-static][qemu-user-static] binaries |
 
 ## Using
@@ -55,12 +54,11 @@ RUN ...
 | `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/airspy-adsb][airspy], [sdr-enthusiasts/docker-airnavradar][docker-airnavradar], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network], [sdr-enthusiasts/docker-rtlsdrairband][docker-rtlsdrairband] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
 | `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
-| `rtlsdr`          | `acars-decoder`, `readsb-full`, `soapyrtlsdr`, `wreadsb` | [sdr-enthusiasts/acars-oxide][acars-oxide] |
+| `rtlsdr`          | `acars-decoder`, `readsb-full`, `wreadsb` | [sdr-enthusiasts/acars-oxide][acars-oxide] |
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
 | `readsb-netonly`  | -                              | - |
-| `soapyrtlsdr`     | `dump978-full`                 | - |
 | `dump978-full`    | -                              | [sdr-enthusiasts/docker-piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
-| `wreadsb`         | -                              | [sdr-enthusiasts/docker-tar1090][docker-tar1090] |
+| `wreadsb`         | `dump978-full`                 | [sdr-enthusiasts/docker-tar1090][docker-tar1090] |
 | `qemu`            | -                              | [sdr-enthusiasts/docker-flightradar24][docker-flightradar24], [sdr-enthusiasts/docker-planefinder][docker-planefinder] |
 
 <!-- links below here -->

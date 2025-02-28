@@ -1,6 +1,6 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient AS buildimage
 
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
 
 SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
 

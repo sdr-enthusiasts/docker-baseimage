@@ -447,60 +447,9 @@ jobs:
           tags: ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-soapy
           labels: ${{ steps.meta.outputs.labels }}
 
-  deploy_soapyrtlsdr:
-    name: Deploy soapyrtlsdr to ghcr.io
-    needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      # Check out our code
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 2
-
-      # Log into ghcr (so we can push images)
-      - name: Login to ghcr.io
-        uses: docker/login-action@v3.3.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Get metadata from repo
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5.7.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      # Set up QEMU for multi-arch builds
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.6.0
-
-      # Set up buildx for multi platform builds
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
-        uses: docker/build-push-action@v6.15.0
-        with:
-          context: .
-          file: ./Dockerfile.soapyrtlsdr
-          no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:soapyrtlsdr
-          labels: ${{ steps.meta.outputs.labels }}
-
   deploy_soapy-full:
     name: Deploy soapy-full to ghcr.io
-    needs: [deploy_soapyrtlsdr]
+    needs: [deploy_ghcr_rtlsdr]
     runs-on: ubuntu-22.04
     permissions:
       contents: read
@@ -602,7 +551,7 @@ jobs:
 
   deploy_wreadsb:
     name: Deploy wreadsb to ghcr.io
-    needs: [deploy_soapyrtlsdr, deploy_ghcr_mlat_client]
+    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client]
     runs-on: ubuntu-22.04
     permissions:
       contents: read
