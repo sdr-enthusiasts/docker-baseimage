@@ -103,7 +103,7 @@ jobs:
   deploy_ghcr_mlat_client:
     name: Test MLAT Client to ghcr.io
     # Define any dependent steps
-    needs: [hadolint]
+    needs: [deploy_ghcr_python]
     # Define dockerfile and image tag
     env:
       DOCKERFILE: Dockerfile.mlatclient

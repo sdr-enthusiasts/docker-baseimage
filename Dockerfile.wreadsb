@@ -152,7 +152,5 @@ RUN \
   apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   # test mlat-client
   /usr/bin/mlat-client --help > /dev/null && \
-  # remove pycache introduced by testing mlat-client
-  { find /usr | grep -E "/__pycache__$" | xargs rm -rf || true; } && \
   rm -rf /src/* && \
   bash /scripts/clean-build.sh

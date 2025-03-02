@@ -55,6 +55,4 @@ RUN \
   #apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   apt-get clean && \
   rm -rf /src/* "${dist_pkg_target}" "${mlatclient_target}" && \
-  # remove pycache
-  { find /usr | grep -E "/__pycache__$" | xargs rm -rf || true; } && \
   bash /app/scripts/clean-build.sh
