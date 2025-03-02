@@ -8,9 +8,7 @@ RUN set -x && \
     KEPT_PACKAGES=() && \
     # packages for python
     KEPT_PACKAGES+=(python3) && \
-    KEPT_PACKAGES+=(python3-pip) && \
-    KEPT_PACKAGES+=(python3-setuptools) && \
-    KEPT_PACKAGES+=(python3-wheel) && \
+    KEPT_PACKAGES+=(python3-pkg-resources) && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
     "${KEPT_PACKAGES[@]}" \
@@ -20,4 +18,6 @@ RUN set -x && \
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
     rm -rf /src/* && \
+    # remove pycache
+    { find /usr | grep -E "/__pycache__$" | xargs rm -rf || true; } && \
     bash /scripts/clean-build.sh
