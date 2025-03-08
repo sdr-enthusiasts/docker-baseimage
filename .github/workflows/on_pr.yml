@@ -1167,7 +1167,7 @@ jobs:
       # Build & Push
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:planefence_base
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v6.13.0
+        uses: docker/build-push-action@v6.15.0
         with:
           context: .
           file: ${{ env.DOCKERFILE }}
