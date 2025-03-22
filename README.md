@@ -19,7 +19,6 @@ Provide a basic image, with all normal packages common to all installs of [miken
 | `acars-decoder` | `rtlsdr` | [libacars][libacars] and all prerequisites for full functionality: ([zlib1g][zlib1g], [libxml2][libxml2], [libsqlite3][libsqlite3]) |
 | `python` | `base` | [python3][python3], [python3-pkg-resources][python3-pkg-resources] |
 | `readsb-full` | `rtlsdr` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf] and all prerequisites for full functionality: ([bladeRF][bladeRF], [bladeRF FPGA images][bladeRF FPGA images], [libiio (for PlutoSDR)][libiio], [libad9361-iio (for PlutoSDR)][libad9361-iio]) |
-| `readsb-netonly` | `base` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf][Mictronics/readsb-protobuf] intended to operate in network only mode. |
 | `wreadsb` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb][wiedehopf/readsb] with [rtl-sdr][rtl-sdr] & [libusb][libusb]. |
 | `rtlsdr` | `base` | Contains the latest master branch of [rtl-sdr][rtl-sdr] and latest tagged release of [SoapyRTLSDR][SoapyRTLSDR], and prerequisites (eg: [libusb][libusb]) |
 | `dump978-full` | `wreadsb` | Contains the latest tagged release of [flightaware/dump978][flightaware/dump978], and prerequisites (various boost libraries) |
@@ -55,7 +54,6 @@ RUN ...
 | `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
 | `rtlsdr`          | `acars-decoder`, `readsb-full`, `wreadsb` | [sdr-enthusiasts/acars-oxide][acars-oxide] |
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
-| `readsb-netonly`  | -                              | - |
 | `dump978-full`    | -                              | [sdr-enthusiasts/docker-piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
 | `wreadsb`         | `dump978-full`                 | [sdr-enthusiasts/docker-tar1090][docker-tar1090], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-airnavradar][docker-airnavradar] |
 
