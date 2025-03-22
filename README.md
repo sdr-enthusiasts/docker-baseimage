@@ -23,7 +23,6 @@ Provide a basic image, with all normal packages common to all installs of [miken
 | `wreadsb` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb][wiedehopf/readsb] with [rtl-sdr][rtl-sdr] & [libusb][libusb]. |
 | `rtlsdr` | `base` | Contains the latest master branch of [rtl-sdr][rtl-sdr] and latest tagged release of [SoapyRTLSDR][SoapyRTLSDR], and prerequisites (eg: [libusb][libusb]) |
 | `dump978-full` | `wreadsb` | Contains the latest tagged release of [flightaware/dump978][flightaware/dump978], and prerequisites (various boost libraries) |
-| `qemu` | `base` | Contains [qemu-user-static][qemu-user-static] binaries |
 
 ## Using
 
@@ -59,7 +58,6 @@ RUN ...
 | `readsb-netonly`  | -                              | - |
 | `dump978-full`    | -                              | [sdr-enthusiasts/docker-piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
 | `wreadsb`         | `dump978-full`                 | [sdr-enthusiasts/docker-tar1090][docker-tar1090], [sdr-enthusiasts/docker-radarvirtuel][docker-radarvirtuel], [sdr-enthusiasts/docker-airnavradar][docker-airnavradar] |
-| `qemu`            | -                              | - |
 
 <!-- links below here -->
 [acars_router]: https://github.com/sdr-enthusiasts/acars-router
