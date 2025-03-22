@@ -18,6 +18,4 @@ RUN set -x && \
     apt-get remove -y "${TEMP_PACKAGES[@]}" && \
     apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
     rm -rf /src/* && \
-    # remove pycache
-    { find /usr | grep -E "/__pycache__$" | xargs rm -rf || true; } && \
     bash /scripts/clean-build.sh
