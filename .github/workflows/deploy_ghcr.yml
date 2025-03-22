@@ -13,14 +13,8 @@ on:
         type: boolean
         description: "Rebuild the base images but don't trigger downstream builds"
         default: false
-  # Build and deploy the image on pushes to main branch
-  push:
-    # Only publish on push to main branch
-    branches:
-      - main
-    # Don't trigger if it's just a documentation update
-    paths:
-      - "Dockerfile**"
+  # disable deploy on push, only deployed manually as this build will trigger
+  # tons of other rebuilds
 
 env:
   REGISTRY: ghcr.io
