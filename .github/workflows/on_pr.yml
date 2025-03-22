@@ -53,7 +53,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: |
             Dockerfile.base
@@ -124,7 +124,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: |
             Dockerfile.mlatclient
@@ -195,7 +195,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -203,7 +203,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -284,7 +284,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -292,7 +292,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -375,7 +375,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -383,7 +383,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -466,7 +466,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -475,7 +475,7 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -559,7 +559,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -568,7 +568,7 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -652,7 +652,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -662,7 +662,7 @@ jobs:
             Dockerfile.acars-decoder-soapy
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -748,7 +748,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -757,7 +757,7 @@ jobs:
             Dockerfile.soapy-full
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -842,7 +842,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: |
             Dockerfile.dump978-full
@@ -850,7 +850,7 @@ jobs:
             Dockerfile.rtlsdr
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -934,7 +934,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: |
             Dockerfile.wreadsb
@@ -942,7 +942,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -1025,7 +1025,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
         with:
           files: |
@@ -1033,7 +1033,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
@@ -1116,7 +1116,7 @@ jobs:
       # List of files to check to trigger a rebuild on this job
       - name: Get specific changed files
         id: changed-files-specific
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: |
             Dockerfile.planefence_base
@@ -1124,7 +1124,7 @@ jobs:
             Dockerfile.base
       - name: Get changed status of parent
         id: changed-files-parent
-        uses: tj-actions/changed-files@v45.0.7
+        uses: tj-actions/changed-files@v46.0.1
         # Add dependent dockerfiles, one per line
         with:
           files: |
