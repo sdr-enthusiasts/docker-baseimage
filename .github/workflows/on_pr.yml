@@ -236,7 +236,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -325,7 +325,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -418,7 +418,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -511,7 +511,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -607,7 +607,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -701,7 +701,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -793,7 +793,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -884,7 +884,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
@@ -975,7 +975,7 @@ jobs:
           SED_TO_APPEND: -test-pr
         run: |
           set -x
-          sed -i "s|^FROM ${SED_SEARCH}|\0${SED_TO_APPEND}|" "$DOCKERFILE"
+          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
           grep '^FROM ' "$DOCKERFILE"
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
