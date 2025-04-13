@@ -1472,7 +1472,7 @@ jobs:
     env:
       WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
       WORKFLOW_REPO: sdr-enthusiasts/docker-sdrmap
-      WORKFLOW_FILE: deploy.yml
+      WORKFLOW_FILE: deploy.yaml
       WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-sdrmap"
     steps:
       - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
