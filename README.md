@@ -15,9 +15,8 @@ Provide a basic image, with all normal packages common to all installs of [miken
 
 | Tag | Extends | Included Packages |
 | --- | ------- | ------------------|
-| `base` | - | [s6-overlay][s6-overlay] (via [mikenye/deploy-s6-overlay][mikenye/deploy-s6-overlay]), [mikenye/docker-healthchecks-framework][mikenye/docker-healthchecks-framework], [bc][bc], [ca-certificates][ca-certificates], [curl][curl], [gawk][gawk], [ncat][ncat], [net-tools][net-tools], [procps][procps], [socat][socat] |
+| `base` | - | [s6-overlay][s6-overlay] (via [mikenye/deploy-s6-overlay][mikenye/deploy-s6-overlay]), [mikenye/docker-healthchecks-framework][mikenye/docker-healthchecks-framework], [bc][bc], [ca-certificates][ca-certificates], [curl][curl], [gawk][gawk], [ncat][ncat], [net-tools][net-tools], [procps][procps], [socat][socat], [python3][python3], [python3-pkg-resources][python3-pkg-resources] |
 | `acars-decoder` | `rtlsdr` | [libacars][libacars] and all prerequisites for full functionality: ([zlib1g][zlib1g], [libxml2][libxml2], [libsqlite3][libsqlite3]) |
-| `python` | `base` | [python3][python3], [python3-pkg-resources][python3-pkg-resources] |
 | `readsb-full` | `rtlsdr` | Contains the latest `dev` branch of [Mictronics/readsb-protobuf] and all prerequisites for full functionality: ([bladeRF][bladeRF], [bladeRF FPGA images][bladeRF FPGA images], [libiio (for PlutoSDR)][libiio], [libad9361-iio (for PlutoSDR)][libad9361-iio]) |
 | `wreadsb` | `base` | Contains the latest `dev` branch of [wiedehopf's fork of readsb][wiedehopf/readsb] with [rtl-sdr][rtl-sdr] & [libusb][libusb]. |
 | `rtlsdr` | `base` | Contains the latest master branch of [rtl-sdr][rtl-sdr] and latest tagged release of [SoapyRTLSDR][SoapyRTLSDR], and prerequisites (eg: [libusb][libusb]) |
@@ -49,9 +48,8 @@ RUN ...
 
 | Tag               | Sub-tags Using                 | Up-Stream Projects Using |
 | ----------------- | ------------------------------ | ------------------------ |
-| `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/airspy-adsb][airspy], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network], [sdr-enthusiasts/docker-rtlsdrairband][docker-rtlsdrairband], [sdr-enthusiasts/docker-flightradar24][docker-flightradar24], [sdr-enthusiasts/docker-planefinder][docker-planefinder] |
+| `base`            | `ALL`                          | [sdr-enthusiasts/acars_router][acars_router],[sdr-enthusiasts/airspy-adsb][airspy], [sdr-enthusiasts/docker-adsbhub][docker-adsbhub], [sdr-enthusiasts/docker-opensky-network][docker-opensky-network], [sdr-enthusiasts/docker-rtlsdrairband][docker-rtlsdrairband], [sdr-enthusiasts/docker-flightradar24][docker-flightradar24], [sdr-enthusiasts/docker-planefinder][docker-planefinder], [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
 | `acars-decoder`   | -                              | [sdr-enthusiasts/docker-acarsdec][docker-acarsdec], [sdr-enthusiasts/docker-dumpvdl2][docker-dumpvdl2], [sdr-enthusiasts/docker-vdlm2dec][docker-vdlm2dec] |
-| `python`          | -                              | [sdr-enthusiasts/docker-acarshub][docker-acarshub], [sdr-enthusiasts/docker-adsbexchange][docker-adsbexchange], [kx1t/docker-planefence][docker-planefence], [sdr-enthusiasts/docker-reversewebproxy][docker-reversewebproxy], [kx1t/docker-raspberry-noaa-v2][docker-raspberry-noaa-v2] |
 | `rtlsdr`          | `acars-decoder`, `readsb-full`, `wreadsb` | [sdr-enthusiasts/acars-oxide][acars-oxide] |
 | `readsb-full`     | -                              | [sdr-enthusiasts/docker-readsb-protobuf][docker-readsb-protobuf] |
 | `dump978-full`    | -                              | [sdr-enthusiasts/docker-piaware][docker-piaware], [sdr-enthusiasts/docker-dump978][docker-dump978]  |
