@@ -46,6 +46,10 @@ RUN set -x && \
     cp -a "/src/dump978/skyaware/"* "/usr/share/dump978-fa/html/" && \
     # remove unnecessary files to save some space
     rm -rf /usr/share/dump978-fa/html/ol/v6.3.1/*.map /usr/share/dump978-fa/html/ol/v4.4.2 && \
+    # save some space by using symlinks for some copyright files
+    bash /scripts/deduplicate.sh /usr/share/doc/libboost-filesystem1.74.0/ /usr/share/doc/libboost-program-options1.74.0 && \
+    bash /scripts/deduplicate.sh /usr/share/doc/libboost-filesystem1.74.0/ /usr/share/doc/libboost-regex1.74.0 && \
+    bash /scripts/deduplicate.sh /usr/share/doc/libboost-filesystem1.74.0/ /usr/share/doc/libboost-system1.74.0/ && \
     # dump978: prepare test data
     git clone --depth 1 'https://github.com/mutability/dump978.git' "/src/dump978-mutability" && \
     gunzip /src/dump978-mutability/sample-data.txt.gz && \
