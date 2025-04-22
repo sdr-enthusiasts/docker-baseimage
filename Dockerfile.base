@@ -49,6 +49,10 @@ RUN \
   KEPT_PACKAGES+=(dnsutils) && \
   # used by various images
   KEPT_PACKAGES+=(jq) && \
+  # used by enough images to warrant installing it in the baseimage
+  KEPT_PACKAGES+=(python3) && \
+  KEPT_PACKAGES+=(python3-pkg-resources) && \
+  KEPT_PACKAGES+=(nginx-light) && \
   # install packages
   ## Builder fixes...
   mkdir -p /usr/sbin/ && \
