@@ -1,4 +1,4 @@
-FROM debian:bookworm-20250407-slim
+FROM debian:bookworm-20250407-slim AS build
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
   S6OVERLAY_VERSION="v3.2.0.2" \
@@ -56,6 +56,7 @@ RUN \
   ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb && \
   ln -s /bin/tar /usr/sbin/tar && \
   apt-get update && \
+  apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
   "${KEPT_PACKAGES[@]}" \
   "${TEMP_PACKAGES[@]}" \
@@ -96,5 +97,9 @@ RUN \
   apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   rm -rf /src/* && \
   bash /scripts/clean-build.sh
+
+FROM scratch
+
+COPY --from=build / /
 
 ENTRYPOINT [ "/init" ]
