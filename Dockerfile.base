@@ -47,6 +47,8 @@ RUN \
   KEPT_PACKAGES+=(nano) && \
   KEPT_PACKAGES+=(iputils-ping) && \
   KEPT_PACKAGES+=(dnsutils) && \
+  # used by various images
+  KEPT_PACKAGES+=(jq) && \
   # install packages
   ## Builder fixes...
   mkdir -p /usr/sbin/ && \
