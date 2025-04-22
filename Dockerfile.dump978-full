@@ -21,6 +21,8 @@ RUN set -x && \
     TEMP_PACKAGES+=(libboost-regex1.74-dev) && \
     KEPT_PACKAGES+=(libboost-filesystem1.74.0) && \
     TEMP_PACKAGES+=(libboost-filesystem1.74-dev) && \
+    # needed by both piaware and dump978 containers
+    KEPT_PACKAGES+=(lighttpd) && \
     # install packages
     apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -42,6 +44,8 @@ RUN set -x && \
     cp -v "/src/dump978/faup978" "/usr/lib/piaware/helpers/" && \
     mkdir -p "/usr/share/dump978-fa/html" && \
     cp -a "/src/dump978/skyaware/"* "/usr/share/dump978-fa/html/" && \
+    # remove unnecessary files to save some space
+    rm -rf /usr/share/dump978-fa/html/ol/v6.3.1/*.map /usr/share/dump978-fa/html/ol/v4.4.2 && \
     # dump978: prepare test data
     git clone --depth 1 'https://github.com/mutability/dump978.git' "/src/dump978-mutability" && \
     gunzip /src/dump978-mutability/sample-data.txt.gz && \
