@@ -72,7 +72,7 @@ jobs:
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:base
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.base
@@ -123,7 +123,7 @@ jobs:
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.mlatclient
@@ -173,7 +173,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.10.0
       # Build & Push Dockerfile.rtlsdr (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.rtlsdr
@@ -224,7 +224,7 @@ jobs:
 
       # Build & Push Dockerfile.readsb-full (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:readsb-full
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.readsb-full
@@ -275,7 +275,7 @@ jobs:
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.acars-decoder
@@ -326,7 +326,7 @@ jobs:
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-soapy
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.acars-decoder-soapy
@@ -377,7 +377,7 @@ jobs:
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:soapy-full
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.soapy-full
@@ -428,7 +428,7 @@ jobs:
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.dump978-full
@@ -479,7 +479,7 @@ jobs:
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.wreadsb
@@ -530,7 +530,7 @@ jobs:
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:planefence_base
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.17.0
         with:
           context: .
           file: ./Dockerfile.planefence_base
