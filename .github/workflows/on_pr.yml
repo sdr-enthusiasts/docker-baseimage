@@ -260,99 +260,6 @@ jobs:
         id: set-output
         run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
-  deploy_ghcr_readsb-full:
-    name: Test deploy readsb-full to ghcr.io
-    # Define any dependent steps
-    needs: [deploy_ghcr_base, deploy_ghcr_rtlsdr]
-    # Define dockerfile and image tag
-    env:
-      DOCKERFILE: Dockerfile.readsb-full
-      TAG: readsb-full
-    permissions:
-      contents: read
-      packages: write
-    runs-on: ubuntu-22.04
-    # Define output (used to clean-up PR images pushed to ghcr.io)
-    outputs:
-      cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
-    steps:
-      # Check out our code
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 0
-      # List of files to check to trigger a rebuild on this job
-      - name: Get specific changed files
-        id: changed-files-specific
-        uses: tj-actions/changed-files@v46.0.5
-        # Add dependent dockerfiles below the ${{ env.DOCKERFILE }} entry, one per line
-        with:
-          files: |
-            Dockerfile.readsb-full
-            Dockerfile.base
-            Dockerfile.rtlsdr
-      - name: Get changed status of parent
-        id: changed-files-parent
-        uses: tj-actions/changed-files@v46.0.5
-        # Add dependent dockerfiles, one per line
-        with:
-          files: |
-            Dockerfile.rtlsdr
-            Dockerfile.base
-      # Log into ghcr (so we can push images)
-      - name: Login to ghcr.io
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/login-action@v3.4.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      # Get metadata from repo
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        id: meta
-        uses: docker/metadata-action@v5.7.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      # Set up QEMU for multi-arch builds
-      - name: Set up QEMU
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/setup-qemu-action@v3.6.0
-      # Patch dockerfile to pull from PR-generated image
-      - name: Patch dockerfile
-        if: steps.changed-files-parent.outputs.any_changed == 'true'
-        id: patch-dockerfile
-        env:
-          SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          SED_TO_APPEND: -test-pr
-        run: |
-          set -x
-          sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
-          grep '^FROM ' "$DOCKERFILE"
-      # Set up buildx for multi platform builds
-      - name: Set up Docker Buildx
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
-      # Build & Push
-      - name: Test Build & Push ${{ env.IMAGE_NAME }}:${{ env.TAG }}
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: docker/build-push-action@v6.17.0
-        with:
-          context: .
-          file: ${{ env.DOCKERFILE }}
-          no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          push: true
-          # Append "-test-pr-XXX" to image name
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
-          labels: ${{ steps.meta.outputs.labels }}
-      # Set output variable for dynamic matrix in clean-up steps
-      - name: Set clean-up info
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        id: set-output
-        run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
-
   deploy_ghcr_acars-decoder:
     name: Test deploy acars-decoder to ghcr.io
     # Define any dependent steps
@@ -908,22 +815,6 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         id: set-output
         run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
-
-  # trigger_build_sdr-enthusiasts_docker-readsb-protobuf:
-  #   name: Trigger deploy of sdr-enthusiasts/docker-readsb-protobuf
-  #   needs: [deploy_ghcr_readsb-full]
-  #   runs-on: ubuntu-22.04
-  #   if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
-  #   env:
-  #     WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-  #     WORKFLOW_REPO: sdr-enthusiasts/docker-readsb-protobuf
-  #     WORKFLOW_FILE: deploy.yml
-  #     WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
-  #   steps:
-  #     - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
   trigger_build_sdr-enthusiasts_docker-acarsdec:
     name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
