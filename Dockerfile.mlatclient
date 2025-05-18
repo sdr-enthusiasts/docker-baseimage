@@ -14,7 +14,7 @@
 # 4. Also in the same RUN command for your target image, do this:
 # tar zxf /downloader/mlatclient.tgz -C / && \
 # ----------------------------------------------------------------------------------------
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:python
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
 
 ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 
