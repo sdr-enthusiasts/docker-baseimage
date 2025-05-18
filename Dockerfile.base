@@ -60,6 +60,7 @@ RUN \
   ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb && \
   ln -s /bin/tar /usr/sbin/tar && \
   apt-get update && \
+  apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
   "${KEPT_PACKAGES[@]}" \
   "${TEMP_PACKAGES[@]}" \
