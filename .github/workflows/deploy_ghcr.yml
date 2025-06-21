@@ -68,7 +68,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:base
@@ -119,7 +119,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
@@ -170,7 +170,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
       # Build & Push Dockerfile.rtlsdr (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
         uses: docker/build-push-action@v6.18.0
@@ -220,7 +220,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder
@@ -271,7 +271,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile.acars (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-soapy
@@ -322,7 +322,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:soapy-full
@@ -373,7 +373,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full
@@ -424,7 +424,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
@@ -475,7 +475,7 @@ jobs:
       # Set up buildx for multi platform builds
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
 
       # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
       - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:planefence_base
