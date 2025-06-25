@@ -386,7 +386,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-opensky deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-opensky-network deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: planefinder
         continue-on-error: true
         run: |
