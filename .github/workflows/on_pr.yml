@@ -40,6 +40,7 @@ jobs:
       planefence_base_changed: ${{ steps.changed-files-planefence_base.outputs.any_changed }}
       acarsdecoder_changed: ${{ steps.changed-files-acarsdecoder.outputs.any_changed }}
       soapy_changed: ${{ steps.changed-files-soapy.outputs.any_changed }}
+      wreadsb_changed: ${{ steps.changed-files-wreadsb.outputs.any_changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -94,10 +95,20 @@ jobs:
             Dockerfile.rtlsdr
             Dockerfile.base
 
+      - name: Check for wreadsb
+        id: changed-files-wreadsb
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          files: |
+            Dockerfile.wreadsb
+            Dockerfile.mlatclient
+            Dockerfile.rtlsdr
+            Dockerfile.base
+
   # Basefile
   deploy_ghcr_base:
     if: ${{ needs.changed_files.outputs.basefile_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
-    name:  Base
+    name: Base
     # Define any dependent steps
     needs: [hadolint, changed_files]
     # Define dockerfile and image tag
@@ -125,7 +136,7 @@ jobs:
   # Next steps are all of the deployments that depend on the base image
   deploy_ghcr_mlat_client:
     if: ${{ needs.changed_files.outputs.mlatclient_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
-    needs: [hadolint, deploy_ghcr_base, changed_files]
+    needs: [deploy_ghcr_base, changed_files]
     name: Mlat Client
     # Define any dependent steps
     # Define dockerfile and image tag
@@ -153,7 +164,7 @@ jobs:
     if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: RTLSDR
     # Define any dependent steps
-    needs: [hadolint, deploy_ghcr_base, changed_files]
+    needs: [deploy_ghcr_base, changed_files]
     # Define dockerfile and image tag
     permissions:
       contents: read
@@ -179,7 +190,7 @@ jobs:
     if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: Planefence
     # Define any dependent steps
-    needs: [hadolint, deploy_ghcr_base, changed_files]
+    needs: [deploy_ghcr_base, changed_files]
     # Define dockerfile and image tag
     permissions:
       contents: read
@@ -207,7 +218,7 @@ jobs:
     if: ${{ needs.changed_files.outputs.acarsdecoder_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: ACARS Decoder
     # Define any dependent steps
-    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_base, changed_files]
+    needs: [deploy_ghcr_rtlsdr, changed_files]
     # Define dockerfile and image tag
     permissions:
       contents: read
@@ -233,7 +244,7 @@ jobs:
     if: ${{ needs.changed_files.outputs.soapy_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: Soapy Full
     # Define any dependent steps
-    needs: [hadolint, deploy_ghcr_base, changed_files]
+    needs: [deploy_ghcr_rtlsdr, changed_files]
     # Define dockerfile and image tag
     permissions:
       contents: read
@@ -255,6 +266,33 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
+  # deployments that rely on rtlsdr AND mlatclient
+
+  deploy_ghcr_wreadsb:
+    if: ${{ needs.changed_files.outputs.wreadsb_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    name: Wreadsb
+    # Define any dependent steps
+    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client, changed_files]
+    # Define dockerfile and image tag
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: wreadsb-test-pr
+      build_baseimage_test: true
+      build_baseimage_url: :mlatclient/:mlatclient-test-pr,/g;s/:rtlsdr/:rtlsdr-test-pr
+      docker_build_file: Dockerfile.wreadsb
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
   # deploy_ghcr_acars-decoder-soapy:
   #   name: Test deploy acars-decoder-soapy to ghcr.io
   #   # Define any dependent steps
@@ -443,186 +481,7 @@ jobs:
   #       id: set-output
   #       run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
-  # deploy_wreadsb:
-  #   name: Test deploy wreadsb to ghcr.io
-  #   # Define any dependent steps
-  #   needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client]
-  #   # Define dockerfile and image tag
-  #   env:
-  #     DOCKERFILE: Dockerfile.wreadsb
-  #     TAG: wreadsb
-  #   runs-on: ubuntu-22.04
-  #   permissions:
-  #     contents: read
-  #     packages: write
-  #   # Define output (used to clean-up PR images pushed to ghcr.io)
-  #   outputs:
-  #     cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
-  #   steps:
-  #     # Check out our code
-  #     - name: Checkout
-  #       uses: actions/checkout@v4.2.2
-  #       with:
-  #         fetch-depth: 0
-  #     # List of files to check to trigger a rebuild on this job
-  #     - name: Get specific changed files
-  #       id: changed-files-specific
-  #       uses: tj-actions/changed-files@v46.0.5
-  #       with:
-  #         files: |
-  #           Dockerfile.wreadsb
-  #           Dockerfile.rtlsdr
-  #           Dockerfile.base
-  #     - name: Get changed status of parent
-  #       id: changed-files-parent
-  #       uses: tj-actions/changed-files@v46.0.5
-  #       # Add dependent dockerfiles, one per line
-  #       with:
-  #         files: |
-  #           Dockerfile.base
-  #     # Log into ghcr (so we can push images)
-  #     - name: Login to ghcr.io
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       uses: docker/login-action@v3.4.0
-  #       with:
-  #         registry: ${{ env.REGISTRY }}
-  #         username: ${{ github.repository_owner }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
-  #     # Get metadata from repo
-  #     - name: Extract metadata (tags, labels) for Docker
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       id: meta
-  #       uses: docker/metadata-action@v5.7.0
-  #       with:
-  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-  #     # Set up QEMU for multi-arch builds
-  #     - name: Set up QEMU
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       uses: docker/setup-qemu-action@v3.6.0
-  #     # Patch dockerfile to pull from PR-generated image
-  #     - name: Patch dockerfile
-  #       if: steps.changed-files-parent.outputs.any_changed == 'true'
-  #       id: patch-dockerfile
-  #       env:
-  #         SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-  #         SED_TO_APPEND: -test-pr
-  #       run: |
-  #         set -x
-  #         sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
-  #         grep '^FROM ' "$DOCKERFILE"
-  #     # Set up buildx for multi platform builds
-  #     - name: Set up Docker Buildx
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       id: buildx
-  #       uses: docker/setup-buildx-action@v3.10.0
-  #     # Build & Push
-  #     - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       uses: docker/build-push-action@v6.18.0
-  #       with:
-  #         context: .
-  #         file: ${{ env.DOCKERFILE }}
-  #         no-cache: true
-  #         platforms: linux/amd64,linux/arm/v7,linux/arm64
-  #         push: true
-  #         # Append "-test-pr-XXX" to image name
-  #         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
-  #         labels: ${{ steps.meta.outputs.labels }}
-  #     # Set output variable for dynamic matrix in clean-up steps
-  #     - name: Set clean-up info
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       id: set-output
-  #       run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
-  # deploy_planefence_base:
-  #   name: Test deploy planfence_base to ghcr.io
-  #   # Define any dependent steps
-  #   needs: [deploy_ghcr_base]
-  #   # Define dockerfile and image tag
-  #   env:
-  #     DOCKERFILE: Dockerfile.planefence_base
-  #     TAG: planefence_base
-  #   runs-on: ubuntu-22.04
-  #   permissions:
-  #     contents: read
-  #     packages: write
-  #   # Define output (used to clean-up PR images pushed to ghcr.io)
-  #   outputs:
-  #     cleanupinfo: ${{ steps.set-output.outputs.cleanupinfo }}
-  #   steps:
-  #     # Check out our code
-  #     - name: Checkout
-  #       uses: actions/checkout@v4.2.2
-  #       with:
-  #         fetch-depth: 0
-  #     # List of files to check to trigger a rebuild on this job
-  #     - name: Get specific changed files
-  #       id: changed-files-specific
-  #       uses: tj-actions/changed-files@v46.0.5
-  #       with:
-  #         files: |
-  #           Dockerfile.planefence_base
-  #           Dockerfile.base
-  #     - name: Get changed status of parent
-  #       id: changed-files-parent
-  #       uses: tj-actions/changed-files@v46.0.5
-  #       # Add dependent dockerfiles, one per line
-  #       with:
-  #         files: |
-  #           Dockerfile.base
-  #     # Log into ghcr (so we can push images)
-  #     - name: Login to ghcr.io
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       uses: docker/login-action@v3.4.0
-  #       with:
-  #         registry: ${{ env.REGISTRY }}
-  #         username: ${{ github.repository_owner }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
-  #     # Get metadata from repo
-  #     - name: Extract metadata (tags, labels) for Docker
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       id: meta
-  #       uses: docker/metadata-action@v5.7.0
-  #       with:
-  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-  #     # Set up QEMU for multi-arch builds
-  #     - name: Set up QEMU
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       uses: docker/setup-qemu-action@v3.6.0
-  #     # Patch dockerfile to pull from PR-generated image
-  #     - name: Patch dockerfile
-  #       if: steps.changed-files-parent.outputs.any_changed == 'true'
-  #       id: patch-dockerfile
-  #       env:
-  #         SED_SEARCH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-  #         SED_TO_APPEND: -test-pr
-  #       run: |
-  #         set -x
-  #         sed -i "s|^FROM ${SED_SEARCH}[^ ]*|\0${SED_TO_APPEND}|" "$DOCKERFILE"
-  #         grep '^FROM ' "$DOCKERFILE"
-  #     # Set up buildx for multi platform builds
-  #     - name: Set up Docker Buildx
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       id: buildx
-  #       uses: docker/setup-buildx-action@v3.10.0
-  #     # Build & Push
-  #     - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:planefence_base
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       uses: docker/build-push-action@v6.18.0
-  #       with:
-  #         context: .
-  #         file: ${{ env.DOCKERFILE }}
-  #         no-cache: true
-  #         platforms: linux/amd64,linux/arm/v7,linux/arm64
-  #         push: true
-  #         # Append "-test-pr-XXX" to image name
-  #         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-test-pr
-  #         labels: ${{ steps.meta.outputs.labels }}
-  #     # Set output variable for dynamic matrix in clean-up steps
-  #     - name: Set clean-up info
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       id: set-output
-  #       run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
 
   # trigger_build_sdr-enthusiasts_docker-acarsdec:
   #   name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
