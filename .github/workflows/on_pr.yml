@@ -33,8 +33,8 @@ jobs:
     name: Get changed files
     runs-on: ubuntu-22.04
     outputs:
-      basefile_changed: "true"
-      #basefile_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
+      force_build: "true"
+      basefile_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
       mlatclient_changed: ${{ steps.changed-files-mlatclient.outputs.any_changed }}
       rtlsdr_changed: ${{ steps.changed-files-rtlsdr.outputs.any_changed }}
       planefence_base_changed: ${{ steps.changed-files-planefence_base.outputs.any_changed }}
@@ -76,7 +76,7 @@ jobs:
 
   # Basefile
   deploy_ghcr_base:
-    if: ${{ needs.changed_files.outputs.basefile_changed == 'true' }}
+    if: ${{ needs.changed_files.outputs.basefile_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: Test deploy base to ghcr.io
     # Define any dependent steps
     needs: [hadolint, changed_files]
@@ -105,7 +105,7 @@ jobs:
 
   # Next steps are all of the deployments that depend on the base image
   deploy_ghcr_mlat_client:
-    if: ${{ needs.changed_files.outputs.mlatclient_changed == 'true' }}
+    if: ${{ needs.changed_files.outputs.mlatclient_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     needs: [hadolint, deploy_ghcr_base, changed_files]
     name: Test deploy MLAT Client to ghcr.io
     # Define any dependent steps
@@ -132,7 +132,7 @@ jobs:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_rtlsdr:
-    if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' }}
+    if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: Test deploy rtlsdr to ghcr.io
     # Define any dependent steps
     needs: [hadolint, deploy_ghcr_base, changed_files]
@@ -159,7 +159,7 @@ jobs:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_planefence_base:
-    if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' }}
+    if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     name: Test deploy planefence_base to ghcr.io
     # Define any dependent steps
     needs: [hadolint, deploy_ghcr_base, changed_files]
