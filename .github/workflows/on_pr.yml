@@ -48,7 +48,7 @@ jobs:
             Dockerfile.base
 
   deploy_ghcr_base:
-    if: ${{ needs.changed_files.outputs.basefile_changed }}
+    if: ${{ needs.changed_files.outputs.basefile_changed == 'true' }}
     name: Test deploy base to ghcr.io
     # Define any dependent steps
     needs: [hadolint, changed_files]
@@ -68,7 +68,7 @@ jobs:
       build_with_tmpfs: false
       # set build_latest to true if github.event.inputs.use_test_image is false
       build_latest: true
-      docker_latest_tag: -test-pr
+      docker_latest_tag: base-test-pr
       build_baseimage_test: false
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.base
