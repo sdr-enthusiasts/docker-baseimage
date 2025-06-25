@@ -77,7 +77,7 @@ jobs:
   # Basefile
   deploy_ghcr_base:
     if: ${{ needs.changed_files.outputs.basefile_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
-    name: Test deploy base to ghcr.io
+    name:  Base
     # Define any dependent steps
     needs: [hadolint, changed_files]
     # Define dockerfile and image tag
@@ -93,7 +93,6 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_with_tmpfs: false
-      # set build_latest to true if github.event.inputs.use_test_image is false
       build_latest: true
       docker_latest_tag: base-test-pr
       build_baseimage_test: false
@@ -107,7 +106,7 @@ jobs:
   deploy_ghcr_mlat_client:
     if: ${{ needs.changed_files.outputs.mlatclient_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
     needs: [hadolint, deploy_ghcr_base, changed_files]
-    name: Test deploy MLAT Client to ghcr.io
+    name: Mlat Client
     # Define any dependent steps
     # Define dockerfile and image tag
     permissions:
@@ -122,10 +121,9 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_with_tmpfs: false
-      # set build_latest to true if github.event.inputs.use_test_image is false
       build_latest: true
       docker_latest_tag: mlatclient-test-pr
-      build_baseimage_test: false
+      build_baseimage_test: true
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.mlatclient
     secrets:
@@ -133,7 +131,7 @@ jobs:
 
   deploy_ghcr_rtlsdr:
     if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
-    name: Test deploy rtlsdr to ghcr.io
+    name: RTLSDR
     # Define any dependent steps
     needs: [hadolint, deploy_ghcr_base, changed_files]
     # Define dockerfile and image tag
@@ -149,10 +147,9 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_with_tmpfs: false
-      # set build_latest to true if github.event.inputs.use_test_image is false
       build_latest: true
       docker_latest_tag: rtlsdr-test-pr
-      build_baseimage_test: false
+      build_baseimage_test: true
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.rtlsdr
     secrets:
@@ -160,7 +157,7 @@ jobs:
 
   deploy_ghcr_planefence_base:
     if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
-    name: Test deploy planefence_base to ghcr.io
+    name: Planefence
     # Define any dependent steps
     needs: [hadolint, deploy_ghcr_base, changed_files]
     # Define dockerfile and image tag
@@ -176,10 +173,9 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_with_tmpfs: false
-      # set build_latest to true if github.event.inputs.use_test_image is false
       build_latest: true
       docker_latest_tag: planefence_base-test-pr
-      build_baseimage_test: false
+      build_baseimage_test: true
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.planefence_base
     secrets:
