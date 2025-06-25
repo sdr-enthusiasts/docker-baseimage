@@ -33,7 +33,8 @@ jobs:
     name: Get changed files
     runs-on: ubuntu-22.04
     outputs:
-      basefile_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
+      basefile_changed: "true"
+      #basefile_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
       mlatclient_changed: ${{ steps.changed-files-mlatclient.outputs.any_changed }}
       rtlsdr_changed: ${{ steps.changed-files-rtlsdr.outputs.any_changed }}
       planefence_base_changed: ${{ steps.changed-files-planefence_base.outputs.any_changed }}
