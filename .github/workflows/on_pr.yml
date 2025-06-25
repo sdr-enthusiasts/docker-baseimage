@@ -4,6 +4,11 @@ name: Pull Request
 on:
   # Enable manual running of action if necessary
   workflow_dispatch:
+    inputs:
+      disable_upstream_triggers:
+        description: "Disable upstream triggers for this workflow run"
+        required: false
+        default: "false"
   # Build and test deployment the image on pushes to main branch
   pull_request:
     # Only publish on push to main branch
