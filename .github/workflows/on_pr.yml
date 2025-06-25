@@ -40,7 +40,6 @@ jobs:
     name: Get changed files
     runs-on: ubuntu-22.04
     outputs:
-      force_build: "true"
       basefile_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
       mlatclient_changed: ${{ steps.changed-files-mlatclient.outputs.any_changed }}
       rtlsdr_changed: ${{ steps.changed-files-rtlsdr.outputs.any_changed }}
@@ -136,7 +135,7 @@ jobs:
 
   # Basefile
   deploy_ghcr_base:
-    if: ${{ needs.changed_files.outputs.basefile_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.basefile_changed == 'true' }}
     name: Base
     needs: [hadolint, changed_files]
     permissions:
@@ -159,10 +158,9 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-
   # Next steps are all of the deployments that depend on the base image
   deploy_ghcr_mlat_client:
-    if: ${{ needs.changed_files.outputs.mlatclient_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.mlatclient_changed == 'true' }}
     needs: [deploy_ghcr_base, changed_files]
     name: Mlat Client
     permissions:
@@ -186,7 +184,7 @@ jobs:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_rtlsdr:
-    if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' }}
     name: RTLSDR
     needs: [deploy_ghcr_base, changed_files]
     permissions:
@@ -210,7 +208,7 @@ jobs:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_planefence_base:
-    if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' }}
     name: Planefence
     needs: [deploy_ghcr_base, changed_files]
     permissions:
@@ -236,7 +234,7 @@ jobs:
   # deployments that only rely on rtlsdr
 
   deploy_ghcr_acars-decoder:
-    if: ${{ needs.changed_files.outputs.acarsdecoder_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.acarsdecoder_changed == 'true' }}
     name: ACARS Decoder
     needs: [deploy_ghcr_rtlsdr, changed_files]
     permissions:
@@ -260,7 +258,7 @@ jobs:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_soapy_full:
-    if: ${{ needs.changed_files.outputs.soapy_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.soapy_changed == 'true' }}
     name: Soapy Full
     needs: [deploy_ghcr_rtlsdr, changed_files]
     permissions:
@@ -286,7 +284,7 @@ jobs:
   # deployments that rely on rtlsdr AND mlatclient
 
   deploy_ghcr_wreadsb:
-    if: ${{ needs.changed_files.outputs.wreadsb_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.wreadsb_changed == 'true' }}
     name: Wreadsb
     needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client, changed_files]
     permissions:
@@ -312,7 +310,7 @@ jobs:
   # deployments that rely on just soapy-full
 
   deploy_ghcr_acars-decoder-soapy:
-    if: ${{ needs.changed_files.outputs.acarsdecoder_soapy_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.acarsdecoder_soapy_changed == 'true' }}
     name: ACARS Decoder Soapy
     needs: [deploy_ghcr_wreadsb, changed_files]
     permissions:
@@ -338,7 +336,7 @@ jobs:
   # deployments that rely on just wreadsb
 
   deploy_dump978-full:
-    if: ${{ needs.changed_files.outputs.dump978_full_changed == 'true' || needs.changed_files.outputs.force_build == 'true' }}
+    if: ${{ needs.changed_files.outputs.dump978_full_changed == 'true' }}
     name: Dump978 Full
     needs: [deploy_ghcr_wreadsb, changed_files]
     permissions:
