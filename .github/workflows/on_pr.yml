@@ -289,7 +289,7 @@ jobs:
       build_latest: true
       docker_latest_tag: wreadsb-test-pr
       build_baseimage_test: true
-      build_baseimage_url: :mlatclient/:mlatclient-test-pr,/g;s/:rtlsdr/:rtlsdr-test-pr
+      build_baseimage_url: :mlatclient/:mlatclient-test-pr/g;s/:rtlsdr/:rtlsdr-test-pr
       docker_build_file: Dockerfile.wreadsb
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -480,8 +480,6 @@ jobs:
   #       if: steps.changed-files-specific.outputs.any_changed == 'true'
   #       id: set-output
   #       run: echo "cleanupinfo=$TAG" >> $GITHUB_OUTPUT
-
-
 
   # trigger_build_sdr-enthusiasts_docker-acarsdec:
   #   name: Trigger deploy of sdr-enthusiasts/docker-acarsdec
