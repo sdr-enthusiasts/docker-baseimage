@@ -363,46 +363,57 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: acarshub
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-acarshub deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: beast-splitter
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-beast-splitter deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: flightradar24
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-flightradar24 deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: adsbhub
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-adsbhub deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: opensky
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-opensky deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: planefinder
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-planefinder deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: acars_router
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/acars_router deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: airspy
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/airspy_adsb deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: reversewebproxy
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-reversewebproxy deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: radar1090
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-radar1090 deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: flightairmap
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-flightairmap deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
@@ -414,26 +425,32 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: acarsdec
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-acarsdec deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: dumpvdl2
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-dumpvdl2 deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: dumpvdl2dec
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-vdlm2dec deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: dumphfdl
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-dumphfdl deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: hfdlobserver
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-hfdlobserver deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: rtlsdrairband
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-rtlsdrairband deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
@@ -445,6 +462,7 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: Planefence
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-planefence deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
@@ -456,18 +474,22 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: airnav
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-airnavradar deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: radarvirtuel
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-radarvirtuel deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: tar1090
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: sdrplay_beast1090
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
@@ -479,10 +501,12 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: dump978
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-dump978 deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: piaware
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
@@ -494,14 +518,17 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: shipfeeder
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: aprs-tracker
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
       - name: vesselalert
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
@@ -517,6 +544,7 @@ jobs:
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
       - name: sdrmap
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrmap deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
