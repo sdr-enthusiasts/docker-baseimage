@@ -53,11 +53,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5
+
+      - uses: nrwl/nx-set-shas@v3
+        id: last_successful_commit_pull_request
+        with:
+          main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }}
       - name: Check basefile change
         id: changed-files-specific
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.base
 
@@ -65,6 +74,7 @@ jobs:
         id: changed-files-mlatclient
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.mlatclient
             Dockerfile.base
@@ -73,6 +83,7 @@ jobs:
         id: changed-files-rtlsdr
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.rtlsdr
             Dockerfile.base
@@ -81,6 +92,7 @@ jobs:
         id: changed-files-planefence_base
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.planefence_base
             Dockerfile.base
@@ -89,6 +101,7 @@ jobs:
         id: changed-files-acarsdecoder
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.acars-decoder
             Dockerfile.rtlsdr
@@ -98,6 +111,7 @@ jobs:
         id: changed-files-soapy
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.soapy-full
             Dockerfile.rtlsdr
@@ -107,6 +121,7 @@ jobs:
         id: changed-files-wreadsb
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.wreadsb
             Dockerfile.mlatclient
@@ -117,6 +132,7 @@ jobs:
         id: changed-files-acarsdecoder-soapy
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.acars-decoder-soapy
             Dockerfile.soapy-full
@@ -127,6 +143,7 @@ jobs:
         id: changed-files-dump978-full
         uses: tj-actions/changed-files@v46.0.5
         with:
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.dump978-full
             Dockerfile.rtlsdr
