@@ -62,7 +62,7 @@ jobs:
         id: branch-name
         uses: tj-actions/branch-names@v8
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v4
         id: last_successful_commit_pull_request
         with:
           main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }}
