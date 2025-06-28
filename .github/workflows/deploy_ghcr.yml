@@ -74,7 +74,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: mlatclient-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.mlatclient
     secrets:
@@ -97,7 +96,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: rtlsdr-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.rtlsdr
     secrets:
@@ -120,7 +118,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: planefence_base-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.planefence_base
     secrets:
@@ -145,7 +142,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: acars-decoder-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :rtlsdr/:rtlsdr-test-pr
       docker_build_file: Dockerfile.acars-decoder
     secrets:
@@ -168,7 +164,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: soapy-full-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :rtlsdr/:rtlsdr-test-pr
       docker_build_file: Dockerfile.soapy-full
     secrets:
@@ -193,7 +188,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: wreadsb-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :mlatclient/:mlatclient-test-pr/g;s/:rtlsdr/:rtlsdr-test-pr
       docker_build_file: Dockerfile.wreadsb
     secrets:
@@ -218,7 +212,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: acars-decoder-soapy-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :soapy-full/:soapy-full-test-pr
       docker_build_file: Dockerfile.acars-decoder-soapy
     secrets:
@@ -243,7 +236,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: dump978-full-test-pr
-      build_baseimage_test: true
       build_baseimage_url: :wreadsb/:wreadsb-test-pr
       docker_build_file: Dockerfile.dump978-full
     secrets:
