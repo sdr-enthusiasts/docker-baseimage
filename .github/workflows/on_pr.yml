@@ -46,7 +46,6 @@ jobs:
     outputs:
       basefile_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
       mlatclient_changed: ${{ steps.changed-files-mlatclient.outputs.any_changed }}
-      rtlsdr_changed: ${{ steps.changed-files-rtlsdr.outputs.any_changed }}
       planefence_base_changed: ${{ steps.changed-files-planefence_base.outputs.any_changed }}
       acarsdecoder_changed: ${{ steps.changed-files-acarsdecoder.outputs.any_changed }}
       soapy_changed: ${{ steps.changed-files-soapy.outputs.any_changed }}
@@ -81,15 +80,6 @@ jobs:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
             Dockerfile.mlatclient
-            Dockerfile.base
-
-      - name: Check rtlsdr change
-        id: changed-files-rtlsdr
-        uses: tj-actions/changed-files@v46.0.5
-        with:
-          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
-          files: |
-            Dockerfile.rtlsdr
             Dockerfile.base
 
       - name: Check planefence_base change
@@ -204,30 +194,6 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy_ghcr_rtlsdr:
-    if: ${{ needs.changed_files.outputs.rtlsdr_changed == 'true' }}
-    name: RTLSDR
-    needs: [deploy_ghcr_base, changed_files]
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-      attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-    with:
-      push_enabled: true
-      push_destinations: ghcr.io
-      ghcr_repo_owner: ${{ github.repository_owner }}
-      ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
-      build_latest: true
-      docker_latest_tag: rtlsdr-test-pr
-      build_baseimage_test: true
-      build_baseimage_url: :base/:base-test-pr
-      docker_build_file: Dockerfile.rtlsdr
-    secrets:
-      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
-
   deploy_ghcr_planefence_base:
     if: ${{ needs.changed_files.outputs.planefence_base_changed == 'true' }}
     name: Planefence
@@ -254,34 +220,10 @@ jobs:
 
   # deployments that only rely on rtlsdr
 
-  deploy_ghcr_acars-decoder:
-    if: ${{ needs.changed_files.outputs.acarsdecoder_changed == 'true' }}
-    name: ACARS Decoder
-    needs: [deploy_ghcr_rtlsdr, changed_files]
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-      attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-    with:
-      push_enabled: true
-      push_destinations: ghcr.io
-      ghcr_repo_owner: ${{ github.repository_owner }}
-      ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
-      build_latest: true
-      docker_latest_tag: acars-decoder-test-pr
-      build_baseimage_test: true
-      build_baseimage_url: :rtlsdr/:rtlsdr-test-pr
-      docker_build_file: Dockerfile.acars-decoder
-    secrets:
-      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
-
   deploy_ghcr_soapy_full:
     if: ${{ needs.changed_files.outputs.soapy_changed == 'true' }}
     name: Soapy Full
-    needs: [deploy_ghcr_rtlsdr, changed_files]
+    needs: [deploy_ghcr_base, changed_files]
     permissions:
       contents: read
       packages: write
@@ -297,7 +239,7 @@ jobs:
       build_latest: true
       docker_latest_tag: soapy-full-test-pr
       build_baseimage_test: true
-      build_baseimage_url: :rtlsdr/:rtlsdr-test-pr
+      build_baseimage_url: :base/:base-test-pr
       docker_build_file: Dockerfile.soapy-full
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -307,7 +249,7 @@ jobs:
   deploy_ghcr_wreadsb:
     if: ${{ needs.changed_files.outputs.wreadsb_changed == 'true' }}
     name: Wreadsb
-    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client, changed_files]
+    needs: [deploy_ghcr_base, deploy_ghcr_mlat_client, changed_files]
     permissions:
       contents: read
       packages: write
@@ -323,7 +265,7 @@ jobs:
       build_latest: true
       docker_latest_tag: wreadsb-test-pr
       build_baseimage_test: true
-      build_baseimage_url: :mlatclient/:mlatclient-test-pr/g;s/:rtlsdr/:rtlsdr-test-pr
+      build_baseimage_url: :mlatclient/:mlatclient-test-pr/g;s/:base/:base-test-pr
       docker_build_file: Dockerfile.wreadsb
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -442,6 +384,27 @@ jobs:
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-flightairmap deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
+      - name: shipfeeder
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
+      - name: aprs-tracker
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
+      - name: vesselalert
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
+      # - name: acars-oxide
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/a
+
+
   trigger_build_acars_soapy:
     name: Trigger deploy of acars decoder soapy images
     needs: [deploy_ghcr_acars-decoder-soapy]
@@ -534,32 +497,6 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
-
-  trigger_build_rtlsdr:
-    name: Trigger deploy rtlsdr images
-    needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
-    steps:
-      - name: shipfeeder
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
-      - name: aprs-tracker
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
-      - name: vesselalert
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
-      # - name: acars-oxide
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/acars-oxide deploy.yml -f reason="$WORKFLOW_REASON" -f use_test_image=true
 
   trigger_build_mlatclient:
     name: Trigger deploy of sdr-enthusiasts/docker-sdrmap
