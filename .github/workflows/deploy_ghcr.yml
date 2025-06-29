@@ -50,8 +50,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: base
-      build_baseimage_test: false
-      build_baseimage_url: :base/:base
       docker_build_file: Dockerfile.base
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -74,7 +72,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: mlatclient
-      build_baseimage_url: :base/:base
       docker_build_file: Dockerfile.mlatclient
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -96,7 +93,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: rtlsdr
-      build_baseimage_url: :base/:base
       docker_build_file: Dockerfile.rtlsdr
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -118,7 +114,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: planefence_base
-      build_baseimage_url: :base/:base
       docker_build_file: Dockerfile.planefence_base
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -142,7 +137,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: acars-decoder
-      build_baseimage_url: :rtlsdr/:rtlsdr
       docker_build_file: Dockerfile.acars-decoder
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -164,7 +158,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: soapy-full
-      build_baseimage_url: :rtlsdr/:rtlsdr
       docker_build_file: Dockerfile.soapy-full
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -188,7 +181,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: wreadsb
-      build_baseimage_url: :mlatclient/:mlatclient/g;s/:rtlsdr/:rtlsdr
       docker_build_file: Dockerfile.wreadsb
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -212,7 +204,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: acars-decoder-soapy
-      build_baseimage_url: :soapy-full/:soapy-full
       docker_build_file: Dockerfile.acars-decoder-soapy
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -236,7 +227,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: dump978-full
-      build_baseimage_url: :wreadsb/:wreadsb
       docker_build_file: Dockerfile.dump978-full
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
