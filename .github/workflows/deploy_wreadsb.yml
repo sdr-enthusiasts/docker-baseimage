@@ -40,7 +40,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: wreadsb
-      build_baseimage_url: :mlatclient/:mlatclient/g;s/:rtlsdr/:rtlsdr
       docker_build_file: Dockerfile.wreadsb
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -61,7 +60,6 @@ jobs:
       build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: mlatclient
-      build_baseimage_url: :base/:base
       docker_build_file: Dockerfile.mlatclient
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
