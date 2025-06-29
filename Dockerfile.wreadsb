@@ -1,33 +1,9 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient AS buildimage
 
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
-
 SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN \
-  --mount=type=bind,from=buildimage,source=/,target=/buildimage/ \
-  TEMP_PACKAGES=() && \
-  KEPT_PACKAGES=() && \
-  # packages needed to install
-  TEMP_PACKAGES+=(git) && \
-  # packages needed to build
-  TEMP_PACKAGES+=(build-essential) && \
-  TEMP_PACKAGES+=(pkg-config) && \
-  # prerequisites for readsb \
-  KEPT_PACKAGES+=(libncurses6) && \
-  TEMP_PACKAGES+=(libncurses-dev) && \
-  KEPT_PACKAGES+=(zlib1g) && \
-  TEMP_PACKAGES+=(zlib1g-dev) && \
-  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
-  TEMP_PACKAGES+=(libzstd-dev) && \
-  KEPT_PACKAGES+=(libzstd1) && \
-  # install packages
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-  "${KEPT_PACKAGES[@]}" \
-  "${TEMP_PACKAGES[@]}" \
-  && \
   # readsb: clone repo
   git clone \
   --branch "dev" \
@@ -45,7 +21,17 @@ RUN \
   -j "$(nproc)" \
   && \
   cp readsb /usr/local/bin/ && \
-  popd && \
+  /usr/local/bin/readsb --version && \
+  popd
+
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN \
+  --mount=type=bind,from=buildimage,source=/,target=/buildimage/ \
+  cp /buildimage/usr/local/bin/readsb /usr/local/bin/ && \
   pushd /usr/local/bin && \
   ln -s readsb viewadsb && \
   popd && \
@@ -56,10 +42,6 @@ RUN \
   # Get mlat-client
   tar zxf /buildimage/mlatclient.tgz -C / && \
   ln -s /usr/local/bin/mlat-client /usr/bin/mlat-client && \
-  # Clean up
-  apt-get remove -y "${TEMP_PACKAGES[@]}" && \
-  apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y && \
   # test mlat-client
   /usr/bin/mlat-client --help > /dev/null && \
-  rm -rf /src/* && \
   bash /scripts/clean-build.sh
