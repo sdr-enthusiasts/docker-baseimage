@@ -22,7 +22,8 @@ RUN \
   && \
   cp readsb /usr/local/bin/ && \
   /usr/local/bin/readsb --version && \
-  popd
+  popd && \
+  true
 
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
 
