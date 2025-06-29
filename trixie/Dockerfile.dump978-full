@@ -1,0 +1,61 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    # packages needed to install
+    TEMP_PACKAGES+=(git) && \
+    # packages needed to build
+    TEMP_PACKAGES+=(build-essential) && \
+    TEMP_PACKAGES+=(cmake) && \
+    TEMP_PACKAGES+=(pkg-config) && \
+    # dependencies for dump978
+    KEPT_PACKAGES+=(libboost-system1.83.0) && \
+    TEMP_PACKAGES+=(libboost-system1.83-dev) && \
+    KEPT_PACKAGES+=(libboost-program-options1.83.0) && \
+    TEMP_PACKAGES+=(libboost-program-options1.83-dev) && \
+    KEPT_PACKAGES+=(libboost-regex1.83.0) && \
+    TEMP_PACKAGES+=(libboost-regex1.83-dev) && \
+    KEPT_PACKAGES+=(libboost-filesystem1.83.0) && \
+    TEMP_PACKAGES+=(libboost-filesystem1.83-dev) && \
+    # needed by both piaware and dump978 containers
+    KEPT_PACKAGES+=(lighttpd) && \
+    # install packages
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    "${KEPT_PACKAGES[@]}" \
+    "${TEMP_PACKAGES[@]}" \
+    && \
+    # dump978: get latest tag
+    BRANCH_DUMP978=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/flightaware/dump978.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^v.*' | tail -1) && \
+    # dump978: clone latest tag
+    git clone --depth 1 --branch "$BRANCH_DUMP978" "https://github.com/flightaware/dump978.git" "/src/dump978" && \
+    # dump978: make
+    pushd /src/dump978 && \
+    make -j "$(nproc)" all faup978 && \
+    popd && \
+    # dump978: install
+    mkdir -p "/usr/lib/piaware/helpers" && \
+    cp -v "/src/dump978/dump978-fa" "/usr/local/bin/" && \
+    cp -v "/src/dump978/skyaware978" "/usr/local/bin/" && \
+    cp -v "/src/dump978/faup978" "/usr/lib/piaware/helpers/" && \
+    mkdir -p "/usr/share/dump978-fa/html" && \
+    cp -a "/src/dump978/skyaware/"* "/usr/share/dump978-fa/html/" && \
+    # remove unnecessary files to save some space
+    rm -rf /usr/share/dump978-fa/html/ol/v6.3.1/*.map /usr/share/dump978-fa/html/ol/v4.4.2 && \
+    # save some space by using symlinks for some copyright files
+    bash /scripts/deduplicate.sh /usr/share/doc/libboost-filesystem1.74.0/ /usr/share/doc/libboost-program-options1.74.0 && \
+    bash /scripts/deduplicate.sh /usr/share/doc/libboost-filesystem1.74.0/ /usr/share/doc/libboost-regex1.74.0 && \
+    bash /scripts/deduplicate.sh /usr/share/doc/libboost-filesystem1.74.0/ /usr/share/doc/libboost-system1.74.0/ && \
+    # dump978: prepare test data
+    git clone --depth 1 'https://github.com/mutability/dump978.git' "/src/dump978-mutability" && \
+    gunzip /src/dump978-mutability/sample-data.txt.gz && \
+    # dump978: simple test
+    dump978-fa --json-stdout --stdin --format CS8 < /src/dump978-mutability/sample-data.txt && \
+    # Clean up
+    apt-get autoremove -q -y -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 "${TEMP_PACKAGES[@]}" && \
+    rm -rf /src/* && \
+    bash /scripts/clean-build.sh

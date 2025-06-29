@@ -1,0 +1,46 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL3003,DL3028
+RUN set -xe && \
+    # define packages needed for installation and general management of the container:
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    KEPT_PIP3_PACKAGES=() && \
+    #
+    TEMP_PACKAGES+=(python3-pip) && \
+    #
+    KEPT_PACKAGES+=(unzip) && \
+    KEPT_PACKAGES+=(psmisc) && \
+    KEPT_PACKAGES+=(procps nano) && \
+    KEPT_PACKAGES+=(python3) && \
+    KEPT_PACKAGES+=(python3-paho-mqtt) && \
+    KEPT_PACKAGES+=(jq) && \
+    KEPT_PACKAGES+=(gnuplot-nox) && \
+    KEPT_PACKAGES+=(lighttpd) && \
+    KEPT_PACKAGES+=(perl) && \
+    KEPT_PACKAGES+=(iputils-ping) && \
+    KEPT_PACKAGES+=(php-cgi) && \
+    KEPT_PACKAGES+=(html-xml-utils) && \
+    KEPT_PACKAGES+=(file) && \
+    KEPT_PACKAGES+=(jpegoptim) && \
+    KEPT_PACKAGES+=(pngquant) && \
+    #
+    KEPT_PIP3_PACKAGES+=(tzlocal) && \
+    KEPT_PIP3_PACKAGES+=(discord-webhook==1.0.0) && \
+    #    KEPT_PIP3_PACKAGES+=(discord-webhook) && \
+    KEPT_PIP3_PACKAGES+=(requests) && \
+    KEPT_PIP3_PACKAGES+=(geopy) && \
+    #
+    #
+    # Install all the apt, pip3 packages:
+    apt-get update -q && \
+    apt-get install -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -o Dpkg::Options::="--force-confold" -y --no-install-recommends  --no-install-suggests "${TEMP_PACKAGES[@]}" "${KEPT_PACKAGES[@]}" && \
+    pip3 install --break-system-packages --no-cache-dir "${KEPT_PIP3_PACKAGES[@]}" && \
+    #
+    # Clean up
+    apt-get autoremove -q -y -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 "${TEMP_PACKAGES[@]}" && \
+    apt-get clean -y -q && \
+    bash /scripts/clean-build.sh && \
+    rm -rf /src/*

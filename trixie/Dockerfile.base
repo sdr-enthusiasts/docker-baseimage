@@ -1,0 +1,179 @@
+FROM debian:trixie-20250610-slim
+
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+  S6OVERLAY_VERSION="v3.2.1.0" \
+  # Fix for any issues with the S6 overlay. We have quite a few legacy services
+  # that worked fine under v2, but v3 is more strict and will kill a startup process
+  # if it takes more than 5 seconds. tar1090 and rtlsdrairband are the hardest hit
+  # but we may have others.
+  S6_CMD_WAIT_FOR_SERVICES_MAXTIME="0" \
+  # this fix is for making sure that the proper pathing is available for scripts
+  # We seem to have an issue (I think it's an upstream bug) that `with-contenv` shebangs will not wor
+  # outside of the S6 supervision tree. This is a workaround for that.
+  PATH="/command:$PATH"
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL3003
+RUN \
+  --mount=type=bind,source=./,target=/app/ \
+  set -x && \
+  TEMP_PACKAGES=() && \
+  KEPT_PACKAGES=() && \
+  # packages needed to install
+  TEMP_PACKAGES+=(git) && \
+  # logging
+  KEPT_PACKAGES+=(gawk) && \
+  KEPT_PACKAGES+=(pv) && \
+  # required for S6 overlay
+  # curl kept for healthcheck
+  TEMP_PACKAGES+=(file) && \
+  KEPT_PACKAGES+=(curl) && \
+  TEMP_PACKAGES+=(xz-utils) && \
+  KEPT_PACKAGES+=(ca-certificates) && \
+  # bc for scripts and healthchecks
+  KEPT_PACKAGES+=(bc) && \
+  # packages for network stuff
+  KEPT_PACKAGES+=(socat) && \
+  KEPT_PACKAGES+=(ncat) && \
+  KEPT_PACKAGES+=(net-tools) && \
+  KEPT_PACKAGES+=(wget) && \
+  # process management
+  KEPT_PACKAGES+=(procps) && \
+  # needed to compile s6wrap:
+  TEMP_PACKAGES+=(gcc) && \
+  TEMP_PACKAGES+=(build-essential) && \
+  # needed to compile rtl-sdr
+  TEMP_PACKAGES+=(cmake) && \
+  TEMP_PACKAGES+=(pkg-config) && \
+  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+  # needed to run rtl-sdr
+  KEPT_PACKAGES+=(libusb-1.0-0) && \
+  # needed for readsb (zlib/zstd are used by lots of stuff)
+  KEPT_PACKAGES+=(libncurses6) && \
+  KEPT_PACKAGES+=(zlib1g) && \
+  KEPT_PACKAGES+=(libzstd1) && \
+  # needed for diagnostics
+  KEPT_PACKAGES+=(nano) && \
+  KEPT_PACKAGES+=(iputils-ping) && \
+  KEPT_PACKAGES+=(dnsutils) && \
+  # used by various images
+  KEPT_PACKAGES+=(jq) && \
+  # used by enough images to warrant installing it in the baseimage
+  KEPT_PACKAGES+=(python3) && \
+  KEPT_PACKAGES+=(python3-pkg-resources) && \
+  KEPT_PACKAGES+=(nginx-light) && \
+  # install packages
+  ## Builder fixes...
+  mkdir -p /usr/sbin/ && \
+  ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split && \
+  ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb && \
+  ln -s /bin/tar /usr/sbin/tar && \
+  apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -y --no-install-recommends \
+  "${KEPT_PACKAGES[@]}" \
+  "${TEMP_PACKAGES[@]}" \
+  && \
+  # install S6 Overlay
+  #curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/fredclausen/deploy-s6-overlay/remove-s6-legacy/deploy-s6-overlay-v3.sh && \
+  curl --location --output /tmp/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay-v3.sh && \
+  sh /tmp/deploy-s6-overlay.sh && \
+  rm -f /tmp/deploy-s6-overlay.sh && \
+  # deploy healthchecks framework
+  git clone \
+  --depth=1 \
+  https://github.com/mikenye/docker-healthchecks-framework.git \
+  /opt/healthchecks-framework \
+  && \
+  rm -rf \
+  /opt/healthchecks-framework/.git* \
+  /opt/healthchecks-framework/*.md \
+  /opt/healthchecks-framework/tests \
+  && \
+  # fix healthchecks framework pathing
+  sed -i 's/S6_SERVICE_PATH="\/run\/s6\/services"/S6_SERVICE_PATH="\/run\/s6\/legacy-services"/g' /opt/healthchecks-framework/checks/check_s6_service_abnormal_death_tally.sh && \
+  # Add s6wrap
+  pushd /tmp && \
+  git clone --depth=1 https://github.com/wiedehopf/s6wrap.git && \
+  cd s6wrap && \
+  make && \
+  mv s6wrap /usr/local/bin && \
+  popd && \
+  # Add additional stuff
+  mkdir -p /scripts /etc/cont-init.d && \
+  curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/install_libseccomp2.sh | bash && \
+  chmod +x /etc/s6-overlay/s6-rc.d/libseccomp2/up && \
+  chmod +x /etc/s6-overlay/scripts/libseccomp2_check.sh && \
+  cp /app/scripts/* /scripts/ && \
+  ############### RTLSDR stuff
+  # rtlsdr: clone repo
+  git clone \
+  --branch master \
+  --depth 1 \
+  --single-branch \
+  https://gitea.osmocom.org/sdr/rtl-sdr.git \
+  # 'https://github.com/rtlsdrblog/rtl-sdr-blog.git' \
+  /src/rtl-sdr \
+  && \
+  # prepare to build
+  mkdir -p /src/rtl-sdr/build && \
+  pushd /src/rtl-sdr/build && \
+  git rev-parse HEAD > /CONTAINER_VERSION && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DDETACH_KERNEL_DRIVER=ON \
+  -DINSTALL_UDEV_RULES=ON \
+  ../ \
+  && \
+  # build
+  make -j "$(nproc)" && \
+  # install
+  make install && \
+  ldconfig && \
+  popd && \
+  # SoapySDR: get latest tag
+  BRANCH_SOAPYSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/pothosware/SoapySDR.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^soapy-sdr-.*' | tail -1) && \
+  # SoapySDR: clone latest tag
+  git clone --depth 1 --branch "$BRANCH_SOAPYSDR" "https://github.com/pothosware/SoapySDR.git" "/src/SoapySDR" && \
+  # SoapySDR: prepare to build
+  mkdir -p /src/SoapySDR/build && \
+  pushd /src/SoapySDR/build && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -Wno-dev \
+  ../ \
+  && \
+  # SoapySDR: make & install
+  make -j "$(nproc)" && \
+  make install && \
+  ldconfig && \
+  popd && \
+  # SoapySDR: simple test
+  SoapySDRUtil --info && \
+  # SoapyRTLSDR: get latest tag
+  BRANCH_SOAPYRTLSDR=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' 'https://github.com/pothosware/SoapyRTLSDR.git' | grep -v '\^' | cut -d '/' -f 3 | grep '^soapy-rtl-.*' | tail -1) && \
+  # SoapyRTLSDR: clone latest tag
+  git clone --depth 1 --branch "$BRANCH_SOAPYRTLSDR" "https://github.com/pothosware/SoapyRTLSDR.git" "/src/SoapyRTLSDR" && \
+  # SoapyRTLSDR: prepare to build
+  mkdir -p /src/SoapyRTLSDR/build && \
+  pushd /src/SoapyRTLSDR/build && \
+  cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -Wno-dev \
+  ../ \
+  && \
+  # SoapyRTLSDR: make & install
+  make -j "$(nproc)" && \
+  make install && \
+  ldconfig && \
+  popd && \
+  # SoapyRTLSDR: simple test
+  SoapySDRUtil --check=rtlsdr && \
+  ############### RTLSDR stuff end
+  # Clean up
+  apt-get autoremove -q -y -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 "${TEMP_PACKAGES[@]}" && \
+  rm -rf /src/* && \
+  bash /scripts/clean-build.sh
+
+ENTRYPOINT [ "/init" ]

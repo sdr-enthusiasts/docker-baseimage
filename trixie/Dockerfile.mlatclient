@@ -1,0 +1,63 @@
+# This container is meant to be used as a build/download container for Wiedehopf's mlat-client
+# it uses debian:bookworm-slim as basis
+# ----------------------------------------------------------------------------------------
+# HOW TO USE IN YOUR Dockerfile:
+# 1. Create a downloader image like this:
+# FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlat-client as downloader
+#
+# 2. In your target image, start your RUN command like this:
+# RUN --mount=type=bind,from=downloader,source=/,target=/downloader set -x && \
+#
+# 3. In your target image in that same RUN command, make sure to add this to the APT install list:
+# KEPT_PACKAGES+=(python3-pkg-resources) && \
+#
+# 4. Also in the same RUN command for your target image, do this:
+# tar zxf /downloader/mlatclient.tgz -C / && \
+# ----------------------------------------------------------------------------------------
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+
+ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
+
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL3003
+RUN \
+  --mount=type=bind,source=./,target=/app/ \
+  set -x && \
+  PACKAGES=() && \
+  # packages needed to install
+  PACKAGES+=(git) && \
+  PACKAGES+=(gcc) && \
+  PACKAGES+=(python3-dev) && \
+  PACKAGES+=(python3-setuptools) && \
+  PACKAGES+=(build-essential) && \
+  PACKAGES+=(ca-certificates) && \
+  # needed to build some other stuff we build using this image as a builder
+  PACKAGES+=(libusb-1.0-0-dev) && \
+  PACKAGES+=(zlib1g-dev) && \
+  PACKAGES+=(libncurses-dev) && \
+  PACKAGES+=(libzstd-dev) && \
+  PACKAGES+=(pkg-config) && \
+  # needed for diagnostics
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${PACKAGES[@]}" \
+  && \
+  #
+  # Get and install mlat-client:
+  git clone --depth=1 "$MLATCLIENT_REPO" /src/mlat-client && \
+  cd /src/mlat-client && \
+  python3 setup.py build && \
+  python3 setup.py install && \
+  #
+  # Now create a tgz tarball of the mlat-client that facilitates installing on the target:
+  dist_pkg_target="$(ls -d /usr/local/lib/python*/dist-packages)" && \
+  mlatclient_target="$(which mlat-client)" && \
+  tar zcvf /mlatclient.tgz "${dist_pkg_target}" "${mlatclient_target}" && \
+  #
+  # Don't remove any packets, this image is meant to be used as a build image
+  # apt-get autoremove -q -y -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 "${TEMP_PACKAGES[@]}" && \
+  apt-get clean && \
+  rm -rf /src/* "${dist_pkg_target}" "${mlatclient_target}" && \
+  bash /app/scripts/clean-build.sh

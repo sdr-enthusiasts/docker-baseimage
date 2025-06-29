@@ -1,0 +1,111 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN set -x && \
+  TEMP_PACKAGES=() && \
+  KEPT_PACKAGES=() && \
+  # packages needed to install
+  TEMP_PACKAGES+=(git) && \
+  # packages needed to build
+  TEMP_PACKAGES+=(build-essential) && \
+  TEMP_PACKAGES+=(cmake) && \
+  TEMP_PACKAGES+=(pkg-config) && \
+  TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
+  # dependencies for SoapySDR
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${KEPT_PACKAGES[@]}" \
+  "${TEMP_PACKAGES[@]}" \
+  && \
+  if ! (uname -m | grep -qs armv7 || dpkg --print-architecture | grep -qs '^armhf$'); then \
+  # install sdrplay
+  curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
+  chmod +x /tmp/install_sdrplay.sh && \
+  /tmp/install_sdrplay.sh && \
+  # Deploy SoapyRTLTCP
+  git clone https://github.com/pothosware/SoapyRTLTCP.git /src/SoapyRTLTCP && \
+  pushd /src/SoapyRTLTCP && \
+  mkdir -p /src/SoapyRTLTCP/build && \
+  pushd /src/SoapyRTLTCP/build && \
+  cmake ../ -DCMAKE_BUILD_TYPE=Release && \
+  make all && \
+  make install && \
+  popd && popd && \
+  ldconfig && \
+  # deploy SoapySDRPlay
+  git clone https://github.com/pothosware/SoapySDRPlay.git /src/SoapySDRPlay && \
+  pushd /src/SoapySDRPlay && \
+  mkdir build && \
+  pushd build && \
+  cmake .. && \
+  make && \
+  make install && \
+  popd && \
+  popd && \
+  ldconfig; \
+  fi && \
+  # deploy libmirisdr
+  git clone https://github.com/ericek111/libmirisdr-5.git /src/libmirisdr-5 && \
+  pushd /src/libmirisdr-5 && \
+  mkdir build && \
+  pushd build && \
+  cmake .. && \
+  make && \
+  make install && \
+  popd && popd && \
+  # deploy SoapyMiri
+  git clone https://github.com/ericek111/SoapyMiri.git /src/SoapyMiri && \
+  pushd /src/SoapyMiri && \
+  mkdir build && \
+  pushd build && \
+  cmake .. && \
+  make -j4 && \
+  make install && \
+  popd && popd && \
+  # deploy airspyhf
+  git clone https://github.com/airspy/airspyhf.git /src/airspyhf && \
+  pushd /src/airspyhf && \
+  mkdir -p /src/airspyhf/build && \
+  pushd /src/airspyhf/build && \
+  cmake ../ -DCMAKE_BUILD_TYPE=Release -DINSTALL_UDEV_RULES=ON && \
+  make && \
+  make install && \
+  ldconfig && \
+  popd && popd && \
+  # Deploy SoapyAirspyHF
+  git clone https://github.com/pothosware/SoapyAirspyHF.git /src/SoapyAirspyHF && \
+  pushd /src/SoapyAirspyHF && \
+  mkdir -p /src/SoapyAirspyHF/build && \
+  pushd /src/SoapyAirspyHF/build && \
+  cmake ../ -DCMAKE_BUILD_TYPE=Release && \
+  make all && \
+  make install && \
+  popd && popd && \
+  ldconfig && \
+  # deploy airspyone host
+  git clone https://github.com/airspy/airspyone_host.git /src/airspyone_host && \
+  pushd /src/airspyone_host && \
+  mkdir -p /src/airspyone_host/build && \
+  pushd /src/airspyone_host/build && \
+  cmake ../ -DINSTALL_UDEV_RULES=ON && \
+  make && \
+  make install && \
+  ldconfig && \
+  popd && popd && \
+  # Deploy SoapyAirspy
+  git clone https://github.com/pothosware/SoapyAirspy.git /src/SoapyAirspy && \
+  pushd /src/SoapyAirspy && \
+  mkdir build && \
+  pushd build && \
+  cmake .. && \
+  make    && \
+  make install   && \
+  popd && \
+  popd && \
+  # Clean up
+  apt-get autoremove -q -y -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 "${TEMP_PACKAGES[@]}" && \
+  rm -rf /src/* && \
+  bash /scripts/clean-build.sh

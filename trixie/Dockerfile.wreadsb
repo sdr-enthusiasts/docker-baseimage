@@ -1,0 +1,54 @@
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient AS buildimage
+
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
+RUN \
+  # readsb: clone repo
+  git clone \
+  --branch "dev" \
+  --depth 1 \
+  --single-branch \
+  'https://github.com/wiedehopf/readsb.git' \
+  '/src/readsb' \
+  && \
+  # readsb: build & install
+  pushd /src/readsb && \
+  make \
+  RTLSDR=yes \
+  AIRCRAFT_HASH_BITS=14 \
+  DISABLE_RTLSDR_ZEROCOPY_WORKAROUND=yes \
+  -j "$(nproc)" \
+  && \
+  cp readsb /usr/local/bin/ && \
+  /usr/local/bin/readsb --version && \
+  popd && \
+  true
+
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
+
+SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039,DL3009
+RUN \
+  --mount=type=bind,from=buildimage,source=/,target=/buildimage/ \
+  cp /buildimage/usr/local/bin/readsb /usr/local/bin/ && \
+  pushd /usr/local/bin && \
+  ln -s readsb viewadsb && \
+  popd && \
+  ldconfig && \
+  PACKAGES+=(python3-pyasyncore) && \
+  # install packages
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  "${PACKAGES[@]}" \
+  && \
+  # readsb: simple tests
+  readsb --version && \
+  viewadsb --version && \
+  # Get mlat-client
+  tar zxf /buildimage/mlatclient.tgz -C / && \
+  ln -s /usr/local/bin/mlat-client /usr/bin/mlat-client && \
+  # test mlat-client
+  /usr/bin/mlat-client --help > /dev/null && \
+  bash /scripts/clean-build.sh
