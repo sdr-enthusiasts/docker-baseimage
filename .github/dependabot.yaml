@@ -14,6 +14,17 @@ updates:
       - "mikenye"
       - "kx1t"
 
+  # Maintain dependencies for Docker
+  - package-ecosystem: "docker"
+    directory: "/trixie"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "00:00"
+      timezone: "Etc/UTC"
+    assignees:
+      - "fredclausen"
+
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
