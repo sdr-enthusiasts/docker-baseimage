@@ -76,27 +76,6 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy_ghcr_rtlsdr:
-    name: RTLSDR
-    needs: [deploy_ghcr_base]
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-      attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-    with:
-      push_enabled: true
-      push_destinations: ghcr.io
-      ghcr_repo_owner: ${{ github.repository_owner }}
-      ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
-      build_latest: true
-      docker_latest_tag: rtlsdr
-      docker_build_file: Dockerfile.rtlsdr
-    secrets:
-      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
-
   deploy_ghcr_planefence_base:
     name: Planefence
     needs: [deploy_ghcr_base]
@@ -120,30 +99,9 @@ jobs:
 
   # deployments that only rely on rtlsdr
 
-  deploy_ghcr_acars-decoder:
-    name: ACARS Decoder
-    needs: [deploy_ghcr_rtlsdr]
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-      attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-    with:
-      push_enabled: true
-      push_destinations: ghcr.io
-      ghcr_repo_owner: ${{ github.repository_owner }}
-      ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
-      build_latest: true
-      docker_latest_tag: acars-decoder
-      docker_build_file: Dockerfile.acars-decoder
-    secrets:
-      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
-
   deploy_ghcr_soapy_full:
     name: Soapy Full
-    needs: [deploy_ghcr_rtlsdr]
+    needs: [deploy_ghcr_base]
     permissions:
       contents: read
       packages: write
@@ -166,7 +124,7 @@ jobs:
 
   deploy_ghcr_wreadsb:
     name: Wreadsb
-    needs: [deploy_ghcr_rtlsdr, deploy_ghcr_mlat_client]
+    needs: [deploy_ghcr_base, deploy_ghcr_mlat_client]
     permissions:
       contents: read
       packages: write
@@ -293,6 +251,27 @@ jobs:
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-flightairmap deploy.yml -f reason="$WORKFLOW_REASON"
 
+      # moved from rtlsdr to base image
+      - name: shipfeeder
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: aprs-tracker
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: vesselalert
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON"
+      # - name: acars-oxide
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/acars-oxide deploy.yml -f reason="$WORKFLOW_REASON"
+
   trigger_build_acars_soapy:
     name: Trigger deploy of acars decoder soapy images
     needs: [deploy_ghcr_acars-decoder-soapy]
@@ -385,32 +364,6 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy.yml -f reason="$WORKFLOW_REASON"
-
-  trigger_build_rtlsdr:
-    name: Trigger deploy rtlsdr images
-    needs: [deploy_ghcr_rtlsdr]
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
-    steps:
-      - name: shipfeeder
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: aprs-tracker
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: vesselalert
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON"
-      # - name: acars-oxide
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/acars-oxide deploy.yml -f reason="$WORKFLOW_REASON"
 
   trigger_build_mlatclient:
     name: Trigger deploy of sdr-enthusiasts/docker-sdrmap
