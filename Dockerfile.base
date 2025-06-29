@@ -49,6 +49,10 @@ RUN \
   TEMP_PACKAGES+=(libusb-1.0-0-dev) && \
   # needed to run rtl-sdr
   KEPT_PACKAGES+=(libusb-1.0-0) && \
+  # needed for readsb (zlib/zstd are used by lots of stuff)
+  KEPT_PACKAGES+=(libncurses6) && \
+  KEPT_PACKAGES+=(zlib1g) && \
+  KEPT_PACKAGES+=(libzstd1) && \
   # needed for diagnostics
   KEPT_PACKAGES+=(nano) && \
   KEPT_PACKAGES+=(iputils-ping) && \

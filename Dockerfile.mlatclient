@@ -32,6 +32,12 @@ RUN \
   PACKAGES+=(python3-setuptools) && \
   PACKAGES+=(build-essential) && \
   PACKAGES+=(ca-certificates) && \
+  # needed to build some other stuff we build using this image as a builder
+  PACKAGES+=(libusb-1.0-0-dev) && \
+  PACKAGES+=(zlib1g-dev) && \
+  PACKAGES+=(libncurses-dev) && \
+  PACKAGES+=(libzstd-dev) && \
+  PACKAGES+=(pkg-config) && \
   # needed for diagnostics
   # install packages
   apt-get update && \
