@@ -23,119 +23,72 @@ env:
 
 jobs:
 
-  deploy_wreadsb:
-    name: Deploy wreadsb to ghcr.io
+  deploy_ghcr_wreadsb:
+    name: Wreadsb
     needs: [deploy_ghcr_mlat_client]
-    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
-
-    steps:
-      # Check out our code
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 2
-
-      # Log into ghcr (so we can push images)
-      - name: Login to ghcr.io
-        uses: docker/login-action@v3.4.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Get metadata from repo
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5.7.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      # Set up QEMU for multi-arch builds
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.6.0
-
-      # Set up buildx for multi platform builds
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3.11.1
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
-        uses: docker/build-push-action@v6.18.0
-        with:
-          context: .
-          file: ./Dockerfile.wreadsb
-          no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
-          labels: ${{ steps.meta.outputs.labels }}
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: wreadsb-test-pr
+      build_baseimage_url: :mlatclient/:mlatclient-test-pr/g;s/:rtlsdr/:rtlsdr-test-pr
+      docker_build_file: Dockerfile.wreadsb
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_mlat_client:
-    name: Deploy MLAT client image to ghcr.io
-    runs-on: ubuntu-22.04
+    name: Mlat Client
     permissions:
       contents: read
       packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: mlatclient-test-pr
+      build_baseimage_url: :base/:base-test-pr
+      docker_build_file: Dockerfile.mlatclient
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-    steps:
-      # Check out our code
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 2
-
-      # Log into ghcr (so we can push images)
-      - name: Login to ghcr.io
-        uses: docker/login-action@v3.4.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Get metadata from repo
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5.7.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      # Set up QEMU for multi-arch builds
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.6.0
-
-      # Set up buildx for multi platform builds
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3.11.1
-
-      # Build & Push Dockerfile (only push if this action was NOT triggered by a PR)
-      - name: Build & Push ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
-        uses: docker/build-push-action@v6.18.0
-        with:
-          context: .
-          file: ./Dockerfile.mlatclient
-          no-cache: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient
-          labels: ${{ steps.meta.outputs.labels }}
-
-  trigger_build_sdr-enthusiasts_docker-tar1090:
-    name: Trigger deploy of sdr-enthusiasts/docker-tar1090
-    needs: [deploy_wreadsb, deploy_ghcr_mlat_client]
-    runs-on: ubuntu-22.04
+  trigger_build_wreadsb:
+    name: Trigger deploy of wreadsb/mlatclient images
+    needs: [deploy_ghcr_wreadsb]
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
-    env:
-      WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
-      WORKFLOW_REPO: sdr-enthusiasts/docker-tar1090
-      WORKFLOW_FILE: deploy.yml
-      WORKFLOW_REASON: "triggered via deploy_ghcr.yml in sdr-enthusiasts/docker-baseimage"
     steps:
-      - name: Trigger ${{ env.WORKFLOW_FILE }} in ${{ env.WORKFLOW_REPO }}
+      - name: airnav
+        continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo "$WORKFLOW_REPO" "$WORKFLOW_FILE" -f reason="$WORKFLOW_REASON"
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-airnavradar deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: radarvirtuel
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-radarvirtuel deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: tar1090
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: sdrplay_beast1090
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy.yml -f reason="$WORKFLOW_REASON"
