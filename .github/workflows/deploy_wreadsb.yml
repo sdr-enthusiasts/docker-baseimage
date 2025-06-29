@@ -39,8 +39,8 @@ jobs:
       ghcr_repo: ${{ github.repository }}
       build_with_tmpfs: false
       build_latest: true
-      docker_latest_tag: wreadsb-test-pr
-      build_baseimage_url: :mlatclient/:mlatclient-test-pr/g;s/:rtlsdr/:rtlsdr-test-pr
+      docker_latest_tag: wreadsb
+      build_baseimage_url: :mlatclient/:mlatclient/g;s/:rtlsdr/:rtlsdr
       docker_build_file: Dockerfile.wreadsb
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,8 +60,8 @@ jobs:
       ghcr_repo: ${{ github.repository }}
       build_with_tmpfs: false
       build_latest: true
-      docker_latest_tag: mlatclient-test-pr
-      build_baseimage_url: :base/:base-test-pr
+      docker_latest_tag: mlatclient
+      build_baseimage_url: :base/:base
       docker_build_file: Dockerfile.mlatclient
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
