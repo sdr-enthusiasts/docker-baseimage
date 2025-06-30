@@ -54,137 +54,149 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-#   # Next steps are all of the deployments that depend on the base image
-#   deploy_ghcr_mlat_client:
-#     needs: [deploy_ghcr_base]
-#     name: Mlat Client
-#     permissions:
-#       contents: read
-#       packages: write
-#       id-token: write
-#       attestations: write
-#     uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-#     with:
-#       push_enabled: true
-#       push_destinations: ghcr.io
-#       ghcr_repo_owner: ${{ github.repository_owner }}
-#       ghcr_repo: ${{ github.repository }}
-#       build_with_tmpfs: false
-#       build_latest: true
-#       docker_latest_tag: mlatclient
-#       docker_build_file: trixie/Dockerfile.mlatclient
-#     secrets:
-#       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+  # Next steps are all of the deployments that depend on the base image
+  deploy_ghcr_mlat_client:
+    needs: [deploy_ghcr_base]
+    name: Mlat Client
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: trixie-mlatclient
+      build_baseimage_test: true
+      build_baseimage_url: :base/:trixie-base
+      docker_build_file: trixie/Dockerfile.mlatclient
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-#   deploy_ghcr_planefence_base:
-#     name: Planefence
-#     needs: [deploy_ghcr_base]
-#     permissions:
-#       contents: read
-#       packages: write
-#       id-token: write
-#       attestations: write
-#     uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-#     with:
-#       push_enabled: true
-#       push_destinations: ghcr.io
-#       ghcr_repo_owner: ${{ github.repository_owner }}
-#       ghcr_repo: ${{ github.repository }}
-#       build_with_tmpfs: false
-#       build_latest: true
-#       docker_latest_tag: planefence_base
-#       docker_build_file: trixie/Dockerfile.planefence_base
-#     secrets:
-#       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy_ghcr_planefence_base:
+    name: Planefence
+    needs: [deploy_ghcr_base]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: trixie-planefence_base
+      build_baseimage_test: true
+      build_baseimage_url: :base/:trixie-base
+      docker_build_file: trixie/Dockerfile.planefence_base
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-#   # deployments that only rely on rtlsdr
+  # deployments that only rely on rtlsdr
 
-#   deploy_ghcr_soapy_full:
-#     name: Soapy Full
-#     needs: [deploy_ghcr_base]
-#     permissions:
-#       contents: read
-#       packages: write
-#       id-token: write
-#       attestations: write
-#     uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-#     with:
-#       push_enabled: true
-#       push_destinations: ghcr.io
-#       ghcr_repo_owner: ${{ github.repository_owner }}
-#       ghcr_repo: ${{ github.repository }}
-#       build_with_tmpfs: false
-#       build_latest: true
-#       docker_latest_tag: soapy-full
-#       docker_build_file: trixie/Dockerfile.soapy-full
-#     secrets:
-#       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy_ghcr_soapy_full:
+    name: Soapy Full
+    needs: [deploy_ghcr_base]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: trixie-soapy-full
+      build_baseimage_test: true
+      build_baseimage_url: :base/:trixie-base
+      docker_build_file: trixie/Dockerfile.soapy-full
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-#   # deployments that rely on rtlsdr AND mlatclient
+  # deployments that rely on rtlsdr AND mlatclient
 
-#   deploy_ghcr_wreadsb:
-#     name: Wreadsb
-#     needs: [deploy_ghcr_base, deploy_ghcr_mlat_client]
-#     permissions:
-#       contents: read
-#       packages: write
-#       id-token: write
-#       attestations: write
-#     uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-#     with:
-#       push_enabled: true
-#       push_destinations: ghcr.io
-#       ghcr_repo_owner: ${{ github.repository_owner }}
-#       ghcr_repo: ${{ github.repository }}
-#       build_with_tmpfs: false
-#       build_latest: true
-#       docker_latest_tag: wreadsb
-#       docker_build_file: trixie/Dockerfile.wreadsb
-#     secrets:
-#       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy_ghcr_wreadsb:
+    name: Wreadsb
+    needs: [deploy_ghcr_base, deploy_ghcr_mlat_client]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: trixie-wreadsb
+      build_baseimage_test: true
+      build_baseimage_url: :mlatclient/:trixie-mlatclient/g;s/:base/:trixie-base
+      docker_build_file: trixie/Dockerfile.wreadsb
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-#   # deployments that rely on just soapy-full
+  # deployments that rely on just soapy-full
 
-#   deploy_ghcr_acars-decoder-soapy:
-#     name: ACARS Decoder Soapy
-#     needs: [deploy_ghcr_wreadsb]
-#     permissions:
-#       contents: read
-#       packages: write
-#       id-token: write
-#       attestations: write
-#     uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-#     with:
-#       push_enabled: true
-#       push_destinations: ghcr.io
-#       ghcr_repo_owner: ${{ github.repository_owner }}
-#       ghcr_repo: ${{ github.repository }}
-#       build_with_tmpfs: false
-#       build_latest: true
-#       docker_latest_tag: acars-decoder-soapy
-#       docker_build_file: trixie/Dockerfile.acars-decoder-soapy
-#     secrets:
-#       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy_ghcr_acars-decoder-soapy:
+    name: ACARS Decoder Soapy
+    needs: [deploy_ghcr_wreadsb]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: trixie-acars-decoder-soapy
+      build_baseimage_test: true
+      build_baseimage_url: :soapy-full/:trixie-soapy-full
+      docker_build_file: trixie/Dockerfile.acars-decoder-soapy
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-#   # deployments that rely on just wreadsb
+  # deployments that rely on just wreadsb
 
-#   deploy_dump978-full:
-#     name: Dump978 Full
-#     needs: [deploy_ghcr_wreadsb]
-#     permissions:
-#       contents: read
-#       packages: write
-#       id-token: write
-#       attestations: write
-#     uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
-#     with:
-#       push_enabled: true
-#       push_destinations: ghcr.io
-#       ghcr_repo_owner: ${{ github.repository_owner }}
-#       ghcr_repo: ${{ github.repository }}
-#       build_with_tmpfs: false
-#       build_latest: true
-#       docker_latest_tag: dump978-full
-#       docker_build_file: trixie/Dockerfile.dump978-full
-#     secrets:
-#       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy_dump978-full:
+    name: Dump978 Full
+    needs: [deploy_ghcr_wreadsb]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: trixie-dump978-full
+      build_baseimage_test: true
+      build_baseimage_url: :wreadsb/:trixie-wreadsb
+      docker_build_file: trixie/Dockerfile.dump978-full
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
