@@ -35,6 +35,27 @@
             "x86_64": true,
             "arm64": false,
             "armv7": false
+        },
+        {
+            "name": "docker-adsbhub",
+            "image_build": "ghcr.io/sdr-enthusiasts/docker-adsbhub:trixie-latest-build-1",
+            "x86_64": true,
+            "arm64": false,
+            "armv7": false
+        },
+        {
+            "name": "docker-opensky-network",
+            "image_build": "ghcr.io/sdr-enthusiasts/docker-opensky-network:trixie-latest-build-1",
+            "x86_64": true,
+            "arm64": false,
+            "armv7": false
+        },
+        {
+            "name": "docker-flightradar24",
+            "image_build": "ghcr.io/sdr-enthusiasts/docker-flightradar24:trixie-latest-build-1",
+            "x86_64": true,
+            "arm64": false,
+            "armv7": false
         }
     ]
 }

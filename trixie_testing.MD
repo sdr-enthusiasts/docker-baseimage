@@ -74,9 +74,9 @@ The ready for testing column indicates that the image has been tested on at leas
 | -- | - | - | - | - | - |
 | `acarshub` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `beast-splitter` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `flightradar24` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `adsbhub` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `opensky` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `flightradar24` | ✅ | ✅ | ✅ | ❌ | ❌ |
+| `adsbhub` | ✅ | ✅ | ✅ | ❌ | ❌ |
+| `opensky` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `planefinder` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `acars_router` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `airspy` | ❌ | ❌ | ❌ | ❌ | ❌ |
