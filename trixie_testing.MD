@@ -1,5 +1,15 @@
 # Trixie migration
 
+## What this is
+
+Currently, the SDR Enthusiasts Docker images are based on Debian Bookworm. Debian Trixie is the next version of Debian, and it is expected to be released in mid 2025. This migration will update the base images to use Debian Trixie, which will allow us to take advantage of the latest features and improvements in Debian.
+
+In order to ensure a smooth transition, each image will need to be tested on each architecture we support. This document will track the progress of the migration and provide instructions for testing the images.
+
+There is going to be no wide release until Trixie is officially released, all images have been tested, and all images have been confirmed to work on all architectures. I fully anticipate that we will have a working set of images before Trixie is released, but the intent is to give a few month's time past Trixie's release to ensure that everything is working as expected.
+
+The wider the participation in testing, the faster we can get to a stable release. If you want to help test the images, please follow the instructions below.
+
 ## Testing procedure
 
 For anyone who wants to help test the trixie migration, please follow these steps:
