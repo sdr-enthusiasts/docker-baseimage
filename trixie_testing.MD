@@ -45,36 +45,16 @@ You can see if the build is working. That means we've successfully built the ima
 
 The ready for testing column indicates that the image has been tested on at least one architecture and is ready for wider testing. You can see which architectures have been tested. Just because there is a ❌ in the column does not mean it will not work, it just means we have not tested it on that architecture yet.
 
-## Tasks for pre trixie deployment
+## Matrix
 
-- [ ] Archive the current docker images
-- [ ] Move the trixie docker files to the base dir
-
-## Tasks for post trixie deployment
-
-- [ ] Remove `deploy_trixie.yml`
-  - [ ] `acarshub`
-  - [ ] `acarsdec`
-  - [ ] `dumpvdl2`
-  - [ ] `dumphfdl`
-  - [ ] `hfdlobserver`
-  - [ ] `vdlm2dec`
-- [ ] Remove trixie check for `libglib2.0-0` and `libconfig++`
-  - [ ] docker-dumpvdl2
-  - [ ] docker-dumphfdl
-  - [ ] docker-hfdlobserver
-- [ ] Move back to main branch for the dumphfdl clone
-  - [ ] docker-dumphfdl
-  - [ ] docker-hfdlobserver
-
-## Key
+### Key
 
 | Key | Description |
 | -- | -- |
 | ✅ | Completed |
 | ❌ | Not completed |
 
-## Base Images
+### Base Images
 
 | Image Name | Build Works |
 | -- | - |
@@ -86,9 +66,9 @@ The ready for testing column indicates that the image has been tested on at leas
 | `acars-decoder-soapy` | ✅ |
 | `dump978-full` | ✅ |
 
-## Base Image Child Images
+### Base Image Child Images
 
-### Base Image: `base`
+#### Base Image: `base`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
@@ -107,25 +87,25 @@ The ready for testing column indicates that the image has been tested on at leas
 | `aprs-tracker` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `vessel-alert` | ❌ | ❌ | ❌ | ❌ | ❌ |
 
-### Base Image: `mlat-client`
+#### Base Image: `mlat-client`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `sdr-map` | ❌ | ❌ | ❌ | ❌ | ❌ |
 
-### Base Image: `planefence_base`
+#### Base Image: `planefence_base`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `planefence` | ❌ | ❌ | ❌ | ❌ | ❌ |
 
-### Base Image: `soapy-full`
+#### Base Image: `soapy-full`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `rtlsdrairband` | ❌ | ❌ | ❌ | ❌ | ❌ |
 
-### Base Image: `wreadsb`
+#### Base Image: `wreadsb`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
@@ -135,7 +115,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | `ultrafeeder` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `sdrplay-1090` | ❌ | ❌ | ❌ | ❌ | ❌ |
 
-### Base Image: `acars-decoder-soapy`
+#### Base Image: `acars-decoder-soapy`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
@@ -145,9 +125,37 @@ The ready for testing column indicates that the image has been tested on at leas
 | `dumphfdl` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `hfdlobserver` | ✅ | ❌ | ❌ | ❌ | ❌ |
 
-### Base Image: `dump978-full`
+#### Base Image: `dump978-full`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `dump978` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `piaware` | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+## Tasks
+
+### Tasks for pre trixie deployment
+
+- [ ] Archive the current docker images
+- [ ] Move the trixie docker files to the base dir
+
+### Tasks for post trixie deployment
+
+- [ ] Remove `deploy_trixie.yml`
+  - [ ] `acarshub`
+  - [ ] `acarsdec`
+  - [ ] `dumpvdl2`
+  - [ ] `dumphfdl`
+  - [ ] `hfdlobserver`
+  - [ ] `vdlm2dec`
+- [ ] Remove trixie check for `libglib2.0-0` and `libconfig++`
+  - [ ] docker-dumpvdl2
+  - [ ] docker-dumphfdl
+  - [ ] docker-hfdlobserver
+- [ ] Move back to main branch for the dumphfdl clone
+  - [ ] docker-dumphfdl
+  - [ ] docker-hfdlobserver
+
+## Current blockers
+
+- hfdlobserver does not run. Incompatible with Python 3.13
