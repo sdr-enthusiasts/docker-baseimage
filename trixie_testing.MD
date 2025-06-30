@@ -1,5 +1,9 @@
 # Trixie migration
 
+## Testing procedure
+
+For anyone who wants to help test the trixie migration, please follow these steps:
+
 ## Tasks for pre trixie deployment
 
 - [ ] Archive the current docker images
