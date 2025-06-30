@@ -25,7 +25,7 @@
 
 | Image Name | Build Works | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - |
-| `acarshub` | ❌ | ❌ | ❌ | ❌ |
+| `acarshub` | ✅ | ✅ | ❌ | ❌ |
 | `beast-splitter` | ❌ | ❌ | ❌ | ❌ |
 | `flightradar24` | ❌ | ❌ | ❌ | ❌ |
 | `adsbhub` | ❌ | ❌ | ❌ | ❌ |
