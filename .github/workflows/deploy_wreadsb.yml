@@ -66,7 +66,7 @@ jobs:
 
   trigger_build_wreadsb:
     name: Trigger deploy of wreadsb/mlatclient images
-    needs: [deploy_ghcr_wreadsb]
+    needs: [deploy_ghcr_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
@@ -90,3 +90,8 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: sdrmap
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrmap deploy.yml -f reason="$WORKFLOW_REASON"
