@@ -4,6 +4,37 @@
 
 For anyone who wants to help test the trixie migration, please follow these steps:
 
+```shell
+cd /path/to/your/docker-compose-directory
+curl -s https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/update_docker_compose.py -o update_docker_compose.py
+cp docker-compose.yml docker-compose.yml.bak
+python3 update_docker_compose.py
+```
+
+> [!WARNING]
+> **BEFORE RUNNING THIS SCRIPT ENSURE YOU HAVE A BACKUP OF YOUR `docker-compose.yml` FILE.**
+
+You can see all available options for the script by running:
+
+```shell
+python3 update_docker_compose.py --help
+```
+
+By default, it will replace any images currently in your `docker-compose.yml` file with any images we've updated to `debian trixie`. You can specify to only use "safe" images, which are images that have been tested and confirmed to work with your CPU's architecture.
+
+> [!IMPORTANT]
+> "Safe" images does not mean they're 100% without bugs. Safe images are those that have been tested and confirmed to work with your CPU's architecture by a user or developer, but every person's setup is different and you may run in to a problem based on your specific setup.
+
+It is also going to "pin" the images to a fixed tag, so that you can easily roll back to the previous version if needed. If you want to move to the latest images, rerun the script and it will fetch the latest images and update as appropriate.
+
+## Notes about the matrix below
+
+Each image we intend to move over to trixie is listed below, along with its status.
+
+You can see if the build is working. That means we've successfully built the image on GitHub CI, but that does not mean it is ready for testing.
+
+The ready for testing column indicates that the image has been tested on at least one architecture and is ready for wider testing. You can see which architectures have been tested. Just because there is a ❌ in the column does not mean it will not work, it just means we have not tested it on that architecture yet.
+
 ## Tasks for pre trixie deployment
 
 - [ ] Archive the current docker images
