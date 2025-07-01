@@ -33,7 +33,7 @@ python3 update_docker_compose.py --help
 By default, it will replace any images currently in your `docker-compose.yml` file with any images we've updated to `debian trixie`. You can specify to only use "safe" images, which are images that have been tested and confirmed to work with your CPU's architecture.
 
 > [!IMPORTANT]
-> "Safe" images does not mean they're 100% without bugs. Safe images are those that have been tested and confirmed to work with your CPU's architecture by a user or developer, but every person's setup is different and you may run in to a problem based on your specific setup.
+> "Safe" images does not mean they're 100% without bugs. Safe images are those that have been tested and confirmed to work with your CPU's architecture by a user or developer (generally), but every person's setup is different and you may run in to a problem based on your specific setup.
 
 It is also going to "pin" the images to a fixed tag, so that you can easily roll back to the previous version if needed. If you want to move to the latest images, rerun the script and it will fetch the latest images and update as appropriate.
 
@@ -84,8 +84,8 @@ The ready for testing column indicates that the image has been tested on at leas
 | `planefinder` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `acars_router` |  | ✅ | ✅ | ❌ | ❌ |
 | `airspy` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `reversewebproxy` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `radar1090` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `reversewebproxy` | ✅ | ✅ | ❌ | ❌ | ❌ |
+| `radar1090` | ✅ | ✅ | ❌ | ❌ | ❌ |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `shipfeeder` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `aprs-tracker` | ❌ | ❌ | ❌ | ❌ | ❌ |

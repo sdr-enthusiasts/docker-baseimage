@@ -72,11 +72,25 @@
       "armv7": false
     },
     {
+        "name": "docker-radar1090",
+        "image_build": "ghcr.io/sdr-enthusiasts/docker-radar1090:trixie-latest-build-1",
+        "x86_64": false,
+        "arm64": false,
+        "armv7": false
+    },
+    {
       "name": "docker-vdlm2dec",
       "image_build": "ghcr.io/sdr-enthusiasts/docker-vdlm2dec:trixie-latest-build-1",
       "x86_64": false,
       "arm64": false,
       "armv7": false
+    },
+    {
+        "name": "webproxy",
+        "image_build": "ghcr.io/sdr-enthusiasts/docker-reversewebproxy:trixie-latest-build-2",
+        "x86_64": false,
+        "arm64": false,
+        "armv7": false
     }
   ]
 }
