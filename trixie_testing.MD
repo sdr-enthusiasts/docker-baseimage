@@ -78,7 +78,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | `adsbhub` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `opensky` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `planefinder` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `acars_router` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `acars_router` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `airspy` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `reversewebproxy` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `radar1090` | ❌ | ❌ | ❌ | ❌ | ❌ |

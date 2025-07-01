@@ -2,6 +2,13 @@
   "version": "1.0.0",
   "images": [
     {
+        "name": "acars_router",
+        "image_build": "ghcr.io/sdr-enthusiasts/acars_router:trixie-latest-build-1",
+        "x86_64": true,
+        "arm64": false,
+        "armv7": false
+    },
+    {
       "name": "docker-acarsdec",
       "image_build": "ghcr.io/sdr-enthusiasts/docker-acarsdec:trixie-latest-build-1",
       "x86_64": true,
