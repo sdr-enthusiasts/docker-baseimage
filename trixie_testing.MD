@@ -77,7 +77,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | `flightradar24` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `adsbhub` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `opensky` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `planefinder` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `planefinder` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `acars_router` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `airspy` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `reversewebproxy` | ❌ | ❌ | ❌ | ❌ | ❌ |
