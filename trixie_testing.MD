@@ -37,13 +37,17 @@ By default, it will replace any images currently in your `docker-compose.yml` fi
 
 It is also going to "pin" the images to a fixed tag, so that you can easily roll back to the previous version if needed. If you want to move to the latest images, rerun the script and it will fetch the latest images and update as appropriate.
 
+## FEEDBACK
+
+If you are running an image that is marked as "ready for testing" but the CPU architecture is not marked as tested, please test it and report back so we can mark it as tested.
+
 ## Notes about the matrix below
 
 Each image we intend to move over to trixie is listed below, along with its status.
 
 You can see if the build is working. That means we've successfully built the image on GitHub CI, but that does not mean it is ready for testing.
 
-The ready for testing column indicates that the image has been tested on at least one architecture and is ready for wider testing. You can see which architectures have been tested. Just because there is a ❌ in the column does not mean it will not work, it just means we have not tested it on that architecture yet.
+The ready for testing column indicates that the image has been tested on at least one architecture (generally, but not always. Some images aren't applicable to my setup) and is ready for wider testing. You can see which architectures have been tested. Just because there is a ❌ in the column does not mean it will not work, it just means we have not tested it on that architecture yet.
 
 ## Matrix
 
@@ -78,8 +82,8 @@ The ready for testing column indicates that the image has been tested on at leas
 | `adsbhub` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `opensky` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `planefinder` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `acars_router` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `airspy` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `acars_router` |  | ✅ | ✅ | ❌ | ❌ |
+| `airspy` | ✅ | ✅ | ✅ | ❌ | ❌ |
 | `reversewebproxy` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `radar1090` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |

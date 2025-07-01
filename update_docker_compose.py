@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 import json
 import urllib.request
@@ -75,6 +75,10 @@ def main():
 
     if replaced_images:
         print("Replaced images:")
+
+        # sort the replaced images alphabetically
+        replaced_images.sort()
+
         for img in replaced_images:
             print(f"- {img}")
     else:
