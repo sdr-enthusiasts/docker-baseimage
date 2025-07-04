@@ -163,3 +163,4 @@ The ready for testing column indicates that the image has been tested on at leas
 ## Current blockers
 
 - hfdlobserver does not run. Incompatible with Python 3.13
+- docker-airnavradar does not build. Issue with the `libglib2.0-0` dependency and debian trixie.
