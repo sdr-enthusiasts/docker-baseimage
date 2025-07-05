@@ -79,6 +79,13 @@
         "armv7": false
     },
     {
+        "name": "docker-radarvirtuel",
+        "image_build": "ghcr.io/sdr-enthusiasts/docker-radarvirtuel:trixie-latest-build-1",
+        "x86_64": true,
+        "arm64": false,
+        "armv7": false
+    },
+    {
         "name": "docker-sdrmap",
         "image_build": "ghcr.io/sdr-enthusiasts/docker-sdrmap:trixie-latest-build-2",
         "x86_64": true,
