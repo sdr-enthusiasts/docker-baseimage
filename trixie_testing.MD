@@ -10,6 +10,9 @@ There is going to be no wide release until Trixie is officially released, all im
 
 The wider the participation in testing, the faster we can get to a stable release. If you want to help test the images, please follow the instructions below.
 
+> [!WARNING]
+> ***IF YOU ARE RUNNING ADSB.IM THIS DOES NOT APPLY TO YOU. TESTING OF THESE IMAGES WILL BE DONE WHEN THE MAINTAINERS OF ADSB.IM ARE READY. RUNNING ANY OF THESE COMMANDS WILL LIKELY BREAK YOUR SETUP.***
+
 ## Testing procedure
 
 For anyone who wants to help test the trixie migration, please follow these steps:
