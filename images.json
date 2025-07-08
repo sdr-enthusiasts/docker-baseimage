@@ -17,14 +17,14 @@
     },
     {
       "name": "docker-acarsdec",
-      "image_build": "ghcr.io/sdr-enthusiasts/docker-acarsdec:trixie-latest-build-1",
+      "image_build": "ghcr.io/sdr-enthusiasts/docker-acarsdec:trixie-latest-build-2",
       "x86_64": true,
       "arm64": false,
       "armv7": false
     },
     {
       "name": "docker-acarshub",
-      "image_build": "ghcr.io/sdr-enthusiasts/docker-acarshub:trixie-latest-build-3",
+      "image_build": "ghcr.io/sdr-enthusiasts/docker-acarshub:trixie-latest-build-5",
       "x86_64": true,
       "arm64": false,
       "armv7": false
@@ -45,7 +45,7 @@
     },
     {
       "name": "docker-dumpvdl2",
-      "image_build": "ghcr.io/sdr-enthusiasts/docker-dumpvdl2:trixie-latest-build-2",
+      "image_build": "ghcr.io/sdr-enthusiasts/docker-dumpvdl2:trixie-latest-build-3",
       "x86_64": true,
       "arm64": false,
       "armv7": false
