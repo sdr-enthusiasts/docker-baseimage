@@ -24,7 +24,7 @@
     },
     {
       "name": "docker-acarshub",
-      "image_build": "ghcr.io/sdr-enthusiasts/docker-acarshub:trixie-latest-build-5",
+      "image_build": "ghcr.io/sdr-enthusiasts/docker-acarshub:trixie-latest-build-8",
       "x86_64": true,
       "arm64": false,
       "armv7": false
