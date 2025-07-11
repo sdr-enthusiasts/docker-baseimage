@@ -20,6 +20,8 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+  WORKFLOW_REASON: "triggered via deploy_wreadsb.yml in sdr-enthusiasts/docker-baseimage"
 
 jobs:
 
