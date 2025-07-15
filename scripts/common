@@ -55,6 +55,10 @@ s6wrap=(s6wrap --quiet --timestamps --prepend="$SCRIPT_NAME" --args)
 # meant to be used in the script that is the child to s6-supervise
 function stop_service() {
     _SERVICE=$(ps -q$(ps -cp $$ -o ppid="") -o args= | grep -F s6-supervise | cut -d' ' -f2)
+    if [[ -z ${_SERVICE} ]]; then
+        echo "unable to stop service (possibly not called from by s6 service)"
+        exit 1
+    fi
     s6-svc -d /run/service/"${_SERVICE}"
     # just in case this doesn't work, exec an infinite sleep
     # if the service stopping works, the sleep will just be terminated
