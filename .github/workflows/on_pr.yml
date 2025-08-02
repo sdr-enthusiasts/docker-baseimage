@@ -59,7 +59,7 @@ jobs:
           fetch-depth: 0
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v8
+        uses: tj-actions/branch-names@v9
 
       - uses: nrwl/nx-set-shas@v4
         id: last_successful_commit_pull_request
