@@ -14,7 +14,7 @@ repos:
         exclude: ^(rootfs/webapp/static/css/other/|rootfs/webapp/static/js/other/|Logo-Sources|acarshub-typescript/css/other/|acarshub-typescript/js-other)
   # lint the dockerfiles
   - repo: https://github.com/hadolint/hadolint
-    rev: c3dc18df7a501f02a560a2cc7ba3c69a85ca01d3  # frozen: v2.13.1-beta
+    rev: 4e697ba704fd23b2409b947a319c19c3ee54d24f  # frozen: v2.14.0
     hooks:
       - id: hadolint
   - repo: https://github.com/codespell-project/codespell.git
