@@ -1,0 +1,58 @@
+---
+name: Deploy planefence_base
+
+on:
+  # Enable manual running of action if necessary
+  workflow_dispatch:
+    inputs:
+      reason:
+        required: true
+        description: "Reason for running this workflow"
+      disable_upstream_triggers:
+        required: false
+        type: boolean
+        description: "Rebuild the base images but don't trigger downstream builds"
+        default: false
+
+  repository_dispatch:
+    types: build_on_wreadsb_update
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+  WORKFLOW_REASON: "triggered via deploy_planefence_base.yml in sdr-enthusiasts/docker-baseimage"
+
+jobs:
+  deploy_ghcr_planefence_base:
+    name: Planefence
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_with_tmpfs: false
+      build_latest: true
+      docker_latest_tag: planefence_base
+      docker_build_file: Dockerfile.planefence_base
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+
+  trigger_build_planefence:
+    name: Trigger deploy of sdr-enthusiasts/docker-planefence
+    needs: [deploy_ghcr_planefence_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: Planefence
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-planefence deploy.yml -f reason="$WORKFLOW_REASON"
