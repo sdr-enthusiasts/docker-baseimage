@@ -200,3 +200,184 @@ jobs:
       docker_build_file: trixie/Dockerfile.dump978-full
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  trigger_build_base:
+    name: Trigger deploy of base image
+    needs: [deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: acarshub
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-acarshub deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: beast-splitter
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-beast-splitter deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: flightradar24
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-flightradar24 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: adsbhub
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-adsbhub deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: opensky
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-opensky-network deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: planefinder
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-planefinder deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: acars_router
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/acars_router deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: airspy
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/airspy_adsb deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: reversewebproxy
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-reversewebproxy deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: radar1090
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-radar1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: flightairmap
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-flightairmap deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+
+      # # moved from rtlsdr to base image
+      # - name: shipfeeder
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: aprs-tracker
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: vesselalert
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: acars-oxide
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/acars-oxide deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+
+  trigger_build_acars_soapy:
+    name: Trigger deploy of acars decoder soapy images
+    needs: [deploy_ghcr_acars-decoder-soapy]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: acarsdec
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-acarsdec deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: dumpvdl2
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-dumpvdl2 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: dumpvdl2dec
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-vdlm2dec deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: dumphfdl
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-dumphfdl deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: hfdlobserver
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-hfdlobserver deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: rtlsdrairband
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-rtlsdrairband deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+
+  # trigger_build_planefence:
+  #   name: Trigger deploy of sdr-enthusiasts/docker-planefence
+  #   needs: [deploy_ghcr_planefence_base]
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+  #   steps:
+  #     - name: Planefence
+  #       continue-on-error: true
+  #       run: |
+  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+  #         gh workflow run --ref main --repo sdr-enthusiasts/docker-planefence deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+
+  trigger_build_wreadsb:
+    name: Trigger deploy of wreadsb/mlatclient images
+    needs: [deploy_ghcr_wreadsb, deploy_ghcr_mlat_client]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      # - name: airnav
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-airnavradar deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: radarvirtuel
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-radarvirtuel deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: tar1090
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: sdrplay_beast1090
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: sdrmap
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrmap deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+
+  # trigger_build_dump978:
+  #   name: Trigger deploy of sdr-enthusiasts/docker-dump978
+  #   needs: [deploy_dump978-full]
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+  #   steps:
+  #     - name: dump978
+  #       continue-on-error: true
+  #       run: |
+  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+  #         gh workflow run --ref main --repo sdr-enthusiasts/docker-dump978 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+  #     - name: piaware
+  #       continue-on-error: true
+  #       run: |
+  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+  #         gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy_trixie.yml -f reason="$WORKFLOW_REASON"
