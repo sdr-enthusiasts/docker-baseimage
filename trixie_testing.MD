@@ -59,7 +59,8 @@ The ready for testing column indicates that the image has been tested on at leas
 | Key | Description |
 | -- | -- |
 | ✅ | Completed |
-| ❌ | Not completed |
+| 🟡 | Work In Progress |
+| ❌ | Will Not Complete |
 
 ### Base Images
 
@@ -79,65 +80,65 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `acarshub` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `beast-splitter` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `flightradar24` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `adsbhub` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `opensky` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `planefinder` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `acars_router` |  | ✅ | ✅ | ❌ | ❌ |
-| `airspy` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `reversewebproxy` | ✅ | ✅ | ❌ | ❌ | ❌ |
-| `radar1090` | ✅ | ✅ | ❌ | ❌ | ❌ |
+| `acarshub` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `beast-splitter` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `flightradar24` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `adsbhub` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `opensky` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `planefinder` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `acars_router` |  | ✅ | ✅ | 🟡 | 🟡 |
+| `airspy` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `reversewebproxy` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
+| `radar1090` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `shipfeeder` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `aprs-tracker` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `vessel-alert` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `shipfeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `aprs-tracker` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `vessel-alert` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `mlat-client`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `sdr-map` | ✅ | ✅ | ✅ | ❌ | ❌ |
+| `sdr-map` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
 
 #### Base Image: `planefence_base`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `planefence` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `planefence` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `soapy-full`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `rtlsdrairband` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `rtlsdrairband` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `wreadsb`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `airnav` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `radarvirtuel` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `tar1090` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `ultrafeeder` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `sdrplay-1090` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `airnav` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `radarvirtuel` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `tar1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `ultrafeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `sdrplay-1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `acars-decoder-soapy`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `acarsdec` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `dumpvdl2` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `vdlm2dec` | ✅ | ❌ | ✅ | ❌ | ❌ |
-| `dumphfdl` | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `hfdlobserver` | ✅ | ❌ | ❌ | ❌ | ❌ |
+| `acarsdec` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `dumpvdl2` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `vdlm2dec` | ✅ | 🟡 | ✅ | 🟡 | 🟡 |
+| `dumphfdl` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `hfdlobserver` | ✅ | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `dump978-full`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `dump978` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `piaware` | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `dump978` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `piaware` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 ## Tasks
 
