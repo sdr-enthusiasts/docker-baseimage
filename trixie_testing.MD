@@ -60,6 +60,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | -- | -- |
 | ✅ | Completed |
 | 🟡 | Work In Progress |
+| 💬 | Ready for testing. Feedback requested |
 | ❌ | Will Not Complete |
 
 ### Base Images
@@ -80,15 +81,15 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `acarshub` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `acarshub` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `beast-splitter` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | `flightradar24` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `adsbhub` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `opensky` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `planefinder` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `acars_router` |  | ✅ | ✅ | 🟡 | 🟡 |
-| `airspy` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `reversewebproxy` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
+| `adsbhub` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `opensky` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `planefinder` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `acars_router` |  | ✅ | ✅ | 💬 | 💬 |
+| `airspy` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `reversewebproxy` | ✅ | ✅ | 💬 | 💬 | 💬 |
 | `radar1090` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `shipfeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
@@ -99,7 +100,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `sdr-map` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `sdr-map` | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 #### Base Image: `planefence_base`
 
@@ -118,7 +119,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `airnav` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| `radarvirtuel` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `radarvirtuel` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `tar1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | `ultrafeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | `sdrplay-1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
@@ -127,17 +128,17 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `acarsdec` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `dumpvdl2` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
-| `vdlm2dec` | ✅ | 🟡 | ✅ | 🟡 | 🟡 |
-| `dumphfdl` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `acarsdec` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `dumpvdl2` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `vdlm2dec` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `dumphfdl` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `hfdlobserver` | ✅ | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `dump978-full`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `dump978` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
+| `dump978` | ✅ | ✅ | 💬 | 💬 | 💬 |
 | `piaware` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 ## Tasks
