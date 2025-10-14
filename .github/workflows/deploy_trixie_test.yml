@@ -365,19 +365,19 @@ jobs:
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrmap deploy_trixie.yml -f reason="$WORKFLOW_REASON"
 
-  # trigger_build_dump978:
-  #   name: Trigger deploy of sdr-enthusiasts/docker-dump978
-  #   needs: [deploy_dump978-full]
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
-  #   steps:
-  #     - name: dump978
-  #       continue-on-error: true
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo sdr-enthusiasts/docker-dump978 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-  #     - name: piaware
-  #       continue-on-error: true
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+  trigger_build_dump978:
+    name: Trigger deploy of sdr-enthusiasts/docker-dump978
+    needs: [deploy_dump978-full]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: dump978
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-dump978 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      # - name: piaware
+      #   continue-on-error: true
+      #   run: |
+      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy_trixie.yml -f reason="$WORKFLOW_REASON"
