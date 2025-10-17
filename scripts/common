@@ -3,9 +3,6 @@
 # This script can be sourced in services.d run and cont-init.d/cont-finish.d modules
 # It provides some basic common functions
 
-# redirect stderr to stdout so it's picked up in the docker logs
-exec 2>&1
-
 # all errors will show a line number and the command used to produce the error
 # shellcheck disable=SC2148,SC2164
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd)/$(basename "$0")"
