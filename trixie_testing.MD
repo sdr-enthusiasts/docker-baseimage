@@ -138,8 +138,8 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `dump978` | ✅ | ✅ | 💬 | 💬 | 💬 |
-| `piaware` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `dump978` | ✅ | ✅ | 💬 | 💬 | 💬
+| `piaware` | ✅ | 🟡 | 🟡 | 🟡 | 🟡 |
 
 ## Tasks
 
@@ -169,3 +169,4 @@ The ready for testing column indicates that the image has been tested on at leas
 
 - hfdlobserver does not run. Incompatible with Python 3.13
 - docker-airnavradar does not build. Issue with the `libglib2.0-0` dependency and debian trixie.
+- piaware builds but does not run. It seems to be an issue with starting mlat-client and python packaging.

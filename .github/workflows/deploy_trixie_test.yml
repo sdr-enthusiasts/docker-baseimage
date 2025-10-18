@@ -376,8 +376,8 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-dump978 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-      # - name: piaware
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: piaware
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy_trixie.yml -f reason="$WORKFLOW_REASON"
