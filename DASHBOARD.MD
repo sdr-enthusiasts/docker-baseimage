@@ -21,10 +21,15 @@
 
 ## ADSB Images
 
+| Image | Build | Tests | Lint | Issues | PRs |
+|------|-------|--------------|---------|--------|-----|
+| [Airnav Radar][airnav.repo] | [![Build][airnav.badge-build]][airnav.build] | [![Tests][airnav.badge-test]][airnav.test] | [![Lint][airnav.badge-lint]][airnav.lint] | ![Issues][airnav.badge-issues] | ![PRs][airnav.badge-prs] |
+
+## ADSB Images / Old
+
 | Image | Build | Tests / Lint | Updates | Issues | PRs |
 |------|-------|--------------|---------|--------|-----|
 | [ADSB Hub][adsbhub.repo] | [![Build][adsbhub.badge-build]][adsbhub.build] | [![Lint][adsbhub.badge-test]][adsbhub.test] | [![Updates][adsbhub.badge-updates]][adsbhub.updates] | ![Issues][adsbhub.badge-issues] | ![PRs][adsbhub.badge-prs] |
-| [Airnav Radar][airnav.repo] | [![Build][airnav.badge-build]][airnav.build] | [![Tests][airnav.badge-test]][airnav.test] | [![Updates][airnav.badge-updates]][airnav.updates] | ![Issues][airnav.badge-issues] | ![PRs][airnav.badge-prs] |
 | [Airspy][airspy.repo] | [![Build][airspy.badge-build]][airspy.build] | [![Tests][airspy.badge-test]][airspy.test] | [![Updates][airspy.badge-updates]][airspy.updates] | ![Issues][airspy.badge-issues] | ![PRs][airspy.badge-prs] |
 | [Beast Splitter][beast.repo] | [![Build][beast.badge-build]][beast.build] | [![Tests][beast.badge-test]][beast.test] | [![Updates][beast.badge-updates]][beast.updates] | ![Issues][beast.badge-issues] | ![PRs][beast.badge-prs] |
 | [dump978][dump978.repo] | [![Build][dump978.badge-build]][dump978.build] | [![Tests][dump978.badge-test]][dump978.test] | [![Updates][dump978.badge-updates]][dump978.updates] | ![Issues][dump978.badge-issues] | ![PRs][dump978.badge-prs] |
@@ -179,11 +184,11 @@
 <!-- Airnav Radar -->
 [airnav.repo]: https://github.com/sdr-enthusiasts/docker-airnavradar
 [airnav.build]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/deploy.yml
-[airnav.test]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/on_pr.yml
-[airnav.updates]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/pre-commit-updates.yaml
+[airnav.test]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/test_build.yml
+[airnav.lint]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/lint.yaml
 [airnav.badge-build]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/deploy.yml/badge.svg
-[airnav.badge-test]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/on_pr.yml/badge.svg
-[airnav.badge-updates]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/pre-commit-updates.yaml/badge.svg
+[airnav.badge-test]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/test_build.yml/badge.svg
+[airnav.badge-lint]: https://github.com/sdr-enthusiasts/docker-airnavradar/actions/workflows/lint.yaml/badge.svg
 [airnav.badge-issues]: https://img.shields.io/github/issues/sdr-enthusiasts/docker-airnavradar
 [airnav.badge-prs]: https://img.shields.io/github/issues-pr/sdr-enthusiasts/docker-airnavradar
 
