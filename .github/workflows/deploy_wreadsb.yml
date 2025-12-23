@@ -11,7 +11,7 @@ on:
       disable_upstream_triggers:
         required: false
         type: boolean
-        description: "Rebuild the base images but don't trigger downstream builds"
+        description: "Rebuild wreadsb base image and trigger image builds using wreadsb as base"
         default: false
 
   repository_dispatch:

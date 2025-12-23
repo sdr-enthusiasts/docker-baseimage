@@ -11,11 +11,8 @@ on:
       disable_upstream_triggers:
         required: false
         type: boolean
-        description: "Rebuild the base images but don't trigger downstream builds"
+        description: "Rebuild planefence base image and trigger planefence build"
         default: false
-
-  repository_dispatch:
-    types: build_on_wreadsb_update
 
 env:
   REGISTRY: ghcr.io
