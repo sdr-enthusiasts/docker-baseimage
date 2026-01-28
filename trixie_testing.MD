@@ -82,7 +82,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `acarshub` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `beast-splitter` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `beast-splitter` | ✅ | ✅ | 💬 | 💬 | 💬 |
 | `flightradar24` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `adsbhub` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `opensky` | ✅ | ✅ | ✅ | 💬 | 💬 |

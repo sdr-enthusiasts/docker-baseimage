@@ -212,11 +212,11 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-acarshub deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-      # - name: beast-splitter
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-beast-splitter deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: beast-splitter
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-beast-splitter deploy_trixie.yml -f reason="$WORKFLOW_REASON"
       - name: flightradar24
         continue-on-error: true
         run: |
