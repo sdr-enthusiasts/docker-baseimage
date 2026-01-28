@@ -118,7 +118,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `airnav` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `airnav` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `radarvirtuel` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `tar1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | `ultrafeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
@@ -167,4 +167,4 @@ The ready for testing column indicates that the image has been tested on at leas
 
 ## Current blockers
 
-- docker-airnavradar does not build. Issue with the `libglib2.0-0` dependency and debian trixie.
+**NONE!**
