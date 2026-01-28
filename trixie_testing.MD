@@ -112,7 +112,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `rtlsdrairband` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `rtlsdrairband` | ✅ | ✅ | 💬 | 💬 | 💬 |
 
 #### Base Image: `wreadsb`
 
@@ -169,3 +169,11 @@ The ready for testing column indicates that the image has been tested on at leas
 ## Current blockers
 
 **NONE!**
+
+## Deprecations
+
+- `rtlsdrairband` image: arm32 is no longer supported
+
+## Open Testing Questions
+
+- `rtlsdr-airband` image: Does the removal of mime-types library cause any problems?

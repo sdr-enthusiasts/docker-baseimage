@@ -315,11 +315,11 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-hfdlobserver deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-      # - name: rtlsdrairband
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-rtlsdrairband deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: rtlsdrairband
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-rtlsdrairband deploy_trixie.yml -f reason="$WORKFLOW_REASON"
 
   # trigger_build_planefence:
   #   name: Trigger deploy of sdr-enthusiasts/docker-planefence
