@@ -83,11 +83,11 @@ The ready for testing column indicates that the image has been tested on at leas
 | -- | - | - | - | - | - |
 | `acarshub` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `beast-splitter` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| `flightradar24` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `flightradar24` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `adsbhub` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `opensky` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `planefinder` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `acars_router` |  | ✅ | ✅ | 💬 | 💬 |
+| `acars_router` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `airspy` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `reversewebproxy` | ✅ | ✅ | 💬 | 💬 | 💬 |
 | `radar1090` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
@@ -132,13 +132,13 @@ The ready for testing column indicates that the image has been tested on at leas
 | `dumpvdl2` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `vdlm2dec` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `dumphfdl` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `hfdlobserver` | ✅ | 🟡 | 🟡 | 🟡 | 🟡 |
+| `hfdlobserver` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
 
 #### Base Image: `dump978-full`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `dump978` | ✅ | ✅ | 💬 | 💬 | 💬
+| `dump978` | ✅ | ✅ | 💬 | 💬 | 💬 |
 | `piaware` | ✅ | 🟡 | 🟡 | 🟡 | 🟡 |
 
 ## Tasks
