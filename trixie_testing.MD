@@ -132,14 +132,14 @@ The ready for testing column indicates that the image has been tested on at leas
 | `dumpvdl2` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `vdlm2dec` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `dumphfdl` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `hfdlobserver` | ✅ | ✅ | ✅ | 🟡 | 🟡 |
+| `hfdlobserver` | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 #### Base Image: `dump978-full`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
 | `dump978` | ✅ | ✅ | 💬 | 💬 | 💬 |
-| `piaware` | ✅ | 🟡 | 🟡 | 🟡 | 🟡 |
+| `piaware` | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 ## Tasks
 
@@ -167,6 +167,4 @@ The ready for testing column indicates that the image has been tested on at leas
 
 ## Current blockers
 
-- hfdlobserver does not run. Incompatible with Python 3.13
 - docker-airnavradar does not build. Issue with the `libglib2.0-0` dependency and debian trixie.
-- piaware builds but does not run. It seems to be an issue with starting mlat-client and python packaging.
