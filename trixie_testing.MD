@@ -81,65 +81,67 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `acarshub` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `beast-splitter` | ✅ | ✅ | 💬 | 💬 | 💬 |
-| `flightradar24` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `adsbhub` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `opensky` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `planefinder` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `acars_router` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `airspy` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `reversewebproxy` | ✅ | ✅ | 💬 | 💬 | 💬 |
-| `radar1090` | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
+| [`acarshub`](https://github.com/sdr-enthusiasts/docker-acarshub) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`beast-splitter`](https://github.com/sdr-enthusiasts/docker-beast-splitter) | ✅ | ✅ | 💬 | 💬 | 💬 |
+| [`flightradar24`](https://github.com/sdr-enthusiasts/docker-flightradar24) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`adsbhub`](https://github.com/sdr-enthusiasts/docker-adsbhub) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`opensky`](https://github.com/sdr-enthusiasts/docker-opensky) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`planefinder`](https://github.com/sdr-enthusiasts/docker-planefinder) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`acars_router`](https://github.com/sdr-enthusiasts/acars_router) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`airspy`](https://github.com/sdr-enthusiasts/docker-airspy_adsb) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`reversewebproxy`](https://github.com/sdr-enthusiasts/docker-reversewebproxy) | ✅ | ✅ | 💬 | 💬 | 💬 |
+| [`radar1090`](https://github.com/sdr-enthusiasts/docker-radar1090) | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `shipfeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| `aprs-tracker` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| `vessel-alert` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`shipfeeder`](https://github.com/sdr-enthusiasts/docker-shipfeeder) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`aprs-tracker`](https://github.com/sdr-enthusiasts/docker-aprs-tracker) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`vessel-alert`](https://github.com/sdr-enthusiasts/docker-vessel-alert) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`api2sbs`](https://github.com/sdr-enthusiasts/docker-api2sbs) (NOTE: NEEDS ADDING TO WORKFLOWS) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`docker-telegraf-adsb`](https://github.com/sdr-enthusiasts/docker-telegraf-adsb) (NOTE: NEEDS ADDING TO WORKFLOWS) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `mlat-client`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `sdr-map` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`sdr-map`](https://github.com/sdr-enthusiasts/docker-sdr-map) | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 #### Base Image: `planefence_base`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `planefence` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`planefence`](https://github.com/sdr-enthusiasts/docker-planefence) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `soapy-full`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `rtlsdrairband` | ✅ | ✅ | 💬 | 💬 | 💬 |
+| [`rtlsdr-airband`](https://github.com/sdr-enthusiasts/docker-rtlsdr-airband) | ✅ | ✅ | 💬 | 💬 | 💬 |
 
 #### Base Image: `wreadsb`
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `airnav` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `radarvirtuel` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `tar1090` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `ultrafeeder` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `sdrplay-1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`airnav`](https://github.com/sdr-enthusiasts/docker-airnav) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`radarvirtuel`](https://github.com/sdr-enthusiasts/docker-radarvirtuel) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`tar1090`](https://github.com/sdr-enthusiasts/docker-tar1090) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`ultrafeeder`](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`sdrplay-1090`](https://github.com/sdr-enthusiasts/docker-sdrplay-1090) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `acars-decoder-soapy`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `acarsdec` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `dumpvdl2` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `vdlm2dec` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `dumphfdl` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `hfdlobserver` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`acarsdec`](https://github.com/sdr-enthusiasts/docker-acarsdec) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`dumpvdl2`](https://github.com/sdr-enthusiasts/docker-dumpvdl2) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`vdlm2dec`](https://github.com/sdr-enthusiasts/docker-vdlm2dec) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`dumphfdl`](https://github.com/sdr-enthusiasts/docker-dumphfdl) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`hfdlobserver`](https://github.com/sdr-enthusiasts/docker-hfdlobserver) | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 #### Base Image: `dump978-full`
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `dump978` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `piaware` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`dump978`](https://github.com/sdr-enthusiasts/docker-dump978) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`piaware`](https://github.com/sdr-enthusiasts/docker-piaware) | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 ## Tasks
 
