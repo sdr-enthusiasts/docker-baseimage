@@ -138,7 +138,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready for Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| `dump978` | ✅ | ✅ | 💬 | 💬 | 💬 |
+| `dump978` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `piaware` | ✅ | ✅ | ✅ | 💬 | 💬 |
 
 ## Tasks
