@@ -339,21 +339,21 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
-      # - name: airnav
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-airnavradar deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: airnav
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-airnavradar deploy_trixie.yml -f reason="$WORKFLOW_REASON"
       - name: radarvirtuel
         continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-radarvirtuel deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-      # - name: tar1090
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: tar1090
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
       # - name: sdrplay_beast1090
       #   continue-on-error: true
       #   run: |

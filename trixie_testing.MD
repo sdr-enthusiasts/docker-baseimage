@@ -120,8 +120,8 @@ The ready for testing column indicates that the image has been tested on at leas
 | -- | - | - | - | - | - |
 | `airnav` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `radarvirtuel` | ✅ | ✅ | ✅ | 💬 | 💬 |
-| `tar1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| `ultrafeeder` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| `tar1090` | ✅ | ✅ | ✅ | 💬 | 💬 |
+| `ultrafeeder` | ✅ | ✅ | ✅ | 💬 | 💬 |
 | `sdrplay-1090` | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 
 #### Base Image: `acars-decoder-soapy`
@@ -164,6 +164,7 @@ The ready for testing column indicates that the image has been tested on at leas
 - [ ] Move back to main branch for the dumphfdl clone
   - [ ] docker-dumphfdl
   - [ ] docker-hfdlobserver
+- [ ] Fix trigger for tar1090->ultra to just use regular deploy
 
 ## Current blockers
 
