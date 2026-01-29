@@ -95,7 +95,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | [`shipfeeder`](https://github.com/sdr-enthusiasts/docker-shipfeeder) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | [`aprs-tracker`](https://github.com/sdr-enthusiasts/docker-aprs-tracker) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | [`vessel-alert`](https://github.com/sdr-enthusiasts/docker-vesselalert) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| [`api2sbs`](https://github.com/sdr-enthusiasts/docker-api2sbs) (NOTE: NEEDS ADDING TO WORKFLOWS) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`api2sbs`](https://github.com/sdr-enthusiasts/docker-api2sbs) | ✅ | ✅ | 💬 | 💬 | 💬 |
 | [`docker-telegraf-adsb`](https://github.com/sdr-enthusiasts/docker-telegraf-adsb) | ✅ | ✅ | 💬 | 💬 | 💬 |
 
 #### Base Image: `mlat-client`

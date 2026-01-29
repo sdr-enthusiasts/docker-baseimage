@@ -272,6 +272,11 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-telegraf-adsb deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: api2sbs
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-api2sbs deploy.yml -f reason="$WORKFLOW_REASON"
       # - name: acars-oxide
       #   run: |
       #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
