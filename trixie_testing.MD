@@ -2,38 +2,14 @@
 
 ## What this is
 
-Currently, the SDR Enthusiasts Docker images are based on Debian Bookworm. Debian Trixie is the next version of Debian, and it is expected to be released in mid 2025. This migration will update the base images to use Debian Trixie, which will allow us to take advantage of the latest features and improvements in Debian.
-
-In order to ensure a smooth transition, each image will need to be tested on each architecture we support. This document will track the progress of the migration and provide instructions for testing the images.
-
-There is going to be no wide release until Trixie is officially released, all images have been tested, and all images have been confirmed to work on all architectures. I fully anticipate that we will have a working set of images before Trixie is released, but the intent is to give a few month's time past Trixie's release to ensure that everything is working as expected.
-
-The wider the participation in testing, the faster we can get to a stable release. If you want to help test the images, please follow the instructions below.
+Currently, the SDR Enthusiasts Docker images are based on Debian Bookworm. Debian Trixie is the next version of Debian, and it was released in the summer of 2025. We are migrating our containers to Trixie to ensure continued support and access to the latest features and security updates.
 
 > [!WARNING]
 > ***IF YOU ARE RUNNING ADSB.IM THIS DOES NOT APPLY TO YOU. TESTING OF THESE IMAGES WILL BE DONE WHEN THE MAINTAINERS OF ADSB.IM ARE READY. RUNNING ANY OF THESE COMMANDS WILL LIKELY BREAK YOUR SETUP.***
 
 ## Testing procedure
 
-For anyone who wants to help test the trixie migration, please follow these steps:
-
-```shell
-cd /path/to/your/docker-compose-directory
-curl -s https://raw.githubusercontent.com/sdr-enthusiasts/docker-baseimage/main/update_docker_compose.py -o update_docker_compose.py
-cp docker-compose.yml docker-compose.yml.bak
-python3 update_docker_compose.py
-```
-
-> [!WARNING]
-> **BEFORE RUNNING THIS SCRIPT ENSURE YOU HAVE A BACKUP OF YOUR `docker-compose.yml` FILE.**
-
-You can see all available options for the script by running:
-
-```shell
-python3 update_docker_compose.py --help
-```
-
-By default, it will replace any images currently in your `docker-compose.yml` file with any images we've updated to `debian trixie`. You can specify to only use "safe" images, which are images that have been tested and confirmed to work with your CPU's architecture.
+For anyone who wants to help test the trixie migration, you can use the `trixie-latest` tag on each of the SDR-E images.
 
 > [!IMPORTANT]
 > "Safe" images does not mean they're 100% without bugs. Safe images are those that have been tested and confirmed to work with your CPU's architecture by a user or developer (generally), but every person's setup is different and you may run in to a problem based on your specific setup.
@@ -50,7 +26,7 @@ Each image we intend to move over to trixie is listed below, along with its stat
 
 You can see if the build is working. That means we've successfully built the image on GitHub CI, but that does not mean it is ready for testing.
 
-The ready for testing column indicates that the image has been tested on at least one architecture (generally, but not always. Some images aren't applicable to my setup) and is ready for wider testing. You can see which architectures have been tested. Just because there is a ❌ in the column does not mean it will not work, it just means we have not tested it on that architecture yet.
+The ready for testing column indicates that the image has been tested on at least one architecture (generally, but not always. Some images aren't applicable to my setup) and is ready for wider testing. You can see which architectures have been tested and which need feedback.
 
 ## Matrix
 
@@ -90,7 +66,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | [`acars_router`](https://github.com/sdr-enthusiasts/acars_router) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`airspy`](https://github.com/sdr-enthusiasts/airspy_adsb) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`reversewebproxy`](https://github.com/sdr-enthusiasts/docker-reversewebproxy) | ✅ | ✅ | 💬 | 💬 | 💬 |
-| [`radar1090`](https://github.com/sdr-enthusiasts/docker-radar1090) | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
+| [`radar1090`](https://github.com/sdr-enthusiasts/docker-radar1090) | ✅ | ✅ | 💬 | 💬 | 💬 |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |
 | [`shipfeeder`](https://github.com/sdr-enthusiasts/docker-shipfeeder) | ✅ | ✅ | 💬 | 💬 | 💬 |
 | [`aprs-tracker`](https://github.com/sdr-enthusiasts/docker-aprs-tracker) | ✅ | ✅ | 💬 | 💬 | 💬 |
@@ -108,7 +84,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| [`planefence`](https://github.com/sdr-enthusiasts/docker-planefence) | ✅ | ✅ | 💬 | 💬 | 💬 |
+| [`planefence`](https://github.com/sdr-enthusiasts/docker-planefence) | ✅ | ✅ | ✅ | ✅ | 💬 |
 
 #### Base Image: `soapy-full`
 
