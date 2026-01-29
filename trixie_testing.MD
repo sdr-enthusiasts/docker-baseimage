@@ -92,7 +92,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | [`reversewebproxy`](https://github.com/sdr-enthusiasts/docker-reversewebproxy) | ✅ | ✅ | 💬 | 💬 | 💬 |
 | [`radar1090`](https://github.com/sdr-enthusiasts/docker-radar1090) | ✅ | ✅ | 🟡 | 🟡 | 🟡 |
 | `flightairmap` | ❌ | ❌ | ❌ | ❌ | ❌ |
-| [`shipfeeder`](https://github.com/sdr-enthusiasts/docker-shipfeeder) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`shipfeeder`](https://github.com/sdr-enthusiasts/docker-shipfeeder) | ✅ | ✅ | 💬 | 💬 | 💬 |
 | [`aprs-tracker`](https://github.com/sdr-enthusiasts/docker-aprs-tracker) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | [`vessel-alert`](https://github.com/sdr-enthusiasts/docker-vesselalert) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | [`api2sbs`](https://github.com/sdr-enthusiasts/docker-api2sbs) | ✅ | ✅ | 💬 | 💬 | 💬 |
