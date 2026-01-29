@@ -354,11 +354,11 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-      # - name: sdrplay_beast1090
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: sdrplay_beast1090
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy_trixie.yml -f reason="$WORKFLOW_REASON"
       - name: sdrmap
         continue-on-error: true
         run: |

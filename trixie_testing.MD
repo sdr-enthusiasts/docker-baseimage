@@ -124,7 +124,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | [`radarvirtuel`](https://github.com/sdr-enthusiasts/docker-radarvirtuel) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`tar1090`](https://github.com/sdr-enthusiasts/docker-tar1090) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`ultrafeeder`](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) | ✅ | ✅ | ✅ | 💬 | 💬 |
-| [`sdrplay-1090`](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090) | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| [`sdrplay-1090`](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090) | ✅ | ✅ | 💬 | 💬 | 💬 |
 
 #### Base Image: `acars-decoder-soapy`
 
@@ -175,6 +175,7 @@ The ready for testing column indicates that the image has been tested on at leas
 ## Deprecations
 
 - `rtlsdrairband` image: arm32 is no longer supported
+- `sdrplay-beast1090` image: arm32 is no longer supported
 
 ## Open Testing Questions
 
