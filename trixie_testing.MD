@@ -57,7 +57,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| [`acarshub`](https://github.com/sdr-enthusiasts/docker-acarshub) | ✅ | ✅ | ✅ | 💬 | 💬 |
+| [`acarshub`](https://github.com/sdr-enthusiasts/docker-acarshub) | ✅ | ✅ | ✅ | 💬 | ❌ |
 | [`beast-splitter`](https://github.com/sdr-enthusiasts/docker-beast-splitter) | ✅ | ✅ | 💬 | 💬 | 💬 |
 | [`flightradar24`](https://github.com/sdr-enthusiasts/docker-flightradar24) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`adsbhub`](https://github.com/sdr-enthusiasts/docker-adsbhub) | ✅ | ✅ | ✅ | 💬 | 💬 |
@@ -90,7 +90,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 | Image Name | Build Works | Ready For Testing | AMD64 | ARM64 | ARMv7 |
 | -- | - | - | - | - | - |
-| [`rtlsdr-airband`](https://github.com/sdr-enthusiasts/docker-rtlsdrairband) | ✅ | ✅ | 💬 | 💬 | 💬 |
+| [`rtlsdr-airband`](https://github.com/sdr-enthusiasts/docker-rtlsdrairband) | ✅ | ✅ | 💬 | 💬 | ❌ |
 
 #### Base Image: `wreadsb`
 
@@ -100,7 +100,7 @@ The ready for testing column indicates that the image has been tested on at leas
 | [`radarvirtuel`](https://github.com/sdr-enthusiasts/docker-radarvirtuel) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`tar1090`](https://github.com/sdr-enthusiasts/docker-tar1090) | ✅ | ✅ | ✅ | 💬 | 💬 |
 | [`ultrafeeder`](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) | ✅ | ✅ | ✅ | 💬 | 💬 |
-| [`sdrplay-1090`](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090) | ✅ | ✅ | 💬 | 💬 | 💬 |
+| [`sdrplay-1090`](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090) | ✅ | ✅ | 💬 | 💬 | ❌ |
 
 #### Base Image: `acars-decoder-soapy`
 
