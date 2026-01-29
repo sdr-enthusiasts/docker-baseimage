@@ -267,6 +267,11 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: telegraf-adsb
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-telegraf-adsb deploy.yml -f reason="$WORKFLOW_REASON"
       # - name: acars-oxide
       #   run: |
       #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
