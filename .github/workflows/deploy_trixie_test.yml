@@ -274,11 +274,11 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy_trixie.yml -f reason="$WORKFLOW_REASON"
-      # - name: vesselalert
-      #   continue-on-error: true
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+      - name: vesselalert
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy_trixie.yml -f reason="$WORKFLOW_REASON"
       - name: telegraf-adsb
         continue-on-error: true
         run: |
