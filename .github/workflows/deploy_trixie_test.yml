@@ -331,17 +331,17 @@ jobs:
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-rtlsdrairband deploy_trixie.yml -f reason="$WORKFLOW_REASON"
 
-  # trigger_build_planefence:
-  #   name: Trigger deploy of sdr-enthusiasts/docker-planefence
-  #   needs: [deploy_ghcr_planefence_base]
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
-  #   steps:
-  #     - name: Planefence
-  #       continue-on-error: true
-  #       run: |
-  #         echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-  #         gh workflow run --ref main --repo sdr-enthusiasts/docker-planefence deploy_trixie.yml -f reason="$WORKFLOW_REASON"
+  trigger_build_planefence:
+    name: Trigger deploy of sdr-enthusiasts/docker-planefence
+    needs: [deploy_ghcr_planefence_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: Planefence
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-planefence deploy_trixie.yml -f reason="$WORKFLOW_REASON"
 
   trigger_build_wreadsb:
     name: Trigger deploy of wreadsb/mlatclient images
