@@ -174,6 +174,7 @@ The ready for testing column indicates that the image has been tested on at leas
 
 ## Deprecations
 
+- `acarshub` image: arm32 is no longer supported
 - `rtlsdrairband` image: arm32 is no longer supported
 - `sdrplay-beast1090` image: arm32 is no longer supported
 
