@@ -30,6 +30,8 @@ RUN \
   PACKAGES+=(gcc) && \
   PACKAGES+=(python3-dev) && \
   PACKAGES+=(python3-setuptools) && \
+  PACKAGES+=(python3-pip) && \
+  PACKAGES+=(python3-pyasyncore) && \
   PACKAGES+=(build-essential) && \
   PACKAGES+=(ca-certificates) && \
   # needed to build some other stuff we build using this image as a builder
@@ -48,9 +50,11 @@ RUN \
   # Get and install mlat-client:
   git clone --depth=1 "$MLATCLIENT_REPO" /src/mlat-client && \
   cd /src/mlat-client && \
-  python3 setup.py build && \
-  python3 setup.py install && \
-  #
+  pip install . --break-system-packages && \
+  # test mlat-client
+  /usr/local/bin/mlat-client --help > /dev/null && \
+  # cleanup pycache
+  { find /usr | grep -E "/__pycache__$" | xargs rm -rf || true; } && \
   # Now create a tgz tarball of the mlat-client that facilitates installing on the target:
   dist_pkg_target="$(ls -d /usr/local/lib/python*/dist-packages)" && \
   mlatclient_target="$(which mlat-client)" && \
