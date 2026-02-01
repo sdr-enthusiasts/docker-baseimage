@@ -312,7 +312,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-hfdlobserver deploy.yml -f reason="$WORKFLOW_REASON"
+          gh workflow run --ref master --repo sdr-enthusiasts/docker-hfdlobserver deploy.yml -f reason="$WORKFLOW_REASON"
       - name: rtlsdrairband
         continue-on-error: true
         run: |
