@@ -307,7 +307,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-dumphfdl deploy.yml -f reason="$WORKFLOW_REASON"
+          gh workflow run --ref master --repo sdr-enthusiasts/docker-dumphfdl deploy.yml -f reason="$WORKFLOW_REASON"
       - name: hfdlobserver
         continue-on-error: true
         run: |
