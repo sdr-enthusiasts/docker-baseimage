@@ -42,7 +42,7 @@ RUN \
   # install packages
   apt-get update && \
   apt-get install -y --no-install-recommends \
-    "${PACKAGES[@]}" \
+  "${PACKAGES[@]}" \
   && \
   #
   # Get and install mlat-client:

@@ -29,7 +29,7 @@ FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
 
 SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]
 
-# hadolint ignore=DL3008,SC2086,DL4006,SC2039,DL3009
+# hadolint ignore=DL3008,SC2086,DL4006,SC2039
 RUN \
   --mount=type=bind,from=buildimage,source=/,target=/buildimage/ \
   cp /buildimage/usr/local/bin/readsb /usr/local/bin/ && \
@@ -37,12 +37,6 @@ RUN \
   ln -s readsb viewadsb && \
   popd && \
   ldconfig && \
-  PACKAGES+=(python3-pyasyncore) && \
-  # install packages
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-  "${PACKAGES[@]}" \
-  && \
   # readsb: simple tests
   readsb --version && \
   viewadsb --version && \

@@ -36,8 +36,8 @@ RUN set -xe && \
     #
     # Install all the apt, pip3 packages:
     apt-get update -q && \
-    apt-get install -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -o Dpkg::Options::="--force-confold" -y --no-install-recommends  --no-install-suggests "${TEMP_PACKAGES[@]}" "${KEPT_PACKAGES[@]}" && \
-    pip3 install --break-system-packages --no-cache-dir "${KEPT_PIP3_PACKAGES[@]}" && \
+    apt-get install -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -o Dpkg::Options::="--force-confold" -y --no-install-recommends  --no-install-suggests ${TEMP_PACKAGES[@]} ${KEPT_PACKAGES[@]} && \
+    pip3 install --break-system-packages --no-cache-dir ${KEPT_PIP3_PACKAGES[@]} && \
     #
     # Clean up
     apt-get autoremove -q -y -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 "${TEMP_PACKAGES[@]}" && \
