@@ -50,7 +50,7 @@ RUN \
   # Get and install mlat-client:
   git clone --depth=1 "$MLATCLIENT_REPO" /src/mlat-client && \
   cd /src/mlat-client && \
-  pip install . --break-system-packages && \
+  pip install . --break-system-packages --no-cache-dir && \
   # test mlat-client
   /usr/local/bin/mlat-client --help > /dev/null && \
   # cleanup pycache
