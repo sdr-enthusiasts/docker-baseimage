@@ -67,7 +67,7 @@ jobs:
           main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }}
       - name: Check basefile change
         id: changed-files-specific
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -75,7 +75,7 @@ jobs:
 
       - name: Check mlatclient change
         id: changed-files-mlatclient
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -84,7 +84,7 @@ jobs:
 
       - name: Check planefence_base change
         id: changed-files-planefence_base
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -93,7 +93,7 @@ jobs:
 
       - name: Check for acars decoder
         id: changed-files-acarsdecoder
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -103,7 +103,7 @@ jobs:
 
       - name: Check for soapy
         id: changed-files-soapy
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -113,7 +113,7 @@ jobs:
 
       - name: Check for wreadsb
         id: changed-files-wreadsb
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -124,7 +124,7 @@ jobs:
 
       - name: Check for acars decoder soapy
         id: changed-files-acarsdecoder-soapy
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
@@ -135,7 +135,7 @@ jobs:
 
       - name: Check for dump978-full
         id: changed-files-dump978-full
-        uses: tj-actions/changed-files@v47.0.1
+        uses: tj-actions/changed-files@v47.0.2
         with:
           base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
           files: |
