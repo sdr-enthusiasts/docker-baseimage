@@ -23,6 +23,10 @@
   },
   "packageRules": [
     {
+      "matchDatasources": ["docker"],
+      "schedule": []
+    },
+    {
       "matchManagers": ["github-actions", "nix"],
       "matchUpdateTypes": ["major", "minor", "patch", "pin"],
       "automerge": true
