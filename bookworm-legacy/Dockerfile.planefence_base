@@ -2,7 +2,7 @@ FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# hadolint ignore=DL3008,SC2086,DL3003,DL3028
+# hadolint ignore=DL3008,SC2086,DL3003,DL3028,DL3013,SC2068
 RUN set -xe && \
     # define packages needed for installation and general management of the container:
     TEMP_PACKAGES=() && \
