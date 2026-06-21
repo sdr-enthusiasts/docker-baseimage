@@ -24,7 +24,7 @@ fi
 # if the second argument is "clean"
 if [ "$CLEAN" == "clean" ]; then
     echo -e "\033[0;31mWARNING: This will remove ALL Docker containers!\033[0m"
-    read -p "Are you sure you want to continue? (y/N): " confirm
+    read -pr "Are you sure you want to continue? (y/N): " confirm
 
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
         echo "Exiting without cleaning up old images. Please re-run with 'clean' if you want to remove old images or re-run without 'clean' to skip this step."
@@ -40,9 +40,9 @@ if [ "$CLEAN" == "clean" ]; then
             echo "Failed to remove old images. Exiting."
             exit 1
         fi
-   fi
+    fi
 else
-     echo "Skipping cleanup of old images."
+    echo "Skipping cleanup of old images."
 fi
 
 if [ "$VARIANT" == "bookworm" ]; then

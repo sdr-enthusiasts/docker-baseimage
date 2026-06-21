@@ -41,7 +41,6 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
-
   trigger_build_planefence:
     name: Trigger deploy of sdr-enthusiasts/docker-planefence
     needs: [deploy_ghcr_planefence_base]

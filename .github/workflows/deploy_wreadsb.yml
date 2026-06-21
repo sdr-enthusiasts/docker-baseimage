@@ -24,7 +24,6 @@ env:
   WORKFLOW_REASON: "triggered via deploy_wreadsb.yml in sdr-enthusiasts/docker-baseimage"
 
 jobs:
-
   deploy_ghcr_wreadsb:
     name: Wreadsb
     needs: [deploy_ghcr_mlat_client]
