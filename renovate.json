@@ -27,6 +27,11 @@
       "schedule": ["at any time"]
     },
     {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["debian"],
+      "versioning": "regex:^(?<compatibility>\\w+)-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})-slim$"
+    },
+    {
       "matchManagers": ["github-actions", "nix"],
       "matchUpdateTypes": ["major", "minor", "patch", "pin"],
       "automerge": true
