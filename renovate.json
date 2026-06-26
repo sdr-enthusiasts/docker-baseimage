@@ -24,7 +24,7 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "schedule": []
+      "schedule": ["at any time"]
     },
     {
       "matchManagers": ["github-actions", "nix"],
