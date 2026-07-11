@@ -277,6 +277,17 @@ jobs:
         run: |
           echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
           gh workflow run --ref main --repo sdr-enthusiasts/docker-api2sbs deploy.yml -f reason="$WORKFLOW_REASON"
+      - name: VRS
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/docker-virtualradarserver deploy-main.yml -f reason="$WORKFLOW_REASON"
+      - name: browser screenshot
+        continue-on-error: true
+        run: |
+          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
+          gh workflow run --ref main --repo sdr-enthusiasts/browser-screenshot-service deploy.yml -f reason="$WORKFLOW_REASON"
+
       # - name: acars-oxide
       #   run: |
       #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
