@@ -12,7 +12,7 @@
   },
   "timezone": "Etc/UTC",
   "schedule": ["* 0 1 * *"],
-  "enabledManagers": ["nix", "github-actions", "dockerfile"],
+  "enabledManagers": ["nix", "github-actions", "dockerfile", "custom.regex"],
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "prCreation": "immediate",
@@ -40,6 +40,21 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["/^ghcr\\.io/sdr-enthusiasts/.*$/"],
       "enabled": false
+    },
+    {
+      "matchDepNames": ["just-containers/s6-overlay"],
+      "versioning": "loose",
+      "schedule": ["at any time"]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump S6OVERLAY_VERSION in Dockerfile.base against just-containers/s6-overlay GitHub releases",
+      "managerFilePatterns": ["/^Dockerfile\\.base$/"],
+      "matchStrings": ["S6OVERLAY_VERSION=\"(?<currentValue>v[\\d.]+)\""],
+      "depNameTemplate": "just-containers/s6-overlay",
+      "datasourceTemplate": "github-releases"
     }
   ]
 }
