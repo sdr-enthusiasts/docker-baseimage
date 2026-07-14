@@ -1,0 +1,76 @@
+---
+name: Dispatch and capture
+description: >
+  Dispatch a downstream deploy workflow via `gh workflow run`, capture the URL
+  of the run it creates, and upload it as an artifact so a later job can watch
+  the dispatched run to completion.
+
+inputs:
+  slug:
+    description: Short, filesystem-safe name for the downstream target.
+    required: true
+  repo:
+    description: owner/name of the downstream repository.
+    required: true
+  workflow:
+    description: Workflow file to dispatch (e.g. deploy.yml).
+    required: true
+  ref:
+    description: Git ref to dispatch against.
+    required: true
+    default: main
+  reason:
+    description: Reason string passed to the downstream workflow.
+    required: true
+  token:
+    description: GitHub token/PAT authorized to dispatch the downstream workflow.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Dispatch ${{ inputs.slug }} and capture run URL
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        TARGET_SLUG: ${{ inputs.slug }}
+        TARGET_REPO: ${{ inputs.repo }}
+        TARGET_WORKFLOW: ${{ inputs.workflow }}
+        TARGET_REF: ${{ inputs.ref }}
+        TARGET_REASON: ${{ inputs.reason }}
+      run: |
+        set -euo pipefail
+        mkdir -p "${RUNNER_TEMP}/dispatched"
+        manifest="${RUNNER_TEMP}/dispatched/${TARGET_SLUG}.tsv"
+
+        # `gh workflow run` prints the URL of the run it created on success.
+        # Capture stdout so we can persist that URL for later monitoring.
+        if output="$(gh workflow run \
+          --ref "$TARGET_REF" \
+          --repo "$TARGET_REPO" \
+          "$TARGET_WORKFLOW" \
+          -f reason="$TARGET_REASON" 2>&1)"; then
+          echo "$output"
+          run_url="$(grep -oE 'https://github.com/[^ ]+/actions/runs/[0-9]+' <<<"$output" | head -n1 || true)"
+        else
+          echo "::warning::Failed to dispatch ${TARGET_SLUG} (${TARGET_REPO}):"
+          echo "$output"
+          run_url=""
+        fi
+
+        if [[ -z "$run_url" ]]; then
+          echo "::warning::No run URL captured for ${TARGET_SLUG}; it will not be monitored."
+          # Still emit a manifest row so the report shows the dispatch attempt.
+          printf '%s\t%s\t%s\n' "$TARGET_SLUG" "$TARGET_REPO" "" > "$manifest"
+        else
+          echo "Dispatched ${TARGET_SLUG}: ${run_url}"
+          printf '%s\t%s\t%s\n' "$TARGET_SLUG" "$TARGET_REPO" "$run_url" > "$manifest"
+        fi
+
+    - name: Upload dispatched-run manifest
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: dispatched-run-${{ inputs.slug }}
+        path: ${{ runner.temp }}/dispatched/${{ inputs.slug }}.tsv
+        if-no-files-found: warn
+        retention-days: 1

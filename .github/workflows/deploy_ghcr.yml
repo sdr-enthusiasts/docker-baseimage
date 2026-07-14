@@ -189,199 +189,465 @@ jobs:
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
+  # ---------------------------------------------------------------------------
+  # Downstream trigger jobs.
+  #
+  # Each job dispatches deploy workflows in downstream repos. `gh workflow run`
+  # prints the URL of the run it created; we capture that URL and persist it as
+  # an artifact so the final `monitor_downstream_builds` job can watch every
+  # dispatched run to completion and report an aggregate pass/fail.
+  #
+  # Each downstream target is a matrix entry so the dispatch+capture logic lives
+  # in exactly one place.
+  # ---------------------------------------------------------------------------
+
   trigger_build_base:
-    name: Trigger deploy of base image
+    name: Trigger deploy of base image (${{ matrix.slug }})
     needs: [deploy_ghcr_base]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: acarshub,
+              repo: sdr-enthusiasts/docker-acarshub,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: beast-splitter,
+              repo: sdr-enthusiasts/docker-beast-splitter,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: flightradar24,
+              repo: sdr-enthusiasts/docker-flightradar24,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: adsbhub,
+              repo: sdr-enthusiasts/docker-adsbhub,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: opensky,
+              repo: sdr-enthusiasts/docker-opensky-network,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: planefinder,
+              repo: sdr-enthusiasts/docker-planefinder,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: acars_router,
+              repo: sdr-enthusiasts/acars_router,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: airspy,
+              repo: sdr-enthusiasts/airspy_adsb,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: reversewebproxy,
+              repo: sdr-enthusiasts/docker-reversewebproxy,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: radar1090,
+              repo: sdr-enthusiasts/docker-radar1090,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: shipfeeder,
+              repo: sdr-enthusiasts/docker-shipfeeder,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: aprs-tracker,
+              repo: sdr-enthusiasts/docker-aprs-tracker,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: vesselalert,
+              repo: sdr-enthusiasts/docker-vesselalert,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: telegraf-adsb,
+              repo: sdr-enthusiasts/docker-telegraf-adsb,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: api2sbs,
+              repo: sdr-enthusiasts/docker-api2sbs,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: vrs,
+              repo: sdr-enthusiasts/docker-virtualradarserver,
+              workflow: deploy-main.yml,
+              ref: main,
+            }
+          - {
+              slug: browser-screenshot,
+              repo: sdr-enthusiasts/browser-screenshot-service,
+              workflow: deploy.yml,
+              ref: main,
+            }
     steps:
-      - name: acarshub
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-acarshub deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: beast-splitter
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-beast-splitter deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: flightradar24
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-flightradar24 deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: adsbhub
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-adsbhub deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: opensky
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-opensky-network deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: planefinder
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-planefinder deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: acars_router
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/acars_router deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: airspy
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/airspy_adsb deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: reversewebproxy
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-reversewebproxy deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: radar1090
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-radar1090 deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: flightairmap
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-flightairmap deploy.yml -f reason="$WORKFLOW_REASON"
-
-      # moved from rtlsdr to base image
-      - name: shipfeeder
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-shipfeeder deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: aprs-tracker
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-aprs-tracker deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: vesselalert
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-vesselalert deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: telegraf-adsb
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-telegraf-adsb deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: api2sbs
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-api2sbs deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: VRS
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-virtualradarserver deploy-main.yml -f reason="$WORKFLOW_REASON"
-      - name: browser screenshot
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/browser-screenshot-service deploy.yml -f reason="$WORKFLOW_REASON"
-
-      # - name: acars-oxide
-      #   run: |
-      #     echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-      #     gh workflow run --ref main --repo sdr-enthusiasts/acars-oxide deploy.yml -f reason="$WORKFLOW_REASON"
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
 
   trigger_build_acars_soapy:
-    name: Trigger deploy of acars decoder soapy images
+    name: Trigger deploy of acars decoder soapy images (${{ matrix.slug }})
     needs: [deploy_ghcr_acars-decoder-soapy]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: acarsdec,
+              repo: sdr-enthusiasts/docker-acarsdec,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: dumpvdl2,
+              repo: sdr-enthusiasts/docker-dumpvdl2,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: dumphfdl,
+              repo: sdr-enthusiasts/docker-dumphfdl,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: hfdlobserver,
+              repo: sdr-enthusiasts/docker-hfdlobserver,
+              workflow: deploy.yml,
+              ref: master,
+            }
+          - {
+              slug: rtlsdrairband,
+              repo: sdr-enthusiasts/docker-rtlsdrairband,
+              workflow: deploy.yml,
+              ref: main,
+            }
     steps:
-      - name: acarsdec
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-acarsdec deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: dumpvdl2
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-dumpvdl2 deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: dumphfdl
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-dumphfdl deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: hfdlobserver
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref master --repo sdr-enthusiasts/docker-hfdlobserver deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: rtlsdrairband
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-rtlsdrairband deploy.yml -f reason="$WORKFLOW_REASON"
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
 
   trigger_build_planefence:
-    name: Trigger deploy of sdr-enthusiasts/docker-planefence
+    name: Trigger deploy of sdr-enthusiasts/docker-planefence (${{ matrix.slug }})
     needs: [deploy_ghcr_planefence_base]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: planefence,
+              repo: sdr-enthusiasts/docker-planefence,
+              workflow: deploy.yml,
+              ref: main,
+            }
     steps:
-      - name: Planefence
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-planefence deploy.yml -f reason="$WORKFLOW_REASON"
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
 
   trigger_build_wreadsb:
-    name: Trigger deploy of wreadsb/mlatclient images
+    name: Trigger deploy of wreadsb/mlatclient images (${{ matrix.slug }})
     needs: [deploy_ghcr_wreadsb, deploy_ghcr_mlat_client]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: airnav,
+              repo: sdr-enthusiasts/docker-airnavradar,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: radarvirtuel,
+              repo: sdr-enthusiasts/docker-radarvirtuel,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: tar1090,
+              repo: sdr-enthusiasts/docker-tar1090,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: sdrplay_beast1090,
+              repo: sdr-enthusiasts/docker-sdrplay-beast1090,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: sdrmap,
+              repo: sdr-enthusiasts/docker-sdrmap,
+              workflow: deploy.yml,
+              ref: main,
+            }
     steps:
-      - name: airnav
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-airnavradar deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: radarvirtuel
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-radarvirtuel deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: tar1090
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-tar1090 deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: sdrplay_beast1090
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrplay-beast1090 deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: sdrmap
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-sdrmap deploy.yml -f reason="$WORKFLOW_REASON"
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
 
   trigger_build_dump978:
-    name: Trigger deploy of sdr-enthusiasts/docker-dump978
+    name: Trigger deploy of sdr-enthusiasts/docker-dump978 (${{ matrix.slug }})
     needs: [deploy_dump978-full]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: dump978,
+              repo: sdr-enthusiasts/docker-dump978,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: piaware,
+              repo: sdr-enthusiasts/docker-piaware,
+              workflow: deploy.yml,
+              ref: main,
+            }
     steps:
-      - name: dump978
-        continue-on-error: true
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+
+  # ---------------------------------------------------------------------------
+  # Final aggregator: watch every dispatched downstream run to completion,
+  # follow the tar1090 -> docker-adsb-ultrafeeder chain, and fail this job if
+  # any downstream build failed. Runs even if some trigger jobs failed so that
+  # partial results are still reported.
+  # ---------------------------------------------------------------------------
+  monitor_downstream_builds:
+    name: Monitor downstream builds
+    needs:
+      - trigger_build_base
+      - trigger_build_acars_soapy
+      - trigger_build_planefence
+      - trigger_build_wreadsb
+      - trigger_build_dump978
+    runs-on: ubuntu-latest
+    if: ${{ always() && github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: Download dispatched-run manifests
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          path: dispatched
+          pattern: dispatched-run-*
+          merge-multiple: true
+
+      - name: Watch downstream runs and report
+        env:
+          GH_TOKEN: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          TAR1090_REPO: sdr-enthusiasts/docker-tar1090
+          TAR1090_ULTRAFEEDER_REPO: sdr-enthusiasts/docker-adsb-ultrafeeder
         run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-dump978 deploy.yml -f reason="$WORKFLOW_REASON"
-      - name: piaware
-        continue-on-error: true
-        run: |
-          echo "$WORKFLOW_AUTH_TOKEN" | gh auth login --with-token
-          gh workflow run --ref main --repo sdr-enthusiasts/docker-piaware deploy.yml -f reason="$WORKFLOW_REASON"
+          set -euo pipefail
+
+          # --- Collect dispatched runs from the manifests ----------------------
+          # Each manifest line is: <slug>\t<repo>\t<run_url>
+          shopt -s nullglob
+          manifests=(dispatched/*.tsv)
+          if [[ ${#manifests[@]} -eq 0 ]]; then
+            echo "No dispatched-run manifests found. Nothing to monitor."
+            {
+              echo "## Downstream build report"
+              echo ""
+              echo "No downstream runs were dispatched (or none reported a run URL)."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          declare -a SLUGS=() REPOS=() URLS=()
+          while IFS=$'\t' read -r slug repo url; do
+            [[ -z "${url:-}" ]] && continue
+            SLUGS+=("$slug")
+            REPOS+=("$repo")
+            URLS+=("$url")
+          done < <(cat "${manifests[@]}")
+
+          # --- Helper: extract run id from a run URL ---------------------------
+          run_id_from_url() { sed -E 's#.*/runs/([0-9]+).*#\1#' <<<"$1"; }
+
+          # --- Watch a single run to completion, echo its conclusion -----------
+          watch_run() {
+            local repo="$1" run_id="$2"
+            # gh run watch blocks until the run completes.
+            gh run watch "$run_id" --repo "$repo" --exit-status >/dev/null 2>&1 || true
+            gh run view "$run_id" --repo "$repo" --json conclusion --jq '.conclusion' 2>/dev/null || echo "unknown"
+          }
+
+          declare -a R_SLUG=() R_REPO=() R_URL=() R_CONCLUSION=()
+
+          tar1090_ok="false"
+          tar1090_run_id=""
+
+          for i in "${!URLS[@]}"; do
+            slug="${SLUGS[$i]}"
+            repo="${REPOS[$i]}"
+            url="${URLS[$i]}"
+            run_id="$(run_id_from_url "$url")"
+            echo "::group::Watching ${slug} (${repo} run ${run_id})"
+            conclusion="$(watch_run "$repo" "$run_id")"
+            echo "${slug} (${repo}) -> ${conclusion}"
+            echo "::endgroup::"
+            R_SLUG+=("$slug"); R_REPO+=("$repo"); R_URL+=("$url"); R_CONCLUSION+=("$conclusion")
+            if [[ "$slug" == "tar1090" ]]; then
+              tar1090_run_id="$run_id"
+              [[ "$conclusion" == "success" ]] && tar1090_ok="true"
+            fi
+          done
+
+          # --- Follow tar1090 -> docker-adsb-ultrafeeder chain -----------------
+          # tar1090's own workflow dispatches docker-adsb-ultrafeeder right after
+          # its build completes. GitHub does not expose the dispatch reason in run
+          # metadata, so correlate by time: find the newest workflow_dispatch run
+          # on ultrafeeder created at/after tar1090's build started.
+          if [[ "$tar1090_ok" == "true" ]]; then
+            echo "::group::Locating docker-adsb-ultrafeeder run triggered by tar1090"
+            uf_run_id=""
+            since="$(gh run view "$tar1090_run_id" --repo "$TAR1090_REPO" \
+              --json createdAt --jq '.createdAt' 2>/dev/null || echo "")"
+            echo "tar1090 run ${tar1090_run_id} started at ${since:-unknown}"
+            if [[ -z "$since" ]]; then
+              echo "::warning::Could not determine tar1090 start time; cannot safely correlate ultrafeeder run."
+            else
+              for _ in $(seq 1 30); do
+                uf_run_id="$(gh run list \
+                  --repo "$TAR1090_ULTRAFEEDER_REPO" \
+                  --event workflow_dispatch \
+                  --limit 20 \
+                  --json databaseId,createdAt \
+                  --jq "map(select(.createdAt >= \"${since}\")) | sort_by(.createdAt) | reverse | .[0].databaseId // empty" 2>/dev/null || true)"
+                if [[ -n "$uf_run_id" ]]; then
+                  break
+                fi
+                sleep 20
+              done
+            fi
+            if [[ -n "$uf_run_id" ]]; then
+              uf_url="https://github.com/${TAR1090_ULTRAFEEDER_REPO}/actions/runs/${uf_run_id}"
+              echo "Found ultrafeeder run: ${uf_url}"
+              uf_conclusion="$(watch_run "$TAR1090_ULTRAFEEDER_REPO" "$uf_run_id")"
+              echo "ultrafeeder (${TAR1090_ULTRAFEEDER_REPO}) -> ${uf_conclusion}"
+              R_SLUG+=("ultrafeeder"); R_REPO+=("$TAR1090_ULTRAFEEDER_REPO"); R_URL+=("$uf_url"); R_CONCLUSION+=("$uf_conclusion")
+            else
+              echo "Could not locate an ultrafeeder run triggered by tar1090."
+              R_SLUG+=("ultrafeeder"); R_REPO+=("$TAR1090_ULTRAFEEDER_REPO"); R_URL+=("n/a"); R_CONCLUSION+=("not-found")
+            fi
+            echo "::endgroup::"
+          else
+            echo "tar1090 did not succeed; skipping ultrafeeder chain."
+          fi
+
+          # --- Build the summary table -----------------------------------------
+          {
+            echo "## Downstream build report"
+            echo ""
+            echo "| Target | Repository | Result | Run |"
+            echo "| :----- | :--------- | :----- | :-- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          failures=0
+          for i in "${!R_SLUG[@]}"; do
+            slug="${R_SLUG[$i]}"
+            repo="${R_REPO[$i]}"
+            url="${R_URL[$i]}"
+            conclusion="${R_CONCLUSION[$i]}"
+            case "$conclusion" in
+              success) icon="pass" ;;
+              skipped|cancelled) icon="skipped" ;;
+              *) icon="FAIL"; failures=$((failures + 1)) ;;
+            esac
+            if [[ "$url" == "n/a" ]]; then
+              run_cell="n/a"
+            else
+              run_cell="[link](${url})"
+            fi
+            echo "| ${slug} | ${repo} | ${icon} (${conclusion}) | ${run_cell} |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          {
+            echo ""
+            echo "**Total watched:** ${#R_SLUG[@]}  |  **Failures:** ${failures}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "$failures" -gt 0 ]]; then
+            echo "::error::${failures} downstream build(s) failed."
+            exit 1
+          fi
+          echo "All downstream builds succeeded."
