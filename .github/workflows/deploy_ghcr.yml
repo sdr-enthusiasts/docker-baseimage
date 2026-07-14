@@ -630,7 +630,8 @@ jobs:
             conclusion="${R_CONCLUSION[$i]}"
             case "$conclusion" in
               success) icon="pass" ;;
-              skipped|cancelled) icon="skipped" ;;
+              skipped) icon="skipped" ;;
+              cancelled) icon="CANCELLED"; failures=$((failures + 1)) ;;
               *) icon="FAIL"; failures=$((failures + 1)) ;;
             esac
             if [[ "$url" == "n/a" ]]; then
