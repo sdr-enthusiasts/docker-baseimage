@@ -1,7 +1,7 @@
 FROM debian:trixie-20260713-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6OVERLAY_VERSION="v3.2.2.0" \
+  S6OVERLAY_VERSION="v3.2.3.2" \
   # Fix for any issues with the S6 overlay. We have quite a few legacy services
   # that worked fine under v2, but v3 is more strict and will kill a startup process
   # if it takes more than 5 seconds. tar1090 and rtlsdrairband are the hardest hit
