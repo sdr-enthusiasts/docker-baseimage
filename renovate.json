@@ -44,7 +44,8 @@
     {
       "matchDepNames": ["just-containers/s6-overlay"],
       "versioning": "loose",
-      "schedule": ["at any time"]
+      "schedule": ["at any time"],
+      "automerge": false
     }
   ],
   "customManagers": [
