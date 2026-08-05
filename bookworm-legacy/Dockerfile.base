@@ -102,9 +102,6 @@ RUN \
   popd && \
   # Add additional stuff
   mkdir -p /scripts /etc/cont-init.d && \
-  curl -sSL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/install_libseccomp2.sh | bash && \
-  chmod +x /etc/s6-overlay/s6-rc.d/libseccomp2/up && \
-  chmod +x /etc/s6-overlay/scripts/libseccomp2_check.sh && \
   cp /app/scripts/* /scripts/ && \
   ############### RTLSDR stuff
   # rtlsdr: clone repo
