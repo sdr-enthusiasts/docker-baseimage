@@ -101,7 +101,11 @@ RUN \
   mv s6wrap /usr/local/bin && \
   popd && \
   # Add additional stuff
-  mkdir -p /scripts /etc/cont-init.d && \
+  # /etc/s6-overlay/scripts is where downstream images place helper scripts that
+  # their s6 services exec. Several write into it at build time before their own
+  # rootfs/ is COPYed, so it has to exist in the base. It used to be created as a
+  # side effect of install_libseccomp2.sh; create it explicitly now that is gone.
+  mkdir -p /scripts /etc/cont-init.d /etc/s6-overlay/scripts && \
   cp /app/scripts/* /scripts/ && \
   ############### RTLSDR stuff
   # rtlsdr: clone repo
