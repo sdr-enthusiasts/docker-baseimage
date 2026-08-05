@@ -24,7 +24,7 @@ fi
 # if the second argument is "clean"
 if [ "$CLEAN" == "clean" ]; then
     echo -e "\033[0;31mWARNING: This will remove ALL Docker containers!\033[0m"
-    read -pr "Are you sure you want to continue? (y/N): " confirm
+    read -rp "Are you sure you want to continue? (y/N): " confirm
 
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
         echo "Exiting without cleaning up old images. Please re-run with 'clean' if you want to remove old images or re-run without 'clean' to skip this step."
@@ -45,10 +45,12 @@ else
     echo "Skipping cleanup of old images."
 fi
 
+# The repo root holds the trixie Dockerfiles; bookworm was moved to
+# bookworm-legacy/ when trixie was promoted to the default (commit 8704a43).
 if [ "$VARIANT" == "bookworm" ]; then
-    BUILD_PATH="./"
+    BUILD_PATH="./bookworm-legacy"
 elif [ "$VARIANT" == "trixie" ]; then
-    BUILD_PATH="./trixie"
+    BUILD_PATH="./"
 fi
 
 # build the base
