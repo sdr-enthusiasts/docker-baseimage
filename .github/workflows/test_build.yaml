@@ -8,12 +8,11 @@ on:
 jobs:
   test_build_base:
     name: Test Build Base
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: base
       docker_build_file: Dockerfile.base
@@ -23,12 +22,11 @@ jobs:
   test_build_mlat_client:
     name: Test Build Mlat Client
     needs: [test_build_base]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: mlatclient
       docker_build_file: Dockerfile.mlatclient
@@ -38,12 +36,11 @@ jobs:
   test_build_planefence_base:
     name: Test Build Planefence Base
     needs: [test_build_base]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: planefence_base
       docker_build_file: Dockerfile.planefence_base
@@ -53,12 +50,11 @@ jobs:
   test_build_soapy_full:
     name: Test Build Soapy Full
     needs: [test_build_base]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: soapy-full
       docker_build_file: Dockerfile.soapy-full
@@ -68,12 +64,11 @@ jobs:
   test_build_wreadsb:
     name: Test Build Wreadsb
     needs: [test_build_base, test_build_mlat_client]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: wreadsb
       docker_build_file: Dockerfile.wreadsb
@@ -83,12 +78,11 @@ jobs:
   test_build_acars-decoder-soapy:
     name: Test Build ACARS Decoder Soapy
     needs: [test_build_wreadsb]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: acars-decoder-soapy
       docker_build_file: Dockerfile.acars-decoder-soapy
@@ -98,12 +92,11 @@ jobs:
   test_build_dump978-full:
     name: Test Build Dump978 Full
     needs: [test_build_wreadsb]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: dump978-full
       docker_build_file: Dockerfile.dump978-full
