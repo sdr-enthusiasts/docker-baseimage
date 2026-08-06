@@ -30,13 +30,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: base
       docker_build_file: Dockerfile.base
@@ -52,13 +51,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: mlatclient
       docker_build_file: Dockerfile.mlatclient
@@ -73,13 +71,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: planefence_base
       docker_build_file: Dockerfile.planefence_base
@@ -96,13 +93,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: soapy-full
       docker_build_file: Dockerfile.soapy-full
@@ -119,13 +115,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: wreadsb
       docker_build_file: Dockerfile.wreadsb
@@ -142,13 +137,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: acars-decoder-soapy
       docker_build_file: Dockerfile.acars-decoder-soapy
@@ -165,13 +159,12 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@bcf0b94a192e7ca9630f788ecc16acd999541404 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
-      build_with_tmpfs: false
       build_latest: true
       docker_latest_tag: dump978-full
       docker_build_file: Dockerfile.dump978-full
