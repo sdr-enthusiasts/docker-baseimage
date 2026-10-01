@@ -8,7 +8,7 @@ on:
 jobs:
   test_build_base:
     name: Test Build Base
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
@@ -22,7 +22,7 @@ jobs:
   test_build_mlat_client:
     name: Test Build Mlat Client
     needs: [test_build_base]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
@@ -36,7 +36,7 @@ jobs:
   test_build_planefence_base:
     name: Test Build Planefence Base
     needs: [test_build_base]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
@@ -50,7 +50,7 @@ jobs:
   test_build_soapy_full:
     name: Test Build Soapy Full
     needs: [test_build_base]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
@@ -64,7 +64,7 @@ jobs:
   test_build_wreadsb:
     name: Test Build Wreadsb
     needs: [test_build_base, test_build_mlat_client]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
@@ -78,7 +78,7 @@ jobs:
   test_build_acars-decoder-soapy:
     name: Test Build ACARS Decoder Soapy
     needs: [test_build_wreadsb]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
@@ -92,7 +92,7 @@ jobs:
   test_build_dump978-full:
     name: Test Build Dump978 Full
     needs: [test_build_wreadsb]
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: false
       ghcr_repo_owner: ${{ github.repository_owner }}
