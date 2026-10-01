@@ -30,7 +30,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -51,7 +51,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -71,7 +71,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -93,7 +93,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -115,7 +115,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -137,7 +137,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -159,7 +159,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@4cf063e5906338b3b92f0fe71d8dbae52c180d99 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
