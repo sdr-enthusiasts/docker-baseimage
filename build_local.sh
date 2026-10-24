@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# grab the first argument. It should be either "bookworm" or "trixie"
+# grab the first argument. It should be "bookworm", "trixie", or "forky"
 
 VARIANT="$1"
 # grab the second argument. It should be "clean" if you want to remove all images before the build
@@ -8,16 +8,25 @@ CLEAN="$2"
 
 BUILD_PATH="./"
 
+# Each image is built FROM the previous local one, so the builder must use the
+# local image store. A docker-container buildx builder neither loads results
+# locally nor resolves FROM against local images (it pulls the published tags).
+BUILDER="default"
+
+# Prepended to every image tag. The forky Dockerfiles build FROM forky-* tags so
+# they never collide with (or silently build on) the trixie images.
+TAG_PREFIX=""
+
 if [ -z "$VARIANT" ]; then
-    echo "Usage: $0 <bookworm|trixie> <clean>"
+    echo "Usage: $0 <bookworm|trixie|forky> <clean>"
     echo "If you add clean to the command, it will remove all images before the build."
     exit 1
 fi
 
 # check if the argument is valid
 
-if [ "$VARIANT" != "bookworm" ] && [ "$VARIANT" != "trixie" ]; then
-    echo "Invalid variant: $VARIANT. Use 'bookworm' or 'trixie'."
+if [ "$VARIANT" != "bookworm" ] && [ "$VARIANT" != "trixie" ] && [ "$VARIANT" != "forky" ]; then
+    echo "Invalid variant: $VARIANT. Use 'bookworm', 'trixie', or 'forky'."
     exit 1
 fi
 
@@ -47,36 +56,34 @@ fi
 
 # The repo root holds the trixie Dockerfiles; bookworm was moved to
 # bookworm-legacy/ when trixie was promoted to the default (commit 8704a43).
+# forky/ is an experimental copy of the trixie Dockerfiles on debian forky.
 if [ "$VARIANT" == "bookworm" ]; then
     BUILD_PATH="./bookworm-legacy"
 elif [ "$VARIANT" == "trixie" ]; then
     BUILD_PATH="./"
+elif [ "$VARIANT" == "forky" ]; then
+    BUILD_PATH="./forky"
+    TAG_PREFIX="forky-"
 fi
 
-# build the base
+# build each image in order; stop on the first failure since later images
+# are built FROM earlier ones
+build_image() {
+    local step="$1"
+    local tag="$2"
 
-echo "Step 1: Building base image for variant: $VARIANT"
+    echo "Step $step: Building ${TAG_PREFIX}${tag} image for variant: $VARIANT"
 
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:base -f "$BUILD_PATH"/Dockerfile.base .
+    if ! docker build --builder "$BUILDER" -t ghcr.io/sdr-enthusiasts/docker-baseimage:"${TAG_PREFIX}${tag}" -f "$BUILD_PATH"/Dockerfile."$tag" .; then
+        echo -e "\033[0;31mStep $step: Failed to build ${TAG_PREFIX}${tag} image for variant: $VARIANT. Exiting.\033[0m"
+        exit 1
+    fi
+}
 
-# now the images off of the base image
-
-echo "Step 2: Building mlatclient image for variant: $VARIANT"
-
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:mlatclient -f "$BUILD_PATH"/Dockerfile.mlatclient .
-
-echo "Step 3: Building planefence image for variant: $VARIANT"
-
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:planefence_base -f "$BUILD_PATH"/Dockerfile.planefence_base .
-
-echo "Step 4: Building soapy-full image for variant: $VARIANT"
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:soapy-full -f "$BUILD_PATH"/Dockerfile.soapy-full .
-
-echo "Step 5: Building wreadsb image for variant: $VARIANT"
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb -f "$BUILD_PATH"/Dockerfile.wreadsb .
-
-echo "Step 6: Building acars-decoder-soapy image for variant: $VARIANT"
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:acars-decoder-soapy -f "$BUILD_PATH"/Dockerfile.acars-decoder-soapy .
-
-echo "Step 7: Building dump978-full image for variant: $VARIANT"
-docker build -t ghcr.io/sdr-enthusiasts/docker-baseimage:dump978-full -f "$BUILD_PATH"/Dockerfile.dump978-full .
+build_image 1 base
+build_image 2 mlatclient
+build_image 3 planefence_base
+build_image 4 soapy-full
+build_image 5 wreadsb
+build_image 6 acars-decoder-soapy
+build_image 7 dump978-full

@@ -1,0 +1,167 @@
+---
+name: Deploy (forky)
+
+# Experimental: builds the forky/ Dockerfiles and pushes them as forky-<image>
+# tags. Downstream triggers are intentionally absent -- downstream repos build
+# FROM the trixie tags, so dispatching them would test nothing forky-related.
+
+on:
+  # Enable manual running of action if necessary
+  workflow_dispatch:
+    inputs:
+      reason:
+        required: true
+        description: "Reason for running this workflow"
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # Basefile
+  deploy_ghcr_base:
+    name: Base
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-base
+      docker_build_file: forky/Dockerfile.base
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Next steps are all of the deployments that depend on the base image
+  deploy_ghcr_mlat_client:
+    needs: [deploy_ghcr_base]
+    name: Mlat Client
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-mlatclient
+      docker_build_file: forky/Dockerfile.mlatclient
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy_ghcr_planefence_base:
+    name: Planefence
+    needs: [deploy_ghcr_base]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-planefence_base
+      docker_build_file: forky/Dockerfile.planefence_base
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # deployments that only rely on rtlsdr
+
+  deploy_ghcr_soapy_full:
+    name: Soapy Full
+    needs: [deploy_ghcr_base]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-soapy-full
+      docker_build_file: forky/Dockerfile.soapy-full
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # deployments that rely on rtlsdr AND mlatclient
+
+  deploy_ghcr_wreadsb:
+    name: Wreadsb
+    needs: [deploy_ghcr_base, deploy_ghcr_mlat_client]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-wreadsb
+      docker_build_file: forky/Dockerfile.wreadsb
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # deployments that rely on just soapy-full
+
+  deploy_ghcr_acars-decoder-soapy:
+    name: ACARS Decoder Soapy
+    needs: [deploy_ghcr_soapy_full]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-acars-decoder-soapy
+      docker_build_file: forky/Dockerfile.acars-decoder-soapy
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # deployments that rely on just wreadsb
+
+  deploy_dump978-full:
+    name: Dump978 Full
+    needs: [deploy_ghcr_wreadsb]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      build_latest: true
+      docker_latest_tag: forky-dump978-full
+      docker_build_file: forky/Dockerfile.dump978-full
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
