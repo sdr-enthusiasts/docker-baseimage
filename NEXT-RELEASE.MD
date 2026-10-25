@@ -97,6 +97,56 @@ docker-sdrplay-beast1090 has a build stage on `base` and a final stage on
 `wreadsb`, so it needs both next-release base images. docker-acars2pos builds on
 `base` but is a personal fork and out of scope.
 
+## arm/v7 support
+
+What is actually published, read from each tag's manifest list on ghcr.io
+(`docker buildx imagetools inspect ghcr.io/sdr-enthusiasts/<image>:<tag>`), not
+from the workflows. Updated as images move; last checked 2026-10-25.
+
+- Base images: every stable tag and every `forky-*` tag is published for amd64,
+  arm64 and arm/v7.
+- Stable: 25 of 33 child images ship arm/v7.
+- Next: arm/v7 is kept wherever stable has it, except where Debian dropped
+  armhf for a package the image needs (see Decisions).
+- Every child of `soapy-full` and `acars-decoder-soapy` already skips arm/v7 on
+  stable, while those two base images still build it.
+
+| Image                      | Stable `:latest` arm/v7 | Next `:next` arm/v7 | Notes                                                          |
+| -------------------------- | ----------------------- | ------------------- | -------------------------------------------------------------- |
+| docker-acarshub            | no                      | no                  | Never built for arm/v7                                         |
+| docker-flightradar24       | yes                     | yes                 |                                                                |
+| docker-adsbhub             | yes                     | yes                 |                                                                |
+| docker-planefinder         | yes                     | yes                 |                                                                |
+| acars_router               | yes                     | yes                 |                                                                |
+| airspy_adsb                | yes                     | yes                 |                                                                |
+| docker-reversewebproxy     | yes                     | yes                 |                                                                |
+| webproxy                   | yes                     | yes                 | Second image published by docker-reversewebproxy               |
+| docker-radar1090           | yes                     | yes                 |                                                                |
+| docker-shipfeeder          | yes                     | yes                 |                                                                |
+| docker-aprs-tracker        | yes                     | yes                 |                                                                |
+| docker-vesselalert         | yes                     | yes                 |                                                                |
+| docker-telegraf-adsb       | yes                     | yes                 |                                                                |
+| docker-api2sbs             | yes                     | yes                 |                                                                |
+| browser-screenshot-service | yes                     | dropped             | Forky's chromium has no armhf build; `:next` not yet published |
+| docker-beast-splitter      | yes                     | not moved           | Blocked                                                        |
+| vrs                        | yes                     | not moved           | Deferred (docker-virtualradarserver)                           |
+| docker-acarsdec            | no                      | not moved           |                                                                |
+| docker-dumpvdl2            | no                      | not moved           |                                                                |
+| docker-dumphfdl            | no                      | not moved           |                                                                |
+| docker-hfdlobserver        | no                      | not moved           |                                                                |
+| docker-rtlsdrairband       | no                      | not moved           |                                                                |
+| docker-xng                 | no                      | not moved           |                                                                |
+| docker-sdrplay-beast1090   | no                      | not moved           |                                                                |
+| docker-planefence          | yes                     | not moved           |                                                                |
+| docker-airnavradar         | yes                     | not moved           |                                                                |
+| docker-radarvirtuel        | yes                     | not moved           |                                                                |
+| docker-tar1090             | yes                     | not moved           | `telegraf` tag: yes                                            |
+| docker-sdrmap              | yes                     | not moved           |                                                                |
+| docker-opensky-network     | yes                     | not moved           |                                                                |
+| docker-dump978             | yes                     | not moved           | `telegraf` tag: yes                                            |
+| docker-piaware             | yes                     | not moved           |                                                                |
+| docker-adsb-ultrafeeder    | yes                     | not moved           | `telegraf` tag: yes                                            |
+
 ## Infrastructure
 
 - [x] `forky/` Dockerfiles and `build_local.sh forky`
