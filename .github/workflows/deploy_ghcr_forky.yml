@@ -1,9 +1,10 @@
 ---
 name: Deploy (forky)
 
-# Experimental: builds the forky/ Dockerfiles and pushes them as forky-<image>
-# tags. Downstream triggers are intentionally absent -- downstream repos build
-# FROM the trixie tags, so dispatching them would test nothing forky-related.
+# Builds the next Debian release's base images from forky/ and publishes them as
+# forky-<image>, then dispatches each migrated child repo's deploy with
+# base_variant=forky so it builds on them and publishes :next. Mirrors
+# deploy_ghcr.yml; see NEXT-RELEASE.MD for which images have moved.
 
 on:
   # Enable manual running of action if necessary
@@ -12,14 +13,36 @@ on:
       reason:
         required: true
         description: "Reason for running this workflow"
+      disable_upstream_triggers:
+        required: false
+        type: boolean
+        description: "Rebuild the base images but don't trigger downstream builds"
+        default: false
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  WORKFLOW_AUTH_TOKEN: ${{ secrets.GH_PAT_MIKENYE }}
+  WORKFLOW_REASON: "triggered via deploy_ghcr_forky.yml in sdr-enthusiasts/docker-baseimage"
 
 jobs:
+  # The one place the next release's codename lives. It names the Dockerfile
+  # directory, prefixes the base image tags and is passed to child repos as
+  # base_variant. (env cannot be used in a reusable workflow's with:, so it is
+  # a job output.) Moving to the following release means changing this value
+  # and renaming the directory.
+  variant:
+    name: Next Debian release
+    runs-on: ubuntu-latest
+    outputs:
+      codename: ${{ steps.codename.outputs.codename }}
+    steps:
+      - id: codename
+        run: echo "codename=forky" >> "$GITHUB_OUTPUT"
+
   # Basefile
   deploy_ghcr_base:
     name: Base
+    needs: [variant]
     permissions:
       contents: read
       packages: write
@@ -32,14 +55,14 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-base
-      docker_build_file: forky/Dockerfile.base
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-base
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.base
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   # Next steps are all of the deployments that depend on the base image
   deploy_ghcr_mlat_client:
-    needs: [deploy_ghcr_base]
+    needs: [variant, deploy_ghcr_base]
     name: Mlat Client
     permissions:
       contents: read
@@ -53,14 +76,14 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-mlatclient
-      docker_build_file: forky/Dockerfile.mlatclient
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-mlatclient
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.mlatclient
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy_ghcr_planefence_base:
     name: Planefence
-    needs: [deploy_ghcr_base]
+    needs: [variant, deploy_ghcr_base]
     permissions:
       contents: read
       packages: write
@@ -73,8 +96,8 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-planefence_base
-      docker_build_file: forky/Dockerfile.planefence_base
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-planefence_base
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.planefence_base
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -82,7 +105,7 @@ jobs:
 
   deploy_ghcr_soapy_full:
     name: Soapy Full
-    needs: [deploy_ghcr_base]
+    needs: [variant, deploy_ghcr_base]
     permissions:
       contents: read
       packages: write
@@ -95,8 +118,8 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-soapy-full
-      docker_build_file: forky/Dockerfile.soapy-full
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-soapy-full
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.soapy-full
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -104,7 +127,7 @@ jobs:
 
   deploy_ghcr_wreadsb:
     name: Wreadsb
-    needs: [deploy_ghcr_base, deploy_ghcr_mlat_client]
+    needs: [variant, deploy_ghcr_base, deploy_ghcr_mlat_client]
     permissions:
       contents: read
       packages: write
@@ -117,8 +140,8 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-wreadsb
-      docker_build_file: forky/Dockerfile.wreadsb
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-wreadsb
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.wreadsb
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -126,7 +149,7 @@ jobs:
 
   deploy_ghcr_acars-decoder-soapy:
     name: ACARS Decoder Soapy
-    needs: [deploy_ghcr_soapy_full]
+    needs: [variant, deploy_ghcr_soapy_full]
     permissions:
       contents: read
       packages: write
@@ -139,8 +162,8 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-acars-decoder-soapy
-      docker_build_file: forky/Dockerfile.acars-decoder-soapy
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-acars-decoder-soapy
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.acars-decoder-soapy
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -148,7 +171,7 @@ jobs:
 
   deploy_dump978-full:
     name: Dump978 Full
-    needs: [deploy_ghcr_wreadsb]
+    needs: [variant, deploy_ghcr_wreadsb]
     permissions:
       contents: read
       packages: write
@@ -161,7 +184,300 @@ jobs:
       ghcr_repo_owner: ${{ github.repository_owner }}
       ghcr_repo: ${{ github.repository }}
       build_latest: true
-      docker_latest_tag: forky-dump978-full
-      docker_build_file: forky/Dockerfile.dump978-full
+      docker_latest_tag: ${{ needs.variant.outputs.codename }}-dump978-full
+      docker_build_file: ${{ needs.variant.outputs.codename }}/Dockerfile.dump978-full
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # ---------------------------------------------------------------------------
+  # Downstream trigger jobs.
+  #
+  # Each job dispatches deploy workflows in downstream repos. `gh workflow run`
+  # prints the URL of the run it created; we capture that URL and persist it as
+  # an artifact so the final `monitor_downstream_builds` job can watch every
+  # dispatched run to completion and report an aggregate pass/fail.
+  #
+  # Each downstream target is a matrix entry so the dispatch+capture logic lives
+  # in exactly one place.
+  # ---------------------------------------------------------------------------
+
+  trigger_build_base:
+    name: Trigger deploy of base image (${{ matrix.slug }})
+    needs: [variant, deploy_ghcr_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Children of :base that build on the next release. Not yet moved (see
+        # NEXT-RELEASE.MD): docker-beast-splitter (blocked on Boost) and
+        # docker-virtualradarserver (deferred; its deploy does not use sdre.yml).
+        include:
+          - {
+              slug: acarshub,
+              repo: sdr-enthusiasts/docker-acarshub,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: flightradar24,
+              repo: sdr-enthusiasts/docker-flightradar24,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: adsbhub,
+              repo: sdr-enthusiasts/docker-adsbhub,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: planefinder,
+              repo: sdr-enthusiasts/docker-planefinder,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: acars_router,
+              repo: sdr-enthusiasts/acars_router,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: airspy,
+              repo: sdr-enthusiasts/airspy_adsb,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: reversewebproxy,
+              repo: sdr-enthusiasts/docker-reversewebproxy,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: radar1090,
+              repo: sdr-enthusiasts/docker-radar1090,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: shipfeeder,
+              repo: sdr-enthusiasts/docker-shipfeeder,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: aprs-tracker,
+              repo: sdr-enthusiasts/docker-aprs-tracker,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: vesselalert,
+              repo: sdr-enthusiasts/docker-vesselalert,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: telegraf-adsb,
+              repo: sdr-enthusiasts/docker-telegraf-adsb,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: api2sbs,
+              repo: sdr-enthusiasts/docker-api2sbs,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: browser-screenshot,
+              repo: sdr-enthusiasts/browser-screenshot-service,
+              workflow: deploy.yml,
+              ref: main,
+            }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          base_variant: ${{ needs.variant.outputs.codename }}
+
+  # ---------------------------------------------------------------------------
+  # Final aggregator: watch every dispatched downstream run to completion,
+  # follow the tar1090 -> docker-adsb-ultrafeeder chain, and fail this job if
+  # any downstream build failed. Runs even if some trigger jobs failed so that
+  # partial results are still reported.
+  # ---------------------------------------------------------------------------
+  monitor_downstream_builds:
+    name: Monitor downstream builds
+    needs:
+      - trigger_build_base
+    runs-on: ubuntu-latest
+    if: ${{ always() && github.event.inputs.disable_upstream_triggers != 'true' }}
+    steps:
+      - name: Download dispatched-run manifests
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: dispatched
+          pattern: dispatched-run-*
+          merge-multiple: true
+
+      - name: Watch downstream runs and report
+        env:
+          GH_TOKEN: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          TAR1090_REPO: sdr-enthusiasts/docker-tar1090
+          TAR1090_ULTRAFEEDER_REPO: sdr-enthusiasts/docker-adsb-ultrafeeder
+        run: |
+          set -euo pipefail
+
+          # --- Collect dispatched runs from the manifests ----------------------
+          # Each manifest line is: <slug>\t<repo>\t<run_url>\t<note>
+          shopt -s nullglob
+          manifests=(dispatched/*.tsv)
+          if [[ ${#manifests[@]} -eq 0 ]]; then
+            echo "No dispatched-run manifests found. Nothing to monitor."
+            {
+              echo "## Downstream build report"
+              echo ""
+              echo "No downstream runs were dispatched (or none reported a run URL)."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # A row without a run URL (the dispatch failed, or its URL was not
+          # captured) cannot be watched. Report it as a failure instead of
+          # skipping it, so an image that was never built cannot pass.
+          declare -a SLUGS=() REPOS=() URLS=()
+          declare -a R_SLUG=() R_REPO=() R_URL=() R_CONCLUSION=()
+          # Tab is whitespace to read, so consecutive tabs would collapse and an
+          # empty run URL would vanish; split on a non-whitespace separator instead.
+          while IFS=$'\037' read -r slug repo url note; do
+            [[ -z "${slug:-}" ]] && continue
+            if [[ -z "${url:-}" ]]; then
+              echo "::error::${slug} (${repo}) has no run to watch: ${note:-no run URL recorded}"
+              R_SLUG+=("$slug"); R_REPO+=("$repo"); R_URL+=("n/a"); R_CONCLUSION+=("${note:-not-monitored}")
+              continue
+            fi
+            SLUGS+=("$slug")
+            REPOS+=("$repo")
+            URLS+=("$url")
+          done < <(cat "${manifests[@]}" | tr '\t' '\037')
+
+          # --- Helper: extract run id from a run URL ---------------------------
+          run_id_from_url() { sed -E 's#.*/runs/([0-9]+).*#\1#' <<<"$1"; }
+
+          # --- Watch a single run to completion, echo its conclusion -----------
+          watch_run() {
+            local repo="$1" run_id="$2"
+            # gh run watch blocks until the run completes.
+            gh run watch "$run_id" --repo "$repo" --exit-status >/dev/null 2>&1 || true
+            gh run view "$run_id" --repo "$repo" --json conclusion --jq '.conclusion' 2>/dev/null || echo "unknown"
+          }
+
+          tar1090_ok="false"
+          tar1090_run_id=""
+
+          for i in "${!URLS[@]}"; do
+            slug="${SLUGS[$i]}"
+            repo="${REPOS[$i]}"
+            url="${URLS[$i]}"
+            run_id="$(run_id_from_url "$url")"
+            echo "::group::Watching ${slug} (${repo} run ${run_id})"
+            conclusion="$(watch_run "$repo" "$run_id")"
+            echo "${slug} (${repo}) -> ${conclusion}"
+            echo "::endgroup::"
+            R_SLUG+=("$slug"); R_REPO+=("$repo"); R_URL+=("$url"); R_CONCLUSION+=("$conclusion")
+            if [[ "$slug" == "tar1090" ]]; then
+              tar1090_run_id="$run_id"
+              [[ "$conclusion" == "success" ]] && tar1090_ok="true"
+            fi
+          done
+
+          # --- Follow tar1090 -> docker-adsb-ultrafeeder chain -----------------
+          # tar1090's own workflow dispatches docker-adsb-ultrafeeder right after
+          # its build completes. GitHub does not expose the dispatch reason in run
+          # metadata, so correlate by time: find the newest workflow_dispatch run
+          # on ultrafeeder created at/after tar1090's build started.
+          if [[ "$tar1090_ok" == "true" ]]; then
+            echo "::group::Locating docker-adsb-ultrafeeder run triggered by tar1090"
+            uf_run_id=""
+            since="$(gh run view "$tar1090_run_id" --repo "$TAR1090_REPO" \
+              --json createdAt --jq '.createdAt' 2>/dev/null || echo "")"
+            echo "tar1090 run ${tar1090_run_id} started at ${since:-unknown}"
+            if [[ -z "$since" ]]; then
+              echo "::warning::Could not determine tar1090 start time; cannot safely correlate ultrafeeder run."
+            else
+              for _ in $(seq 1 30); do
+                uf_run_id="$(gh run list \
+                  --repo "$TAR1090_ULTRAFEEDER_REPO" \
+                  --event workflow_dispatch \
+                  --limit 20 \
+                  --json databaseId,createdAt \
+                  --jq "map(select(.createdAt >= \"${since}\")) | sort_by(.createdAt) | reverse | .[0].databaseId // empty" 2>/dev/null || true)"
+                if [[ -n "$uf_run_id" ]]; then
+                  break
+                fi
+                sleep 20
+              done
+            fi
+            if [[ -n "$uf_run_id" ]]; then
+              uf_url="https://github.com/${TAR1090_ULTRAFEEDER_REPO}/actions/runs/${uf_run_id}"
+              echo "Found ultrafeeder run: ${uf_url}"
+              uf_conclusion="$(watch_run "$TAR1090_ULTRAFEEDER_REPO" "$uf_run_id")"
+              echo "ultrafeeder (${TAR1090_ULTRAFEEDER_REPO}) -> ${uf_conclusion}"
+              R_SLUG+=("ultrafeeder"); R_REPO+=("$TAR1090_ULTRAFEEDER_REPO"); R_URL+=("$uf_url"); R_CONCLUSION+=("$uf_conclusion")
+            else
+              echo "Could not locate an ultrafeeder run triggered by tar1090."
+              R_SLUG+=("ultrafeeder"); R_REPO+=("$TAR1090_ULTRAFEEDER_REPO"); R_URL+=("n/a"); R_CONCLUSION+=("not-found")
+            fi
+            echo "::endgroup::"
+          else
+            echo "tar1090 did not succeed; skipping ultrafeeder chain."
+          fi
+
+          # --- Build the summary table -----------------------------------------
+          {
+            echo "## Downstream build report"
+            echo ""
+            echo "| Target | Repository | Result | Run |"
+            echo "| :----- | :--------- | :----- | :-- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          failures=0
+          for i in "${!R_SLUG[@]}"; do
+            slug="${R_SLUG[$i]}"
+            repo="${R_REPO[$i]}"
+            url="${R_URL[$i]}"
+            conclusion="${R_CONCLUSION[$i]}"
+            case "$conclusion" in
+              success) icon="pass" ;;
+              skipped) icon="skipped" ;;
+              cancelled) icon="CANCELLED"; failures=$((failures + 1)) ;;
+              *) icon="FAIL"; failures=$((failures + 1)) ;;
+            esac
+            if [[ "$url" == "n/a" ]]; then
+              run_cell="n/a"
+            else
+              run_cell="[link](${url})"
+            fi
+            echo "| ${slug} | ${repo} | ${icon} (${conclusion}) | ${run_cell} |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          {
+            echo ""
+            echo "**Total watched:** ${#R_SLUG[@]}  |  **Failures:** ${failures}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "$failures" -gt 0 ]]; then
+            echo "::error::${failures} downstream build(s) failed."
+            exit 1
+          fi
+          echo "All downstream builds succeeded."
