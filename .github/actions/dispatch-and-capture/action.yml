@@ -57,6 +57,13 @@ runs:
           fields+=(-f base_variant="$TARGET_BASE_VARIANT")
         fi
 
+        # Manifest row: <slug>\t<repo>\t<run_url>\t<note>. A row without a run URL
+        # carries a note saying why; the monitor reports it as a failure rather
+        # than skipping it, so an image that was never built cannot pass.
+        write_manifest() {
+          printf '%s\t%s\t%s\t%s\n' "$TARGET_SLUG" "$TARGET_REPO" "$1" "$2" > "$manifest"
+        }
+
         # `gh workflow run` prints the URL of the run it created on success.
         # Capture stdout so we can persist that URL for later monitoring.
         if output="$(gh workflow run \
@@ -69,23 +76,26 @@ runs:
         elif [[ -n "$TARGET_BASE_VARIANT" ]]; then
           echo "::error::Failed to dispatch ${TARGET_SLUG} (${TARGET_REPO}) with base_variant=${TARGET_BASE_VARIANT}:"
           echo "$output"
+          write_manifest "" "dispatch-failed"
           exit 1
         else
           echo "::warning::Failed to dispatch ${TARGET_SLUG} (${TARGET_REPO}):"
           echo "$output"
-          run_url=""
+          write_manifest "" "dispatch-failed"
+          exit 0
         fi
 
         if [[ -z "$run_url" ]]; then
-          echo "::warning::No run URL captured for ${TARGET_SLUG}; it will not be monitored."
-          # Still emit a manifest row so the report shows the dispatch attempt.
-          printf '%s\t%s\t%s\n' "$TARGET_SLUG" "$TARGET_REPO" "" > "$manifest"
+          echo "::warning::No run URL captured for ${TARGET_SLUG}; it cannot be monitored and will be reported as a failure."
+          write_manifest "" "no-run-url"
         else
           echo "Dispatched ${TARGET_SLUG}: ${run_url}"
-          printf '%s\t%s\t%s\n' "$TARGET_SLUG" "$TARGET_REPO" "$run_url" > "$manifest"
+          write_manifest "$run_url" ""
         fi
 
     - name: Upload dispatched-run manifest
+      # always(): a failed dispatch exits non-zero but must still be reported.
+      if: ${{ always() }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: dispatched-run-${{ inputs.slug }}

@@ -339,7 +339,7 @@ jobs:
           set -euo pipefail
 
           # --- Collect dispatched runs from the manifests ----------------------
-          # Each manifest line is: <slug>\t<repo>\t<run_url>
+          # Each manifest line is: <slug>\t<repo>\t<run_url>\t<note>
           shopt -s nullglob
           manifests=(dispatched/*.tsv)
           if [[ ${#manifests[@]} -eq 0 ]]; then
@@ -352,13 +352,24 @@ jobs:
             exit 0
           fi
 
+          # A row without a run URL (the dispatch failed, or its URL was not
+          # captured) cannot be watched. Report it as a failure instead of
+          # skipping it, so an image that was never built cannot pass.
           declare -a SLUGS=() REPOS=() URLS=()
-          while IFS=$'\t' read -r slug repo url; do
-            [[ -z "${url:-}" ]] && continue
+          declare -a R_SLUG=() R_REPO=() R_URL=() R_CONCLUSION=()
+          # Tab is whitespace to read, so consecutive tabs would collapse and an
+          # empty run URL would vanish; split on a non-whitespace separator instead.
+          while IFS=$'\037' read -r slug repo url note; do
+            [[ -z "${slug:-}" ]] && continue
+            if [[ -z "${url:-}" ]]; then
+              echo "::error::${slug} (${repo}) has no run to watch: ${note:-no run URL recorded}"
+              R_SLUG+=("$slug"); R_REPO+=("$repo"); R_URL+=("n/a"); R_CONCLUSION+=("${note:-not-monitored}")
+              continue
+            fi
             SLUGS+=("$slug")
             REPOS+=("$repo")
             URLS+=("$url")
-          done < <(cat "${manifests[@]}")
+          done < <(cat "${manifests[@]}" | tr '\t' '\037')
 
           # --- Helper: extract run id from a run URL ---------------------------
           run_id_from_url() { sed -E 's#.*/runs/([0-9]+).*#\1#' <<<"$1"; }
@@ -370,8 +381,6 @@ jobs:
             gh run watch "$run_id" --repo "$repo" --exit-status >/dev/null 2>&1 || true
             gh run view "$run_id" --repo "$repo" --json conclusion --jq '.conclusion' 2>/dev/null || echo "unknown"
           }
-
-          declare -a R_SLUG=() R_REPO=() R_URL=() R_CONCLUSION=()
 
           tar1090_ok="false"
           tar1090_run_id=""
