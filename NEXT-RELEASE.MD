@@ -170,7 +170,8 @@ from the workflows. Updated as images move; last checked 2026-10-25.
       merged in sdr-enthusiasts/common-github-workflows#206 as `6fe78a4`
 - [x] Child repos: bump the `sdre.yml` pin and expose the base variant input on `workflow_dispatch` (all 14 migrated `:base` children merged)
 - [x] `dispatch-and-capture`: optional input that forwards the base variant only when set
-- [x] `deploy_ghcr_forky.yml`: codename defined in one place (the `variant` job); trigger and monitor jobs copied from `deploy_ghcr.yml` with the base variant set, `:base` group only so far
+- [x] `deploy_ghcr_forky.yml`: codename defined in one place (the `variant` job); every trigger group and the
+      monitor copied from `deploy_ghcr.yml` with the base variant set, blocked repos left out
 - [ ] User-facing documentation of the `forky-*` and `next` tags
 
 ## Design: base variant input in `sdre.yml`

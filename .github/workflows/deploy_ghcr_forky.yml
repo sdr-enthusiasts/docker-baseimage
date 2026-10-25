@@ -310,6 +310,192 @@ jobs:
           token: ${{ env.WORKFLOW_AUTH_TOKEN }}
           base_variant: ${{ needs.variant.outputs.codename }}
 
+  trigger_build_acars_soapy:
+    name: Trigger deploy of acars decoder soapy images (${{ matrix.slug }})
+    needs: [variant, deploy_ghcr_acars-decoder-soapy]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Not yet moved (see NEXT-RELEASE.MD): docker-rtlsdrairband (blocked: icecast2 is not in forky).
+        include:
+          - {
+              slug: acarsdec,
+              repo: sdr-enthusiasts/docker-acarsdec,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: dumpvdl2,
+              repo: sdr-enthusiasts/docker-dumpvdl2,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: dumphfdl,
+              repo: sdr-enthusiasts/docker-dumphfdl,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: hfdlobserver,
+              repo: sdr-enthusiasts/docker-hfdlobserver,
+              workflow: deploy.yml,
+              ref: master,
+            }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          base_variant: ${{ needs.variant.outputs.codename }}
+
+  trigger_build_soapy_full:
+    name: Trigger deploy of soapy-full images (${{ matrix.slug }})
+    needs: [variant, deploy_ghcr_soapy_full]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: xng,
+              repo: sdr-enthusiasts/docker-xng,
+              workflow: deploy.yml,
+              ref: main,
+            }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          base_variant: ${{ needs.variant.outputs.codename }}
+
+  trigger_build_planefence:
+    name: Trigger deploy of sdr-enthusiasts/docker-planefence (${{ matrix.slug }})
+    needs: [variant, deploy_ghcr_planefence_base]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {
+              slug: planefence,
+              repo: sdr-enthusiasts/docker-planefence,
+              workflow: deploy.yml,
+              ref: main,
+            }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          base_variant: ${{ needs.variant.outputs.codename }}
+
+  trigger_build_wreadsb:
+    name: Trigger deploy of wreadsb/mlatclient images (${{ matrix.slug }})
+    needs: [variant, deploy_ghcr_wreadsb, deploy_ghcr_mlat_client]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Not yet moved (see NEXT-RELEASE.MD): docker-tar1090 (blocked: collectd is not in forky), and with it
+        # docker-adsb-ultrafeeder, which tar1090 dispatches.
+        include:
+          - {
+              slug: airnav,
+              repo: sdr-enthusiasts/docker-airnavradar,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: radarvirtuel,
+              repo: sdr-enthusiasts/docker-radarvirtuel,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: sdrplay_beast1090,
+              repo: sdr-enthusiasts/docker-sdrplay-beast1090,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: sdrmap,
+              repo: sdr-enthusiasts/docker-sdrmap,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: opensky,
+              repo: sdr-enthusiasts/docker-opensky-network,
+              workflow: deploy.yml,
+              ref: main,
+            }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          base_variant: ${{ needs.variant.outputs.codename }}
+
+  trigger_build_dump978:
+    name: Trigger deploy of sdr-enthusiasts/docker-dump978 (${{ matrix.slug }})
+    needs: [variant, deploy_dump978-full]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.disable_upstream_triggers != 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Not yet moved (see NEXT-RELEASE.MD): docker-piaware (blocked: builds beast-splitter, see docker-beast-splitter).
+        include:
+          - {
+              slug: dump978,
+              repo: sdr-enthusiasts/docker-dump978,
+              workflow: deploy.yml,
+              ref: main,
+            }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Dispatch and capture ${{ matrix.slug }}
+        uses: ./.github/actions/dispatch-and-capture
+        with:
+          slug: ${{ matrix.slug }}
+          repo: ${{ matrix.repo }}
+          workflow: ${{ matrix.workflow }}
+          ref: ${{ matrix.ref }}
+          reason: ${{ env.WORKFLOW_REASON }}
+          token: ${{ env.WORKFLOW_AUTH_TOKEN }}
+          base_variant: ${{ needs.variant.outputs.codename }}
+
   # ---------------------------------------------------------------------------
   # Final aggregator: watch every dispatched downstream run to completion,
   # follow the tar1090 -> docker-adsb-ultrafeeder chain, and fail this job if
@@ -320,6 +506,11 @@ jobs:
     name: Monitor downstream builds
     needs:
       - trigger_build_base
+      - trigger_build_acars_soapy
+      - trigger_build_soapy_full
+      - trigger_build_planefence
+      - trigger_build_wreadsb
+      - trigger_build_dump978
     runs-on: ubuntu-latest
     if: ${{ always() && github.event.inputs.disable_upstream_triggers != 'true' }}
     steps:
