@@ -53,27 +53,32 @@ moves from 3.13 to 3.14.
 Triggered by `trigger_build_base` in `deploy_ghcr.yml`, and, for the merged
 repos, with `base_variant=forky` by the same job in `deploy_ghcr_forky.yml`.
 Each merged change bumps `sdre.yml` to `6fe78a4` and adds the `base_variant`
-input; each was built locally (amd64) on stable `:base` and, through the merged
-`apply-base-variant.sh` rewrite, on `forky-base`.
+input.
 
-| Repo                       | Status        | Notes                                                                                               |
-| -------------------------- | ------------- | --------------------------------------------------------------------------------------------------- |
-| docker-acarshub            | merged        | GitHub release job skipped for base variant builds                                                  |
-| docker-beast-splitter      | blocked       | Boost 1.87+ removed `asio::io_service` and 1.89 removed `libboost_system`; upstream v11.1 uses both |
-| docker-flightradar24       | merged        |                                                                                                     |
-| docker-adsbhub             | merged        | Also adds the missing update-flakes workflow and updates `flake.lock`; needs a `PAT` repo secret    |
-| docker-planefinder         | merged        |                                                                                                     |
-| acars_router               | merged        | Branch made in a separate worktree; the local checkout has uncommitted work                         |
-| airspy_adsb                | merged        |                                                                                                     |
-| docker-reversewebproxy     | merged        | goaccess apt repo only on bookworm; Debian's goaccess otherwise                                     |
-| docker-radar1090           | merged        | GCC 16 `-Wunused-but-set-variable` with `-Werror`; built with `-Wno-error=unused-but-set-variable`  |
-| docker-shipfeeder          | merged        | `t64` package names for everything after bookworm; `qemu-arm-static` symlink for qemu 11            |
-| docker-aprs-tracker        | merged        | Also fixes triggered deploys building on the stale `:base-test-pr` image                            |
-| docker-vesselalert         | merged        |                                                                                                     |
-| docker-telegraf-adsb       | merged        |                                                                                                     |
-| docker-api2sbs             | merged        |                                                                                                     |
-| docker-virtualradarserver  | not migrating | Deferred. Builds on forky, but its deploy does not use `sdre.yml`                                   |
-| browser-screenshot-service | merged        |                                                                                                     |
+First Deploy (forky) run, 2026-10-25: every `:latest` and every stable base tag
+kept its exact digest, and 14 of 15 images (reversewebproxy publishes both
+`docker-reversewebproxy` and `webproxy`) gained a `:next` whose
+`/etc/os-release` reads `Debian GNU/Linux forky/sid` on every published
+platform (41 of 41). browser-screenshot-service failed on linux/arm/v7.
+
+| Repo                       | Status        | Notes                                                                                                                                     |
+| -------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| docker-acarshub            | moved         | GitHub release job skipped for base variant builds                                                                                        |
+| docker-beast-splitter      | blocked       | Boost 1.87+ removed `asio::io_service` and 1.89 removed `libboost_system`; upstream v11.1 uses both                                       |
+| docker-flightradar24       | moved         |                                                                                                                                           |
+| docker-adsbhub             | moved         | Also adds the missing update-flakes workflow and updates `flake.lock`; needs a `PAT` repo secret                                          |
+| docker-planefinder         | moved         |                                                                                                                                           |
+| acars_router               | moved         | Branch made in a separate worktree; the local checkout has uncommitted work                                                               |
+| airspy_adsb                | moved         |                                                                                                                                           |
+| docker-reversewebproxy     | moved         | goaccess apt repo only on bookworm; Debian's goaccess otherwise                                                                           |
+| docker-radar1090           | moved         | GCC 16 `-Wunused-but-set-variable` with `-Werror`; built with `-Wno-error=unused-but-set-variable`                                        |
+| docker-shipfeeder          | moved         | `t64` package names for everything after bookworm; `qemu-arm-static` symlink for qemu 11                                                  |
+| docker-aprs-tracker        | moved         | Also fixes triggered deploys building on the stale `:base-test-pr` image                                                                  |
+| docker-vesselalert         | moved         |                                                                                                                                           |
+| docker-telegraf-adsb       | moved         |                                                                                                                                           |
+| docker-api2sbs             | moved         |                                                                                                                                           |
+| docker-virtualradarserver  | not migrating | Deferred. Builds on forky, but its deploy does not use `sdre.yml`                                                                         |
+| browser-screenshot-service | merged        | Forky's chromium dropped armhf, so `:next` skips linux/arm/v7 (sdr-enthusiasts/browser-screenshot-service#219); `:next` not yet published |
 
 ## Other trigger groups
 
@@ -163,6 +168,10 @@ Dependencies this surfaced in later trigger groups:
   and `next-<tag>`.
 - Images that cannot build on the next release are marked blocked and left on
   stable; they are dealt with later.
+- A `:next` build may drop linux/arm/v7 when Debian has dropped armhf for a
+  package the image needs. Stable keeps arm/v7: the child's deploy sets
+  `platform_linux_arm32v7_enabled: ${{ github.event.inputs.base_variant == '' }}`.
+  Applied to: browser-screenshot-service (chromium).
 - Codename checks keep a bookworm branch but test for it explicitly:
   `if codename == bookworm ... else <current packages>`, so new releases take the
   current path.
