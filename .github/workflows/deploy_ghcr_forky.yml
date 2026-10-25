@@ -210,12 +210,18 @@ jobs:
       fail-fast: false
       matrix:
         # Children of :base that build on the next release. Not yet moved (see
-        # NEXT-RELEASE.MD): docker-beast-splitter (blocked on Boost) and
-        # docker-virtualradarserver (deferred; its deploy does not use sdre.yml).
+        # NEXT-RELEASE.MD): docker-virtualradarserver (deferred; its deploy does
+        # not use sdre.yml).
         include:
           - {
               slug: acarshub,
               repo: sdr-enthusiasts/docker-acarshub,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: beast-splitter,
+              repo: sdr-enthusiasts/docker-beast-splitter,
               workflow: deploy.yml,
               ref: main,
             }
@@ -421,8 +427,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Not yet moved (see NEXT-RELEASE.MD): docker-tar1090 (blocked: collectd is not in forky), and with it
-        # docker-adsb-ultrafeeder, which tar1090 dispatches.
         include:
           - {
               slug: airnav,
@@ -433,6 +437,12 @@ jobs:
           - {
               slug: radarvirtuel,
               repo: sdr-enthusiasts/docker-radarvirtuel,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: tar1090,
+              repo: sdr-enthusiasts/docker-tar1090,
               workflow: deploy.yml,
               ref: main,
             }
@@ -475,11 +485,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Not yet moved (see NEXT-RELEASE.MD): docker-piaware (blocked: builds beast-splitter, see docker-beast-splitter).
         include:
           - {
               slug: dump978,
               repo: sdr-enthusiasts/docker-dump978,
+              workflow: deploy.yml,
+              ref: main,
+            }
+          - {
+              slug: piaware,
+              repo: sdr-enthusiasts/docker-piaware,
               workflow: deploy.yml,
               ref: main,
             }
