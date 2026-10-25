@@ -82,20 +82,35 @@ platform (41 of 41). browser-screenshot-service failed on linux/arm/v7.
 
 ## Other trigger groups
 
-Not started. Listed so nothing is forgotten.
+Swept 2026-10-25: each repo's `origin/main` built locally (amd64) on the stable
+base images as written, and on the forky base images through the merged
+`apply-base-variant.sh`, including the telegraf variants (`dockerfile_changes`).
+For images that build on forky, every package they install was checked for an
+arm64 (and, where published, armhf) build in forky; none is missing.
 
-| Base image tag           | Repos                                                                                                                    |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| `acars-decoder-soapy`    | docker-acarsdec, docker-dumpvdl2, docker-dumphfdl, docker-hfdlobserver, docker-rtlsdrairband                             |
-| `soapy-full`             | docker-xng                                                                                                               |
-| `planefence_base`        | docker-planefence                                                                                                        |
-| `wreadsb` / `mlatclient` | docker-airnavradar, docker-radarvirtuel, docker-tar1090, docker-sdrplay-beast1090, docker-sdrmap, docker-opensky-network |
-| `dump978-full`           | docker-dump978, docker-piaware                                                                                           |
-| child of tar1090         | docker-adsb-ultrafeeder (dispatched by docker-tar1090, not by this repo)                                                 |
+| Repo                     | Triggered by          | Status     | Notes                                                                                                                                  |
+| ------------------------ | --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| docker-acarsdec          | `acars-decoder-soapy` | builds     | Needs `base_variant_exclude: acars-bridge`                                                                                             |
+| docker-dumpvdl2          | `acars-decoder-soapy` | builds     | Needs `base_variant_exclude: acars-bridge`                                                                                             |
+| docker-dumphfdl          | `acars-decoder-soapy` | fix tested | `libconfig++` runtime name via `runtime_pkg`; glib `t64` and the `devel` branch for everything after bookworm                          |
+| docker-hfdlobserver      | `acars-decoder-soapy` | fix tested | `libconfig++` and `libxml2` runtime names via `runtime_pkg`; glib `t64` after bookworm                                                 |
+| docker-rtlsdrairband     | `acars-decoder-soapy` | blocked    | `icecast2` removed from forky (still in unstable). Fix tested up to it: `libxml2` via `runtime_pkg`, curl/ncurses names after bookworm |
+| docker-xng               | `soapy-full`          | builds     |                                                                                                                                        |
+| docker-planefence        | `planefence_base`     | builds     |                                                                                                                                        |
+| docker-airnavradar       | `wreadsb`             | fix tested | armhf `t64` names after bookworm; `qemu-arm-static` symlink for qemu 11 (before the `rbfeeder` check)                                  |
+| docker-radarvirtuel      | `wreadsb`             | builds     |                                                                                                                                        |
+| docker-tar1090           | `wreadsb`             | blocked    | `collectd-core` removed from forky (still in unstable); graphs1090 needs it. Also `libpython3.11` fallback                             |
+| docker-sdrplay-beast1090 | `wreadsb`             | fix tested | GCC 15+ `-Wunterminated-string-initialization` with `-Werror`: `EXTRACFLAGS=-Wno-...`; `calloc` fix after bookworm                     |
+| docker-sdrmap            | `wreadsb`             | builds     |                                                                                                                                        |
+| docker-opensky-network   | `wreadsb`             | builds     |                                                                                                                                        |
+| docker-dump978           | `dump978-full`        | fix tested | `setcap` needs `libcap2-bin` installed explicitly; both `latest` and `telegraf` builds                                                 |
+| docker-piaware           | `dump978-full`        | blocked    | Builds beast-splitter v11.1 itself, so it shares docker-beast-splitter's Boost blocker                                                 |
+| docker-adsb-ultrafeeder  | child of tar1090      | blocked    | Builds `FROM docker-tar1090`, which is blocked                                                                                         |
 
-docker-sdrplay-beast1090 has a build stage on `base` and a final stage on
-`wreadsb`, so it needs both next-release base images. docker-acars2pos builds on
-`base` but is a personal fork and out of scope.
+docker-rtlsdrairband builds `FROM soapy-full` but is triggered with the
+`acars-decoder-soapy` group. docker-sdrplay-beast1090 has a build stage on
+`base` and a final stage on `wreadsb`. docker-acars2pos builds on `base` but is
+a personal fork and out of scope.
 
 ## arm/v7 support
 
@@ -208,6 +223,9 @@ Dependencies this surfaced in later trigger groups:
   `wreadsb/wreadsb-test-pr`.
 - docker-planefence's `build_baseimage_url` replaces a tag with itself, so it
   does nothing.
+- docker-piaware's Dockerfile labels its Boost packages as tcllauncher
+  dependencies; tcllauncher does not use Boost. They are for the beast-splitter,
+  dump978 and faup978 binaries.
 - docker-beast-splitter, docker-reversewebproxy and docker-shipfeeder choose
   packages with `if codename == trixie ... else <bookworm>`, which sends every
   new release down the bookworm path.
@@ -227,6 +245,11 @@ Dependencies this surfaced in later trigger groups:
   current path.
 - docker-virtualradarserver is deferred. docker-acars2pos is out of scope.
 - Base variant input name: `base_variant` (blank means stable).
+- Runtime library packages that Debian renames each release (soname bumps, e.g.
+  `libconfig++11`/`libconfig++15`, `libxml2`/`libxml2-16`) are not named in
+  Dockerfiles. A `runtime_pkg` helper resolves the one the unversioned `-dev`
+  package depends on (`apt-cache depends --recurse`) after `apt-get update`, and
+  fails the build if nothing matches.
 
 ## End of a cycle
 
