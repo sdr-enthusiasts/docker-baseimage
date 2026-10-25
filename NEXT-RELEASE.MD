@@ -61,24 +61,24 @@ kept its exact digest, and 14 of 15 images (reversewebproxy publishes both
 `/etc/os-release` reads `Debian GNU/Linux forky/sid` on every published
 platform (41 of 41). browser-screenshot-service failed on linux/arm/v7.
 
-| Repo                       | Status        | Notes                                                                                                                           |
-| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| docker-acarshub            | moved         | GitHub release job skipped for base variant builds                                                                              |
-| docker-beast-splitter      | fix tested    | Boost 1.87+ port applied at build time only where needed (`patches/beast-splitter-boost-1.87.patch`); viewadsb GCC 15+/16 flags |
-| docker-flightradar24       | moved         |                                                                                                                                 |
-| docker-adsbhub             | moved         | Also adds the missing update-flakes workflow and updates `flake.lock`; needs a `PAT` repo secret                                |
-| docker-planefinder         | moved         |                                                                                                                                 |
-| acars_router               | moved         | Branch made in a separate worktree; the local checkout has uncommitted work                                                     |
-| airspy_adsb                | moved         |                                                                                                                                 |
-| docker-reversewebproxy     | moved         | goaccess apt repo only on bookworm; Debian's goaccess otherwise                                                                 |
-| docker-radar1090           | moved         | GCC 16 `-Wunused-but-set-variable` with `-Werror`; built with `-Wno-error=unused-but-set-variable`                              |
-| docker-shipfeeder          | moved         | `t64` package names for everything after bookworm; `qemu-arm-static` symlink for qemu 11                                        |
-| docker-aprs-tracker        | moved         | Also fixes triggered deploys building on the stale `:base-test-pr` image                                                        |
-| docker-vesselalert         | moved         |                                                                                                                                 |
-| docker-telegraf-adsb       | moved         |                                                                                                                                 |
-| docker-api2sbs             | moved         |                                                                                                                                 |
-| docker-virtualradarserver  | not migrating | Deferred. Builds on forky, but its deploy does not use `sdre.yml`                                                               |
-| browser-screenshot-service | moved         | Forky's chromium has no armhf build, so `:next` is amd64 and arm64 only (sdr-enthusiasts/browser-screenshot-service#219)        |
+| Repo                       | Status        | Notes                                                                                                                    |
+| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| docker-acarshub            | moved         | GitHub release job skipped for base variant builds                                                                       |
+| docker-beast-splitter      | moved         | Boost 1.87+ port applied at build time only where needed (`patches/beast-splitter-boost-1.87.patch`)                     |
+| docker-flightradar24       | moved         |                                                                                                                          |
+| docker-adsbhub             | moved         | Also adds the missing update-flakes workflow and updates `flake.lock`; needs a `PAT` repo secret                         |
+| docker-planefinder         | moved         |                                                                                                                          |
+| acars_router               | moved         | Branch made in a separate worktree; the local checkout has uncommitted work                                              |
+| airspy_adsb                | moved         |                                                                                                                          |
+| docker-reversewebproxy     | moved         | goaccess apt repo only on bookworm; Debian's goaccess otherwise                                                          |
+| docker-radar1090           | moved         | GCC 16 `-Wunused-but-set-variable` with `-Werror`; built with `-Wno-error=unused-but-set-variable`                       |
+| docker-shipfeeder          | moved         | `t64` package names for everything after bookworm; `qemu-arm-static` symlink for qemu 11                                 |
+| docker-aprs-tracker        | moved         | Also fixes triggered deploys building on the stale `:base-test-pr` image                                                 |
+| docker-vesselalert         | moved         |                                                                                                                          |
+| docker-telegraf-adsb       | moved         |                                                                                                                          |
+| docker-api2sbs             | moved         |                                                                                                                          |
+| docker-virtualradarserver  | not migrating | Deferred. Builds on forky, but its deploy does not use `sdre.yml`                                                        |
+| browser-screenshot-service | moved         | Forky's chromium has no armhf build, so `:next` is amd64 and arm64 only (sdr-enthusiasts/browser-screenshot-service#219) |
 
 ## Other trigger groups
 
@@ -93,24 +93,31 @@ tags checked (`:latest`, `telegraf` and the stable base tags) kept their exact
 digests; 29 `:next`/`:next-telegraf` tags were published or refreshed, and all
 79 of their platform images report `Debian GNU/Linux forky/sid`.
 
-| Repo                     | Triggered by          | Status     | Notes                                                                                                                                                      |
-| ------------------------ | --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| docker-acarsdec          | `acars-decoder-soapy` | moved      | Needs `base_variant_exclude: acars-bridge`                                                                                                                 |
-| docker-dumpvdl2          | `acars-decoder-soapy` | moved      | Needs `base_variant_exclude: acars-bridge`                                                                                                                 |
-| docker-dumphfdl          | `acars-decoder-soapy` | moved      | `libconfig++` runtime name via `runtime_pkg`; glib `t64` and the `devel` branch for everything after bookworm                                              |
-| docker-hfdlobserver      | `acars-decoder-soapy` | moved      | `libconfig++` and `libxml2` runtime names via `runtime_pkg`; glib `t64` after bookworm                                                                     |
-| docker-rtlsdrairband     | `acars-decoder-soapy` | blocked    | `icecast2` removed from forky (still in unstable). Fix tested up to it: `libxml2` via `runtime_pkg`, curl/ncurses names after bookworm                     |
-| docker-xng               | `soapy-full`          | moved      |                                                                                                                                                            |
-| docker-planefence        | `planefence_base`     | moved      |                                                                                                                                                            |
-| docker-airnavradar       | `wreadsb`             | moved      | armhf `t64` names after bookworm; `qemu-arm-static` symlink for qemu 11 (before the `rbfeeder` check)                                                      |
-| docker-radarvirtuel      | `wreadsb`             | moved      |                                                                                                                                                            |
-| docker-tar1090           | `wreadsb`             | fix tested | `collectd-core` from unstable only where the release lacks it (RC bug #1128534); libpython from collectd's python plugin                                   |
-| docker-sdrplay-beast1090 | `wreadsb`             | moved      | GCC 15+ `-Wunterminated-string-initialization` with `-Werror`: `EXTRACFLAGS=-Wno-...`; `calloc` fix after bookworm                                         |
-| docker-sdrmap            | `wreadsb`             | moved      |                                                                                                                                                            |
-| docker-opensky-network   | `wreadsb`             | moved      |                                                                                                                                                            |
-| docker-dump978           | `dump978-full`        | moved      | `setcap` needs `libcap2-bin` installed explicitly; both `latest` and `telegraf` builds                                                                     |
-| docker-piaware           | `dump978-full`        | fix tested | Same beast-splitter patch; tcl-tls rebuild after bookworm; `pkg_resources` only where shipped; `c_rehash` via `openssl rehash -compat`; dump1090 GCC flags |
-| docker-adsb-ultrafeeder  | child of tar1090      | fix tested | No Dockerfile change; tar1090 forwards `base_variant`, so it builds on `docker-tar1090:next` / `:next-telegraf`                                            |
+Third Deploy (forky) run, 2026-10-25, after unblocking beast-splitter, piaware
+and tar1090: a tar1090-only dispatch first proved the tar1090 -> ultrafeeder
+chain (both built and published `:next` and `:next-telegraf` on forky). The full
+run then left all 45 stable tags at their exact digests, published 6 new and
+refreshed 29 `:next`/`:next-telegraf` tags, and all 97 platform images report
+`Debian GNU/Linux forky/sid`.
+
+| Repo                     | Triggered by          | Status  | Notes                                                                                                                                  |
+| ------------------------ | --------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| docker-acarsdec          | `acars-decoder-soapy` | moved   | Needs `base_variant_exclude: acars-bridge`                                                                                             |
+| docker-dumpvdl2          | `acars-decoder-soapy` | moved   | Needs `base_variant_exclude: acars-bridge`                                                                                             |
+| docker-dumphfdl          | `acars-decoder-soapy` | moved   | `libconfig++` runtime name via `runtime_pkg`; glib `t64` and the `devel` branch for everything after bookworm                          |
+| docker-hfdlobserver      | `acars-decoder-soapy` | moved   | `libconfig++` and `libxml2` runtime names via `runtime_pkg`; glib `t64` after bookworm                                                 |
+| docker-rtlsdrairband     | `acars-decoder-soapy` | blocked | `icecast2` removed from forky (still in unstable). Fix tested up to it: `libxml2` via `runtime_pkg`, curl/ncurses names after bookworm |
+| docker-xng               | `soapy-full`          | moved   |                                                                                                                                        |
+| docker-planefence        | `planefence_base`     | moved   |                                                                                                                                        |
+| docker-airnavradar       | `wreadsb`             | moved   | armhf `t64` names after bookworm; `qemu-arm-static` symlink for qemu 11 (before the `rbfeeder` check)                                  |
+| docker-radarvirtuel      | `wreadsb`             | moved   |                                                                                                                                        |
+| docker-tar1090           | `wreadsb`             | moved   | `collectd-core` from unstable only where the release lacks it (RC bug #1128534)                                                        |
+| docker-sdrplay-beast1090 | `wreadsb`             | moved   | GCC 15+ `-Wunterminated-string-initialization` with `-Werror`: `EXTRACFLAGS=-Wno-...`; `calloc` fix after bookworm                     |
+| docker-sdrmap            | `wreadsb`             | moved   |                                                                                                                                        |
+| docker-opensky-network   | `wreadsb`             | moved   |                                                                                                                                        |
+| docker-dump978           | `dump978-full`        | moved   | `setcap` needs `libcap2-bin` installed explicitly; both `latest` and `telegraf` builds                                                 |
+| docker-piaware           | `dump978-full`        | moved   | Same beast-splitter patch, tcl-tls rebuild after bookworm, `c_rehash` via `openssl rehash -compat`                                     |
+| docker-adsb-ultrafeeder  | child of tar1090      | moved   | Dispatched by tar1090 with `base_variant`; builds on `docker-tar1090:next` / `:next-telegraf`                                          |
 
 docker-rtlsdrairband builds `FROM soapy-full` but is triggered with the
 `acars-decoder-soapy` group. docker-sdrplay-beast1090 has a build stage on
@@ -122,53 +129,53 @@ a personal fork and out of scope.
 What is actually published, read from each tag's manifest list on ghcr.io
 (`docker buildx imagetools inspect ghcr.io/sdr-enthusiasts/<image>:<tag>`), not
 from the workflows. Updated as images move; last checked 2026-10-25, after the
-second Deploy (forky) run.
+third Deploy (forky) run.
 
 - Base images: every stable tag and every `forky-*` tag is published for amd64,
   arm64 and arm/v7.
 - Stable: 26 of 34 child images ship arm/v7.
-- Next: 28 child images publish `:next`; 20 ship arm/v7. Every `:next`
+- Next: 32 child images publish `:next`; 24 ship arm/v7. Every `:next`
   matches its `:latest` except browser-screenshot-service, where Debian dropped
   armhf for a package the image needs (see Decisions).
 - Every child of `soapy-full` and `acars-decoder-soapy` already skips arm/v7 on
   stable, while those two base images still build it.
 
-| Image                      | Stable `:latest` arm/v7 | Next `:next` arm/v7 | Notes                                              |
-| -------------------------- | ----------------------- | ------------------- | -------------------------------------------------- |
-| docker-acarshub            | no                      | no                  | Never built for arm/v7                             |
-| docker-flightradar24       | yes                     | yes                 |                                                    |
-| docker-adsbhub             | yes                     | yes                 |                                                    |
-| docker-planefinder         | yes                     | yes                 |                                                    |
-| acars_router               | yes                     | yes                 |                                                    |
-| airspy_adsb                | yes                     | yes                 |                                                    |
-| docker-reversewebproxy     | yes                     | yes                 |                                                    |
-| webproxy                   | yes                     | yes                 | Second image published by docker-reversewebproxy   |
-| docker-radar1090           | yes                     | yes                 |                                                    |
-| docker-shipfeeder          | yes                     | yes                 |                                                    |
-| docker-aprs-tracker        | yes                     | yes                 |                                                    |
-| docker-vesselalert         | yes                     | yes                 |                                                    |
-| docker-telegraf-adsb       | yes                     | yes                 |                                                    |
-| docker-api2sbs             | yes                     | yes                 |                                                    |
-| browser-screenshot-service | yes                     | dropped             | Forky's chromium has no armhf build                |
-| docker-acarsdec            | no                      | no                  |                                                    |
-| docker-dumpvdl2            | no                      | no                  |                                                    |
-| docker-dumphfdl            | no                      | no                  |                                                    |
-| docker-hfdlobserver        | no                      | no                  |                                                    |
-| docker-xng                 | no                      | no                  |                                                    |
-| docker-sdrplay-beast1090   | no                      | no                  |                                                    |
-| docker-planefence          | yes                     | yes                 |                                                    |
-| docker-airnavradar         | yes                     | yes                 |                                                    |
-| docker-radarbox            | yes                     | yes                 | Legacy image published by docker-airnavradar       |
-| docker-radarvirtuel        | yes                     | yes                 |                                                    |
-| docker-sdrmap              | yes                     | yes                 |                                                    |
-| docker-opensky-network     | yes                     | yes                 |                                                    |
-| docker-dump978             | yes                     | yes                 | `telegraf` / `next-telegraf`: yes / yes            |
-| docker-beast-splitter      | yes                     | not moved           | Fix tested, not yet published                      |
-| vrs                        | yes                     | not moved           | Deferred (docker-virtualradarserver)               |
-| docker-rtlsdrairband       | no                      | not moved           | Blocked                                            |
-| docker-tar1090             | yes                     | not moved           | Fix tested, not yet published; `telegraf` tag: yes |
-| docker-piaware             | yes                     | not moved           | Fix tested, not yet published                      |
-| docker-adsb-ultrafeeder    | yes                     | not moved           | Waits on tar1090; `telegraf` tag: yes              |
+| Image                      | Stable `:latest` arm/v7 | Next `:next` arm/v7 | Notes                                            |
+| -------------------------- | ----------------------- | ------------------- | ------------------------------------------------ |
+| docker-acarshub            | no                      | no                  | Never built for arm/v7                           |
+| docker-flightradar24       | yes                     | yes                 |                                                  |
+| docker-adsbhub             | yes                     | yes                 |                                                  |
+| docker-planefinder         | yes                     | yes                 |                                                  |
+| acars_router               | yes                     | yes                 |                                                  |
+| airspy_adsb                | yes                     | yes                 |                                                  |
+| docker-reversewebproxy     | yes                     | yes                 |                                                  |
+| webproxy                   | yes                     | yes                 | Second image published by docker-reversewebproxy |
+| docker-radar1090           | yes                     | yes                 |                                                  |
+| docker-shipfeeder          | yes                     | yes                 |                                                  |
+| docker-aprs-tracker        | yes                     | yes                 |                                                  |
+| docker-vesselalert         | yes                     | yes                 |                                                  |
+| docker-telegraf-adsb       | yes                     | yes                 |                                                  |
+| docker-api2sbs             | yes                     | yes                 |                                                  |
+| browser-screenshot-service | yes                     | dropped             | Forky's chromium has no armhf build              |
+| docker-acarsdec            | no                      | no                  |                                                  |
+| docker-dumpvdl2            | no                      | no                  |                                                  |
+| docker-dumphfdl            | no                      | no                  |                                                  |
+| docker-hfdlobserver        | no                      | no                  |                                                  |
+| docker-xng                 | no                      | no                  |                                                  |
+| docker-sdrplay-beast1090   | no                      | no                  |                                                  |
+| docker-planefence          | yes                     | yes                 |                                                  |
+| docker-airnavradar         | yes                     | yes                 |                                                  |
+| docker-radarbox            | yes                     | yes                 | Legacy image published by docker-airnavradar     |
+| docker-radarvirtuel        | yes                     | yes                 |                                                  |
+| docker-sdrmap              | yes                     | yes                 |                                                  |
+| docker-opensky-network     | yes                     | yes                 |                                                  |
+| docker-dump978             | yes                     | yes                 | `telegraf` / `next-telegraf`: yes / yes          |
+| docker-beast-splitter      | yes                     | yes                 |                                                  |
+| vrs                        | yes                     | not moved           | Deferred (docker-virtualradarserver)             |
+| docker-rtlsdrairband       | no                      | not moved           | Blocked                                          |
+| docker-tar1090             | yes                     | yes                 | `telegraf` / `next-telegraf`: yes / yes          |
+| docker-piaware             | yes                     | yes                 |                                                  |
+| docker-adsb-ultrafeeder    | yes                     | yes                 | `telegraf` / `next-telegraf`: yes / yes          |
 
 ## Infrastructure
 
