@@ -22,7 +22,7 @@ RUN set -x && \
   && \
   if ! (uname -m | grep -qs armv7 || dpkg --print-architecture | grep -qs '^armhf$'); then \
   # install sdrplay
-  curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
+  curl --fail --retry 3 --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
   chmod +x /tmp/install_sdrplay.sh && \
   /tmp/install_sdrplay.sh && \
   # Deploy SoapyRTLTCP

@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 rm -rf \
     /tmp/* \
     /var/tmp/* \
