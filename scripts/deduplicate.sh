@@ -13,6 +13,15 @@ fi
 src="$1"
 target="$2"
 
+if [[ ! -d "$src" ]]; then
+    echo "deduplicate.sh: ERROR: ${src} is not a directory" >&2
+    exit 1
+fi
+
+if [[ ! -d "$target" ]]; then
+    echo "deduplicate.sh: ERROR: ${target} is not a directory" >&2
+    exit 1
+fi
 
 count=0
 while read -r sub; do
