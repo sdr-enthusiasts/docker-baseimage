@@ -32,7 +32,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@662dadfa94ef654eefa453cdd224697b6282ab7a # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
@@ -51,7 +51,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@89445b76aa108b0cb2cc74bba17b3ac3b502b6b1 # main
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/sdre.yml@662dadfa94ef654eefa453cdd224697b6282ab7a # main
     with:
       push_enabled: true
       push_destinations: ghcr.io
