@@ -209,9 +209,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Children of :base that build on the next release. Not yet moved (see
-        # NEXT-RELEASE.MD): docker-virtualradarserver (deferred; its deploy does
-        # not use sdre.yml).
+        # Children of :base that build on the next release.
         include:
           - {
               slug: acarshub,
@@ -298,6 +296,12 @@ jobs:
               ref: main,
             }
           - {
+              slug: vrs,
+              repo: sdr-enthusiasts/docker-virtualradarserver,
+              workflow: deploy-main.yml,
+              ref: main,
+            }
+          - {
               slug: browser-screenshot,
               repo: sdr-enthusiasts/browser-screenshot-service,
               workflow: deploy.yml,
@@ -324,7 +328,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Not yet moved (see NEXT-RELEASE.MD): docker-rtlsdrairband (blocked: icecast2 is not in forky).
         include:
           - {
               slug: acarsdec,
@@ -349,6 +352,12 @@ jobs:
               repo: sdr-enthusiasts/docker-hfdlobserver,
               workflow: deploy.yml,
               ref: master,
+            }
+          - {
+              slug: rtlsdrairband,
+              repo: sdr-enthusiasts/docker-rtlsdrairband,
+              workflow: deploy.yml,
+              ref: main,
             }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
