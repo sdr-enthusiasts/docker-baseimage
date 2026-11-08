@@ -29,7 +29,8 @@
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["debian"],
-      "versioning": "regex:^(?<compatibility>\\w+)-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})-slim$"
+      "versioning": "regex:^(?<compatibility>\\w+)-(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})-slim$",
+      "automerge": false
     },
     {
       "matchManagers": ["github-actions", "nix"],
