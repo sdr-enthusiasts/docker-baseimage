@@ -57,7 +57,7 @@ RUN ...
 
 <!-- links below here -->
 
-[acars_router]: https://github.com/sdr-enthusiasts/acars-router
+[acars_router]: https://github.com/sdr-enthusiasts/acars_router
 [acars-oxide]: https://github.com/sdr-enthusiasts/acars-oxide
 [airspy]: https://github.com/sdr-enthusiasts/airspy_adsb
 [bc]: https://packages.debian.org/stable/bc
