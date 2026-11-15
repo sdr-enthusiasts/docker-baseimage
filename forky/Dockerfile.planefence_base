@@ -1,5 +1,9 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:forky-base
 
+# Pass the build-time download retry settings from docker-baseimage:base on to
+# images built FROM this one (ONBUILD only reaches direct children).
+ONBUILD ARG CURL_HOME=/etc/sdre-build
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC2086,DL3003,DL3028,DL3013

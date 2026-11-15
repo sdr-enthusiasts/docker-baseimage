@@ -16,6 +16,10 @@
 # ----------------------------------------------------------------------------------------
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base
 
+# Pass the build-time download retry settings from docker-baseimage:base on to
+# images built FROM this one (ONBUILD only reaches direct children).
+ONBUILD ARG CURL_HOME=/etc/sdre-build
+
 ENV MLATCLIENT_REPO="https://github.com/wiedehopf/mlat-client.git"
 
 SHELL ["/bin/bash", "-x", "-o", "pipefail", "-c"]

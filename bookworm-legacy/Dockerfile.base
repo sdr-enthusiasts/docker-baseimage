@@ -14,6 +14,17 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Retry settings for downloads made while building this image and every image
+# built FROM it. curl only reads /etc/sdre-build/.curlrc when CURL_HOME points
+# there, and CURL_HOME is a build ARG (never an ENV), so curl at container
+# runtime is unaffected. ONBUILD only reaches direct children, so every
+# Dockerfile in this repo re-declares it for the images built on top of it.
+RUN mkdir -p /etc/sdre-build && \
+    printf '%s\n' 'retry = 5' 'retry-connrefused' 'connect-timeout = 30' 'speed-limit = 1024' 'speed-time = 60' > /etc/sdre-build/.curlrc && \
+    printf 'Acquire::Retries "5";\n' > /etc/apt/apt.conf.d/80-retries
+ARG CURL_HOME=/etc/sdre-build
+ONBUILD ARG CURL_HOME=/etc/sdre-build
+
 # hadolint ignore=DL3008,SC2086,DL3003
 RUN \
   --mount=type=bind,source=./,target=/app/ \
